@@ -7,13 +7,36 @@
     <h1 class="h3 mb-0 text-gray-800">Bahan Baku</h1>
     <div align="right" class="pt-1">
         <a href="" class="btn btn-success btn-xs"><i class="fa fa-sync"></i></a>
-        <a href="{{route('bahan.create')}}" class="btn btn-primary">Tambah bahan</a>
-        {{-- <button type="button" name="age" id="age" data-toggle="modal" data-target="#add_data_Modal" class="btn btn-primary"><i class="fa fa-plus"> Tambah Bahan</i></button> --}}
+        {{-- <a href="{{route('bahan.create')}}" class="btn btn-primary">Tambah bahan</a> --}}
+        <button type="button" name="age" id="age" data-toggle="modal" data-target="#add_data_Modal" class="btn btn-primary"><i class="fa fa-plus"> Tambah Bahan</i></button>
     </div>
 </div>
 <div class="card shadow mb-4">
     <div class="card-body">
-        {{ $dataTable->table() }}
+        <table class="table table-hover" id="myTable">
+            <thead>
+                <th>No.</th>
+                <th>Nama Bahan</th>
+                <th>Nama Supplier</th>
+                <th>Jumlah Bahan</th>
+                <th>Satuan</th>
+                <th>Harga</th>
+                <th>Aksi</th>
+            </thead>
+            <tbody>
+                @foreach ($bah as $item )
+                    <tr>
+                        <td>{{$loop->iteration}}</td>
+                        <td>{{$item->nama_bahan}}</td>
+                        <td>{{$item->supplier->nama_supplier}}</td>
+                        <td>{{$item->jumlah_bahan}}</td>
+                        <td>{{$item->satuan_bahan}}</td>
+                        <td>{{$item->harga_bahan}}</td>
+                        <td>{{$item->harga_bahan}}</td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
     </div>
 </div>
 <!-- Modals Tambah data -->
@@ -38,13 +61,13 @@
                         <label>Supplier</label>
                             <select class="form-control @error('supplier_id') is-invalid @enderror" name="supplier_id" value="{{ old('supplier_id') }}" name="supplier_id">
                                 <option value="" selected disabled>Pilih Supplier</option>
-                                {{-- @foreach ($supp as $supplier )
-                                    @if (old('supplier_id') === $supplier->id)
-                                        <option value="{{ $supplier->id }}" selected={{ $supplier->nama_supplier }} />
+                                @foreach ($supp as $supplier )
+                                    @if (old('supplier_id') == $supplier->id)
+                                        <option value="{{ $supplier->id }}" selected> {{ $supplier->nama_supplier }} </option>
                                     @else
                                         <option value="{{ $supplier->id }}">{{ $supplier->nama_supplier }}</option>
                                     @endif
-                                @endforeach --}}
+                                @endforeach
                             </select>
                             @error('supplier_id')
                                 <div class="alert alert-danger mt-2">
@@ -88,6 +111,10 @@
 @endsection
 
 @push('scripts')
-    {{ $dataTable->scripts() }}
+    <script>
+        $(document).ready( function () {
+            $('#myTable').DataTable();
+        } );
+    </script>
 @endpush
 

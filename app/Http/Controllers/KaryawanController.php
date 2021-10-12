@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\DataTables\KaryawanDataTable;
 use App\Models\Karyawan;
 use Illuminate\Http\Request;
-use Alert;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class KaryawanController extends Controller
 {

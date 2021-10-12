@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Gaji;
 use Illuminate\Http\Request;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class GajiController extends Controller
 {
@@ -13,7 +15,7 @@ class GajiController extends Controller
      */
     public function index()
     {
-        //
+        return view('gaji.index');
     }
 
     /**
@@ -34,7 +36,24 @@ class GajiController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $gaji = $request->validate([
+            'nama_bahan' => 'required',
+            'supplier_id' => 'required|numeric',
+            'jumlah_bahan' => 'required|numeric',
+            'satuan_bahan' => 'required',
+            'harga_bahan' => 'required|numeric',
+        ]);
+
+        Gaji::create($gaji);
+        if($gaji){
+            //redirect dengan pesan sukses
+            Alert::toast('Data Berhasil Ditambahkan', 'success');
+            return redirect()->route('gaji.index');
+        }else{
+            //redirect dengan pesan error
+            Alert::error('Gagal', 'Data Gagal Ditambahkan');
+            return redirect()->back();
+        }
     }
 
     /**

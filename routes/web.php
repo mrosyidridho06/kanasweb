@@ -5,6 +5,7 @@ use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\BahanController;
 use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\KehadiranController;
+use App\Http\Controllers\GajiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,6 +34,7 @@ Route::middleware(['middleware' => 'auth'])->group(function () {
     Route::resource('/bahan', BahanController::class);
     Route::resource('/karyawan', KaryawanController::class);
     Route::resource('/kehadiran', KehadiranController::class);
+    Route::resource('/gaji', GajiController::class);
 });
 
 

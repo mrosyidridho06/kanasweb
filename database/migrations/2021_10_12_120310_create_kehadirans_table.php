@@ -15,6 +15,11 @@ class CreateKehadiransTable extends Migration
     {
         Schema::create('kehadirans', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('karyawan_id')->unsigned();
+            $table->foreign('karyawan_id')->references('id')->on('karyawans')->onDelete('cascade');
+            $table->integer('masuk');
+            $table->integer('izin');
+            $table->integer('lembur');
             $table->timestamps();
         });
     }

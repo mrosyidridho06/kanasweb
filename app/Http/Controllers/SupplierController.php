@@ -11,7 +11,8 @@ class SupplierController extends Controller
 {
     public function index(SupplierDataTable $dataTable)
     {
-        return $dataTable->render('supplier.supplier');
+        $suppli = Supplier::get();
+        return view('supplier.supplier', compact('suppli'));
     }
      /**
      * Show the form for creating a new resource.
@@ -74,7 +75,7 @@ class SupplierController extends Controller
      */
     public function edit(Supplier $supplier)
     {
-        //
+        return view('supplier.edit', compact('supplier'));
     }
 
     /**
@@ -86,7 +87,23 @@ class SupplierController extends Controller
      */
     public function update(Request $request, Supplier $supplier)
     {
-        //
+        $request->validate([
+            'nama_supplier' => 'required',
+            'alamat_supplier' => 'required',
+            'hp_supplier' => 'required|min:10',
+        ]);
+
+        $supplier->update($request->all());
+
+        if($supplier){
+            //redirect dengan pesan sukses
+            Alert::toast('Data Berhasil Diupdate', 'success');
+            return redirect()->route('supplier.index');
+        }else{
+            //redirect dengan pesan error
+            Alert::error('Gagal', 'Data Gagal Ditambahkan');
+            return redirect()->back();
+        }
     }
 
     /**
@@ -97,10 +114,9 @@ class SupplierController extends Controller
      */
     public function destroy(Supplier $supplier)
     {
-        $supli = Supplier::find($supplier);
-        $supli->delete();
+        $supplier->delete();
 
-        Alert::toast('Data Berhasil Ditambahkan', 'success');
+        Alert::toast('Data Berhasil Dihapus', 'success');
         return redirect()->back();
     }
 }

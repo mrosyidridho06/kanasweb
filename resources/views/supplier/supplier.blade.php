@@ -10,7 +10,32 @@
     </div>
     <div class="card shadow mb-4">
         <div class="card-body">
-            {{ $dataTable->table() }}
+            <table class="table table-responsive" id="myTable">
+                <thead>
+                    <th>No.</th>
+                    <th>Nama Supplier</th>
+                    <th>Alamat</th>
+                    <th>Hp</th>
+                    <th>Aksi</th>
+                </thead>
+                <tbody>
+                    @foreach ($suppli as $item )
+                        <tr>
+                            <td>{{ $loop->iteration }}</td>
+                            <td>{{ $item->nama_supplier }}</td>
+                            <td>{{ $item->alamat_supplier }}</td>
+                            <td>{{ $item->hp_supplier }}</td>
+                            <td><a href="{{route('supplier.edit',$item->id)}}" class="btn btn-primary"><i class="fa fa-edit"></i>Edit</a>
+                                <form action="{{route('supplier.destroy',$item->id)}}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i>Hapus</button>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
         </div>
     </div>
     <!-- Modals Tambah data -->
@@ -61,6 +86,10 @@
 @endsection
 
 @push('scripts')
-    {{ $dataTable->scripts() }}
+    <script>
+        $(document).ready( function () {
+            $('#myTable').DataTable();
+        } );
+    </script>
 @endpush
 

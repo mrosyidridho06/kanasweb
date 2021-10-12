@@ -42,7 +42,7 @@
                         <table class="table table-borderd">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
+                                    <th>No.</th>
                                     <th>Nama Pegawai</th>
                                     <th>Jabatan</th>
                                     <th>Masuk</th>
@@ -51,6 +51,16 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @foreach ($keha as $karyawan)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $karyawan->karyawan->nama_karyawan ?? 'Data Kosong' }}</td>
+                                        <td>{{ $karyawan->karyawan->jabatan }}</td>
+                                        <td>{{ $karyawan->masuk }}</td>
+                                        <td>{{ $karyawan->izin }}</td>
+                                        <td>{{ $karyawan->lembur }}</td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -66,23 +76,51 @@
     <button type="button" class="close" data-dismiss="modal">&times;</button>
 </div>
 <div class="modal-body">
-    <form method="post" id="insert_form" action="proses_kehadiran.php">
+    <form method="post" id="insert_form" action="{{ route('kehadiran.store') }}">
+    {{ csrf_field() }}
     <label>Nama Karyawan</label>
-    <select class="form-control" name="nama_karyawan" id="gaji" required>
+    <select class="form-control @error('karyawan_id') is-invalid @enderror" name="karyawan_id" value="{{ old('karyawan_id') }}" name="karyawan_id" id="gaji" required>
         <option value="" selected="">Pilih Karyawan</option>
+        @foreach ($karya as $karyawan )
+            @if (old('karyawan_id') == $karyawan->id)
+                <option value="{{ $karyawan->id }}" selected>{{ $karyawan->nama_karyawan }}</option>
+            @else
+                <option value="{{ $karyawan->id }}">{{ $karyawan->nama_karyawan }}</option>
+            @endif
+        @endforeach
     </select>
     <br />
     <label>Tanggal</label>
-    <input type="date" name="tanggal_priode" class="form-control"></input>
+    <input type="date" name="tanggal" class="form-control @error('tanggal') is-invalid @enderror" name="tanggal" value="{{ old('tanggal') }}"></input>
+    @error('tanggal')
+        <div class="alert alert-danger mt-2">
+            {{ $message }}
+        </div>
+    @enderror
     <br>
     <label>Masuk</label>
-    <input type="number" name="masuk" class="form-control"></input>
+    <input type="number" name="masuk" class="form-control @error('masuk') is-invalid @enderror" name="masuk" value="{{ old('masuk') }}"></input>
+    @error('masuk')
+        <div class="alert alert-danger mt-2">
+            {{ $message }}
+        </div>
+    @enderror
     <br>
     <label>Izin</label>
-    <input type="number" name="izin" class="form-control"></input>
+    <input type="number" name="izin" class="form-control @error('izin') is-invalid @enderror" name="izin" value="{{ old('izin') }}"></input>
+    @error('izin')
+        <div class="alert alert-danger mt-2">
+            {{ $message }}
+        </div>
+    @enderror
     <br>
     <label>lembur</label>
-    <input type="number" name="jumlah_lembur" id="lembur" class="form-control"></input>
+    <input type="number" name="lembur" id="lembur" class="form-control @error('lembur') is-invalid @enderror" name="lembur" value="{{ old('lembur') }}"></input>
+    @error('lembur')
+        <div class="alert alert-danger mt-2">
+            {{ $message }}
+        </div>
+    @enderror
     <br>
     <input type="submit" name="insert" id="insert" value="Insert" class="btn btn-success" />
     </form>

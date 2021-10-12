@@ -23,9 +23,13 @@ class BahanController extends Controller
 
     // }
 
-    public function index(BahanDataTable $dataTable)
+    public function index()
     {
-        return $dataTable->render('bahan.index');
+        $supp = Supplier::with('bahan')->get();
+
+        $bah = Bahan::get();
+
+        return view('bahan.index', compact('supp', 'bah'));
     }
 
     /**
@@ -35,8 +39,8 @@ class BahanController extends Controller
      */
     public function create()
     {
-        $supp = Supplier::with('bahan')->get();
-        return view('bahan.create', compact('supp'));
+        // $supp = Supplier::with('bahan')->get();
+        // return view('bahan.create', compact('supp'));
     }
 
     /**
