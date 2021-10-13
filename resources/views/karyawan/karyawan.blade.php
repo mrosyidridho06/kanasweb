@@ -10,7 +10,50 @@
     </div>
     <div class="card shadow mb-4">
         <div class="card-body">
-            {{ $dataTable->table() }}
+            <table class="table" id="myTable">
+                <thead>
+                    <th>No.</th>
+                    <th>Nama</th>
+                    <th>Alamat</th>
+                    <th>Jenis Kelamin</th>
+                    <th>Nomor Telepon</th>
+                    <th>Agama</th>
+                    <th>Jabatan</th>
+                    <th>Tanggal Masuk</th>
+                    <th>Foto</th>
+                    <th>Aksi</th>
+                </thead>
+                <tbody>
+                    @foreach ($karyawans as $karyawan)
+                        <tr>
+                            <td>{{$loop->iteration}}</td>
+                            <td>{{ $karyawan->nama_karyawan }}</td>
+                            <td>{{ $karyawan->alamat_karyawan }}</td>
+                            <td>{{ $karyawan->jenis_kelamin }}</td>
+                            <td>{{ $karyawan->hp_karyawan }}</td>
+                            <td>{{ $karyawan->agama }}</td>
+                            <td>{{ $karyawan->jabatan }}</td>
+                            <td>{{ $karyawan->tanggal }}</td>
+                            <td><a href="{{asset('images/'. $karyawan->foto)}}" target="_blank"><img src="{{asset('images/'.$karyawan->foto)}}" width="50px" height="50px" alt=""></td>
+                            <td>
+                                <div class="dropdown">
+                                    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                      <i class="fa fa-cog"></i>
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <a class="btn btn-warning" href="{{route('karyawan.edit',$karyawan->id)}}"><i class="fa fa-edit"></i> Edit</a>
+                                        <form action="{{route('karyawan.destroy', $karyawan->id)}}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')" class="btn btn-danger d-inline"><i class="fa fa-trash"></i> Hapus</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
         </div>
     </div>
         <div id="add_data_Modal" class="modal fade">
@@ -109,5 +152,5 @@
             </div>
 @endsection
 @push('scripts')
-    {{ $dataTable->scripts() }}
+
 @endpush

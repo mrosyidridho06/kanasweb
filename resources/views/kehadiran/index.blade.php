@@ -48,10 +48,11 @@
                                     <th>Masuk</th>
                                     <th>Izin</th>
                                     <th>Lembur</th>
+                                    <th class="text-center">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($keha as $karyawan)
+                                @forelse ($keha as $karyawan)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $karyawan->karyawan->nama_karyawan ?? 'Data Kosong' }}</td>
@@ -59,8 +60,20 @@
                                         <td>{{ $karyawan->masuk }}</td>
                                         <td>{{ $karyawan->izin }}</td>
                                         <td>{{ $karyawan->lembur }}</td>
+                                        <td align="center">
+                                            <a href="{{route('kehadiran.edit',$karyawan->id)}}" class="btn btn-primary"><i class="fa fa-edit"></i> Edit</a>
+                                            <form class="d-inline" action="{{route('kehadiran.destroy',$karyawan->id)}}" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')" class="btn btn-danger d-inline"><i class="fa fa-trash"></i> Hapus</button>
+                                            </form>
+                                        </td>
                                     </tr>
-                                @endforeach
+                                @empty
+                                    <tr>
+                                        <td colspan="7" align="center">Data Kosong</td>
+                                    </tr>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>

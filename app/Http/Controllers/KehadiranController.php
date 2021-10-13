@@ -112,8 +112,11 @@ class KehadiranController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Kehadiran $kehadiran)
     {
-        //
+        $kehadiran->delete();
+        
+        Alert::toast('Data Berhasil Dihapus', 'success');
+        return redirect()->back();
     }
 }

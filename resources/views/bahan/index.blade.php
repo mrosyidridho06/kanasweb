@@ -32,7 +32,14 @@
                         <td>{{$item->jumlah_bahan}}</td>
                         <td>{{$item->satuan_bahan}}</td>
                         <td>{{$item->harga_bahan}}</td>
-                        <td>{{$item->harga_bahan}}</td>
+                        <td>
+                            <a href="{{route('bahan.edit',$item->id)}}" class="btn btn-primary"><i class="fa fa-edit"></i> Edit</a>
+                            <form class="d-inline" action="{{route('bahan.destroy',$item->id)}}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')" class="btn btn-danger d-inline"><i class="fa fa-trash"></i> Hapus</button>
+                            </form>
+                        </td>
                     </tr>
                 @endforeach
             </tbody>

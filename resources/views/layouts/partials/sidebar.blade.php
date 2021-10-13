@@ -2,8 +2,8 @@
 
     <!-- Sidebar - Brand -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
-        <div class="sidebar-brand-icon rotate-n-15">
-            <i class="fas fa-laugh-wink"></i>
+        <div class="sidebar-brand-icon">
+            <img src="{{asset('kanas.png')}}" width="60px" height="60px" alt="">
         </div>
         <div class="sidebar-brand-text mx-3">Kana's Kitchen</div>
     </a>
@@ -63,13 +63,13 @@
     </div>
 
     <!-- Nav Item - Pages Collapse Menu -->
-    <li class="nav-item active">
+    <li class="nav-item">
         <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true"
             aria-controls="collapsePages">
             <i class="fas fa-fw fa-users"></i>
             <span>Karyawan</span>
         </a>
-        <div id="collapsePages" class="collapse show" aria-labelledby="headingPages"
+        <div id="collapsePages" class="collapse" aria-labelledby="headingPages"
             data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Penggajian</h6>

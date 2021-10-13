@@ -8,6 +8,8 @@ use App\Models\Supplier;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
 
+use function GuzzleHttp\Promise\all;
+
 class BahanController extends Controller
 {
     /**
@@ -102,7 +104,9 @@ class BahanController extends Controller
      */
     public function edit(Bahan $bahan)
     {
-        //
+        $supp = Supplier::with('bahan')->get();
+
+        return view('bahan.edit', compact('bahan', 'supp'));
     }
 
     /**
@@ -114,7 +118,25 @@ class BahanController extends Controller
      */
     public function update(Request $request, Bahan $bahan)
     {
-        //
+        $request->validate([
+            'nama_bahan' => 'required',
+            'supplier_id' => 'required|numeric',
+            'jumlah_bahan' => 'required|numeric',
+            'satuan_bahan' => 'required',
+            'harga_bahan' => 'required|numeric',
+        ]);
+
+        $bahan->update($request->all());
+
+        if($bahan){
+            //redirect dengan pesan sukses
+            Alert::toast('Data Berhasil Diubah', 'success');
+            return redirect()->route('bahan.index');
+        }else{
+            //redirect dengan pesan error
+            Alert::error('Gagal', 'Data Gagal Ditambahkan');
+            return redirect()->back();
+        }
     }
 
     /**
@@ -125,6 +147,9 @@ class BahanController extends Controller
      */
     public function destroy(Bahan $bahan)
     {
-        //
+        $bahan->delete();
+
+        Alert::toast('Data Berhasil Dihapus', 'success');
+        return redirect()->back();
     }
 }

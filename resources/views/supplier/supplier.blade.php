@@ -10,13 +10,13 @@
     </div>
     <div class="card shadow mb-4">
         <div class="card-body">
-            <table class="table table-responsive" id="myTable">
+            <table class="table table-hover" id="myTable">
                 <thead>
                     <th>No.</th>
                     <th>Nama Supplier</th>
                     <th>Alamat</th>
                     <th>Hp</th>
-                    <th>Aksi</th>
+                    <th class="text-center">Aksi</th>
                 </thead>
                 <tbody>
                     @foreach ($suppli as $item )
@@ -25,12 +25,20 @@
                             <td>{{ $item->nama_supplier }}</td>
                             <td>{{ $item->alamat_supplier }}</td>
                             <td>{{ $item->hp_supplier }}</td>
-                            <td><a href="{{route('supplier.edit',$item->id)}}" class="btn btn-primary"><i class="fa fa-edit"></i>Edit</a>
-                                <form action="{{route('supplier.destroy',$item->id)}}" method="POST">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i>Hapus</button>
-                                </form>
+                            <td align="center">
+                                <div class="dropdown">
+                                    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                      <i class="fa fa-cog"></i>
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <a class="btn btn-warning" href="{{route('supplier.edit',$item->id)}}"><i class="fa fa-edit"></i> Edit</a>
+                                        <form class="d-inline" action="{{route('supplier.destroy', $item->id)}}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')" class="btn btn-danger d-inline"><i class="fa fa-trash"></i> Hapus</button>
+                                        </form>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
                     @endforeach

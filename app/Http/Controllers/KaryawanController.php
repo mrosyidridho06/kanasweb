@@ -6,6 +6,7 @@ use App\DataTables\KaryawanDataTable;
 use App\Models\Karyawan;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
+use File;
 
 class KaryawanController extends Controller
 {
@@ -14,9 +15,10 @@ class KaryawanController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(KaryawanDataTable $dataTable)
+    public function index(Karyawan $karyawans)
     {
-        return $dataTable->render('karyawan.karyawan');
+        $karyawans = Karyawan::get();
+        return view('karyawan.karyawan', compact('karyawans'));
     }
 
     /**
@@ -116,8 +118,12 @@ class KaryawanController extends Controller
      */
     public function destroy(Karyawan $karyawan)
     {
-        $karya = Karyawan::find($karyawan);
+        // $karyawan = Karyawan::find($karyawan);
+        File::delete('images/'.$karyawan->foto);
 
-        return view('karyawan.delete', compact('karyawan'));
+        $karyawan->delete();
+
+        Alert::toast('Data Berhasil Dihapus', 'success');
+        return redirect()->back();
     }
 }

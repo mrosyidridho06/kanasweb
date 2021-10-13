@@ -9,7 +9,7 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class SupplierController extends Controller
 {
-    public function index(SupplierDataTable $dataTable)
+    public function index()
     {
         $suppli = Supplier::get();
         return view('supplier.supplier', compact('suppli'));
