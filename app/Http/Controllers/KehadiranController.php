@@ -60,6 +60,14 @@ class KehadiranController extends Controller
 
         // dd($bah);
 
+        // Kehadiran::create([
+        //     'karyawan_id' => $request->karyawan_id,
+        //     'tanggal' => $request->tanggal,
+        //     'masuk' => $request->masuk,
+        //     'izin' => $request->izin,
+        //     'lembur' => $request->lembur,
+        // ]);
+
         Kehadiran::create($bah);
         if($bah){
             //redirect dengan pesan sukses
@@ -94,6 +102,15 @@ class KehadiranController extends Controller
         //
     }
 
+    public function pencarian(Request $request)
+    {
+        $dari = $request->from_date;
+        $ke = $request->to_date;
+
+        Kehadiran::whereBetween('tanggal', '>=', $dari)->whereBetween('tanggal', '<=', $ke);
+
+        return view('kehadiran.index');
+    }
     /**
      * Update the specified resource in storage.
      *
@@ -115,8 +132,8 @@ class KehadiranController extends Controller
     public function destroy(Kehadiran $kehadiran)
     {
         $kehadiran->delete();
-        
-        Alert::toast('Data Berhasil Dihapus', 'success');
+
+        Alert::toast('Data Berhasil Dihapus', 'warning');
         return redirect()->back();
     }
 }

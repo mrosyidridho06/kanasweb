@@ -1,11 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\SupplierController;
-use App\Http\Controllers\BahanController;
-use App\Http\Controllers\KaryawanController;
-use App\Http\Controllers\KehadiranController;
 use App\Http\Controllers\GajiController;
+use App\Http\Controllers\BahanController;
+use App\Http\Controllers\ResepController;
+use App\Http\Controllers\KaryawanController;
+use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\KehadiranController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,15 +23,14 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth'])->name('dashboard');
 
 Route::middleware(['middleware' => 'auth'])->group(function () {
-    Route::get('/resep', function () {
-        return view('resep.resep');
-    });
+    // Route::get('/dashboard', DashboardController::class);
     Route::resource('/supplier', SupplierController::class);
+    Route::resource('/resep', ResepController::class);
     Route::resource('/bahan', BahanController::class);
     Route::resource('/karyawan', KaryawanController::class);
     Route::resource('/kehadiran', KehadiranController::class);

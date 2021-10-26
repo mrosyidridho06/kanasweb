@@ -12,18 +12,19 @@
             <div class="col-md-12">
                 <div class="card mt-2">
                     <div class="card-body">
-                        <form action="" method="GET">
+                        <form action="{{route('kehadiran.index')}}" method="GET">
+                            @csrf
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>From Date</label>
-                                        <input type="date" name="from_date" value="" class="form-control">
+                                        <input type="date" name="from_date" value="{{date('Y-m-d')}}" class="form-control">
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>To Date</label>
-                                        <input type="date" name="to_date" value="" class="form-control">
+                                        <input type="date" name="to_date" value="{{date('Y-m-d')}}" class="form-control">
                                     </div>
                                 </div>
                                 <div class="col-md-4">
@@ -48,6 +49,7 @@
                                     <th>Masuk</th>
                                     <th>Izin</th>
                                     <th>Lembur</th>
+                                    <th>Tanggal</th>
                                     <th class="text-center">Aksi</th>
                                 </tr>
                             </thead>
@@ -60,12 +62,13 @@
                                         <td>{{ $karyawan->masuk }}</td>
                                         <td>{{ $karyawan->izin }}</td>
                                         <td>{{ $karyawan->lembur }}</td>
+                                        <td>{{ $karyawan->tanggal }}</td>
                                         <td align="center">
                                             <a href="{{route('kehadiran.edit',$karyawan->id)}}" class="btn btn-primary"><i class="fa fa-edit"></i> Edit</a>
                                             <form class="d-inline" action="{{route('kehadiran.destroy',$karyawan->id)}}" method="POST">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')" class="btn btn-danger d-inline"><i class="fa fa-trash"></i> Hapus</button>
+                                                <button type="submit" onclick="return confirm ('Apakah ingin dihapus')" class="btn btn-danger d-inline"><i class="fa fa-trash"></i> Hapus</button>
                                             </form>
                                         </td>
                                     </tr>
@@ -145,3 +148,4 @@
 </div>
 </div>
 @endsection
+

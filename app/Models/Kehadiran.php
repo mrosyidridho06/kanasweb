@@ -11,7 +11,7 @@ class Kehadiran extends Model
 
     protected $table = "kehadirans";
 
-    protected $fillable = ["karyawan_id", "masuk", "izin", "lembur"];
+    protected $fillable = ["karyawan_id", "masuk", "izin", "lembur", "tanggal"];
 
     public function karyawan()
     {

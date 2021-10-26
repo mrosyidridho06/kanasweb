@@ -20,6 +20,7 @@ class CreateKehadiransTable extends Migration
             $table->integer('masuk');
             $table->integer('izin');
             $table->integer('lembur');
+            $table->date('tanggal');
             $table->timestamps();
         });
     }
