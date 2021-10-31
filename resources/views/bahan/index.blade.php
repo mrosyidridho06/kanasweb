@@ -20,6 +20,7 @@
                 <th>Nama Supplier</th>
                 <th>Jumlah Bahan</th>
                 <th>Satuan</th>
+                <th>Harga Satuan</th>
                 <th>Harga</th>
                 <th>Aksi</th>
             </thead>
@@ -31,14 +32,22 @@
                         <td>{{$item->supplier->nama_supplier}}</td>
                         <td>{{$item->jumlah_bahan}}</td>
                         <td>{{$item->satuan_bahan}}</td>
-                        <td>{{$item->harga_bahan}}</td>
+                        <td>Rp. {{number_format($item->harga_satuan)}}</td>
+                        <td>Rp. {{number_format($item->harga_bahan)}}</td>
                         <td>
-                            <a href="{{route('bahan.edit',$item->id)}}" class="btn btn-primary"><i class="fa fa-edit"></i> Edit</a>
-                            <form class="d-inline" action="{{route('bahan.destroy',$item->id)}}" method="POST">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')" class="btn btn-danger d-inline"><i class="fa fa-trash"></i> Hapus</button>
-                            </form>
+                            <div class="dropdown">
+                                <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                  <i class="fa fa-cog"></i>
+                                </button>
+                                <div class="dropdown-menu dropdown-primary">
+                                    <a class="dropdown-item" href="{{route('bahan.edit',$item->id)}}"><i class="fa fa-edit"></i> Edit</a>
+                                    <form action="{{route('bahan.destroy', $item->id)}}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')" class="dropdown-item btn"><i class="fa fa-trash"></i> Hapus</button>
+                                    </form>
+                                </div>
+                            </div>
                         </td>
                     </tr>
                 @endforeach
@@ -97,6 +106,11 @@
                                 <option value="Pcs" {{ old('satuan_bahan') == 'Pcs' ? 'selected' : '' }}>Pcs</option>
                                 <option value="mL" {{ old('satuan_bahan') == 'mL' ? 'selected' : '' }}>mL</option>
                             </select>
+                            @error('satuan_bahan')
+                                <div class="alert alert-danger mt-2">
+                                    {{ $message }}
+                                </div>
+                            @enderror
                         <br />
                         <label>Harga</label>
                             <input type="number" name="harga_bahan" id="harga_bahan" class="form-control @error('harga_bahan') is-invalid @enderror" name="harga_bahan" value="{{ old('harga_bahan') }}" />

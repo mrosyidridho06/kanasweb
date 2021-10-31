@@ -55,7 +55,7 @@ class BahanController extends Controller
     {
 
         // dd($request);
-        $bah = $request->validate([
+        $request->validate([
             'nama_bahan' => 'required',
             'supplier_id' => 'required|numeric',
             'jumlah_bahan' => 'required|numeric',
@@ -63,17 +63,25 @@ class BahanController extends Controller
             'harga_bahan' => 'required|numeric',
         ]);
 
-        // $bah = Supplier::create([
-        //     'nama_bahan' => $request->nama_bahan,
-        //     'supplier_id' => Supplier::findOrFail($request['nama_supplier']),
-        //     'jumlah_bahan' => $request->jumlah_bahan,
-        //     'satuan' => $request->satuan,
-        //     'harga_bahan' => $request->harga_bahan,
-        // ]);
+        $jumlah = $_POST['jumlah_bahan'];
+        $harga = $_POST['harga_bahan'];
+
+        $harga_satuan = $harga/$jumlah;
+
+        // dd($harga_satuan);
+
+        $bah = Bahan::create([
+            'nama_bahan' => $request->nama_bahan,
+            'supplier_id' => $request->supplier_id,
+            'jumlah_bahan' => $request->jumlah_bahan,
+            'satuan_bahan' => $request->satuan_bahan,
+            'harga_bahan' => $request->harga_bahan,
+            'harga_satuan' => $harga_satuan,
+        ]);
 
         // dd($bah);
 
-        Bahan::create($bah);
+        // Bahan::create($bah);
         if($bah){
             //redirect dengan pesan sukses
             Alert::toast('Data Berhasil Ditambahkan', 'success');
@@ -118,15 +126,19 @@ class BahanController extends Controller
      */
     public function update(Request $request, Bahan $bahan)
     {
-        $request->validate([
-            'nama_bahan' => 'required',
-            'supplier_id' => 'required|numeric',
-            'jumlah_bahan' => 'required|numeric',
-            'satuan_bahan' => 'required',
-            'harga_bahan' => 'required|numeric',
-        ]);
+        $jumlah = $_POST['jumlah_bahan'];
+        $harga = $_POST['harga_bahan'];
 
-        $bahan->update($request->all());
+        $harga_satuan = $harga/$jumlah;
+
+        $bahan->update([
+            'nama_bahan' => $request->nama_bahan,
+            'supplier_id' => $request->supplier_id,
+            'jumlah_bahan' => $request->jumlah_bahan,
+            'satuan_bahan' => $request->satuan_bahan,
+            'harga_bahan' => $request->harga_bahan,
+            'harga_satuan' => $harga_satuan,
+        ]);
 
         if($bahan){
             //redirect dengan pesan sukses

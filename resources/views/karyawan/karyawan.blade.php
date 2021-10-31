@@ -41,11 +41,11 @@
                                       <i class="fa fa-cog"></i>
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="btn btn-warning" href="{{route('karyawan.edit',$karyawan->id)}}"><i class="fa fa-edit"></i> Edit</a>
+                                        <a class="dropdown-item" href="{{route('karyawan.edit',$karyawan->id)}}"><i class="fa fa-edit"></i> Edit</a>
                                         <form action="{{route('karyawan.destroy', $karyawan->id)}}" method="POST">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')" class="btn btn-danger d-inline"><i class="fa fa-trash"></i> Hapus</button>
+                                            <button class="dropdown-item" type="submit" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')"><i class="fa fa-trash"></i> Hapus</button>
                                         </form>
                                     </div>
                                 </div>
@@ -152,5 +152,9 @@
             </div>
 @endsection
 @push('scripts')
-
+<script>
+    $(document).ready( function () {
+        $('#myTable').DataTable();
+    } );
+</script>
 @endpush

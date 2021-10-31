@@ -23,18 +23,27 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// Route::get('/dashboard', function () {
-//     return view('dashboard');
-// })->middleware(['auth'])->name('dashboard');
+Route::group(['middleware' => 'auth'], function () {
 
-Route::middleware(['middleware' => 'auth'])->group(function () {
-    // Route::get('/dashboard', DashboardController::class);
-    Route::resource('/supplier', SupplierController::class);
-    Route::resource('/resep', ResepController::class);
-    Route::resource('/bahan', BahanController::class);
-    Route::resource('/karyawan', KaryawanController::class);
-    Route::resource('/kehadiran', KehadiranController::class);
-    Route::resource('/gaji', GajiController::class);
+    Route::get('/dashboard', function(){
+        return view('dashboard');
+    });
+
+    Route::group(['middleware' => 'hakakses:admin,user'], function(){
+        Route::resource('/supplier', SupplierController::class);
+        Route::resource('/resep', ResepController::class);
+        Route::resource('/bahan', BahanController::class);
+    });
+
+    Route::group(['middleware' => 'hakakses:admin,hr'], function(){
+        Route::resource('/karyawan', KaryawanController::class);
+        Route::resource('/kehadiran', KehadiranController::class);
+
+    });
+
+    Route::group(['middleware' => 'hakakses:admin'], function () {
+        Route::resource('/gaji', GajiController::class);
+    });
 });
 
 

@@ -30,12 +30,12 @@
                                     <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                       <i class="fa fa-cog"></i>
                                     </button>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="btn btn-warning" href="{{route('supplier.edit',$item->id)}}"><i class="fa fa-edit"></i> Edit</a>
-                                        <form class="d-inline" action="{{route('supplier.destroy', $item->id)}}" method="POST">
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                        <a class="dropdown-item" href="{{route('supplier.edit',$item->id)}}"><i class="fa fa-edit"></i> Edit</a>
+                                        <form action="{{route('supplier.destroy', $item->id)}}" method="POST">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')" class="btn btn-danger d-inline"><i class="fa fa-trash"></i> Hapus</button>
+                                            <button type="submit" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')" class="dropdown-item btn"><i class="fa fa-trash"></i> Hapus</button>
                                         </form>
                                     </div>
                                 </div>
