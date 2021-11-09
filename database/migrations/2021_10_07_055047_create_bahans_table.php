@@ -16,7 +16,7 @@ class CreateBahansTable extends Migration
         Schema::create('bahans', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('supplier_id')->unsigned();
-            $table->foreign('supplier_id')->references('id')->on('suppliers')->onDelete('cascade');
+            $table->foreign('supplier_id')->references('id')->on('suppliers')->onDelete('restrict');
             $table->string('nama_bahan');
             $table->integer('jumlah_bahan');
             $table->string('satuan_bahan');

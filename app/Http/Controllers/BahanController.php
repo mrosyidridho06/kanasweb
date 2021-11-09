@@ -63,8 +63,8 @@ class BahanController extends Controller
             'harga_bahan' => 'required|numeric',
         ]);
 
-        $jumlah = $_POST['jumlah_bahan'];
-        $harga = $_POST['harga_bahan'];
+        $jumlah = $request['jumlah_bahan'];
+        $harga = $request['harga_bahan'];
 
         $harga_satuan = $harga/$jumlah;
 

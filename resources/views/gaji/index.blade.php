@@ -5,22 +5,73 @@
         <h1 class="h3 mb-0 text-gray-800">Penggajian</h1>
         <div align="right" class="pt-1">
             <a href="" class="btn btn-success btn-xs"><i class="fa fa-sync"></i></a>
-            <button type="button" name="age" id="age" data-toggle="modal" data-target="#add_data_Modal" class="btn btn-primary"><i class="fa fa-plus"> Tambah Gaji</i></button>
+            <a href="{{ route('gaji.create') }}" class="btn btn-primary btn-xs"><i class="fa fa-plus"> Tambah Gaji</i></a>
+            {{-- <button type="button" name="age" id="age" data-toggle="modal" data-target="#add_data_Modal" class="btn btn-primary"><i class="fa fa-plus"> Tambah Gaji</i></button> --}}
         </div>
     </div>
-    <div class="card shadow mb-4">
+    <div class="card mt-2">
+        <div class="card-body">
+            <form action="{{route('gaji.index')}}" method="GET">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Bulan</label>
+                            <select name="bulan" class="form-control" id="bulan">
+                                <option value="01">Januari</option>
+                                <option value="02">Februari</option>
+                                <option value="03">Maret</option>
+                                <option value="04">April</option>
+                                <option value="05">Mei</option>
+                                <option value="06">Juni</option>
+                                <option value="07">Juli</option>
+                                <option value="08">Agustus</option>
+                                <option value="09">September</option>
+                                <option value="10">Oktober</option>
+                                <option value="11">November</option>
+                                <option value="12">Desember</option>
+                            </select>
+                            <script>document.getElementById('bulan').value = "<?php if (isset($_GET['bulan']) && $_GET['bulan']) echo $_GET['bulan'];?>";</script>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Tahun</label>
+                            <select name="tahun" id="tahun" class="form-control">
+                                <?php
+                                $year = date('Y');
+                                $min = $year - 60;
+                                $max = $year;
+                                for( $i=$max; $i>=$min; $i-- ) {
+                                echo '<option value='.$i.'>'.$i.'</option>';
+                                } ?>
+                            </select>
+                            <script>document.getElementById('tahun').value = "<?php if (isset($_GET['tahun']) && $_GET['tahun']) echo $_GET['tahun'];?>";</script>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Click to Filter</label> <br>
+                        <button type="submit" class="btn btn-primary">Filter</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="card shadow mt-4">
         <div class="card-body">
             <div class="table-responsive">
                 <table class="table table-hover display" id="tb_gaji">
                 <thead>
                     <tr>
-                        <!-- <th>No.</th> -->
+                        <th>No.</th>
                         <th scope="row">Nama</th>
-                        <th scope="row">Tanggal Pembayaran</th>
-                        <th scope="row">Jumlah Kehadiran</th>
+                        <th scope="row">Masuk</th>
+                        <th scope="row">Lembur</th>
+                        <th scope="row">Uang Lembur</th>
                         <th scope="row">BPJS</th>
                         <th scope="row">Bonus</th>
-                        <th scope="row">Lembur</th>
+                        <th scope="row">Tunjangan</th>
                         <th scope="row">Gaji Harian</th>
                         <th scope="row">Potongan</th>
                         <th scope="row">Total Gaji</th>
@@ -28,58 +79,36 @@
                     </tr>
                 </thead>
                 <tbody>
-
+                    @forelse ($filter as $gaji)
+                    <tr>
+                        <td>{{ $loop->iteration }}</td>
+                        <td>{{ $gaji->karyawan->nama_karyawan }}</td>
+                        <td>{{ $gaji->karyawan->kehadiran->masuk }}</td>
+                        <td>{{ $gaji->karyawan->kehadiran->lembur }}</td>
+                        <td>{{ $gaji->uang_lembur }}</td>
+                        <td>{{ $gaji->karyawan->bpjs }}</td>
+                        <td>{{ $gaji->bonus }}</td>
+                        <td>{{ $gaji->karyawan->tunjangan }}</td>
+                        <td>{{ $gaji->gaji_harian }}</td>
+                        <td>{{ $gaji->potongan }}</td>
+                        <td>{{ $gaji->total_gaji }}</td>
+                        <td align="center">
+                            <a href="{{ route('gaji.edit',$gaji->id) }}" class="btn btn-primary"><i class="fa fa-edit"></i> Edit</a>
+                            <form class="d-inline" action="{{route('gaji.destroy',$gaji->id)}}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" onclick="return confirm ('Apakah ingin dihapus')" class="btn btn-danger d-inline"><i class="fa fa-trash"></i> Hapus</button>
+                            </form>
+                        </td>
+                    </tr>
+                    @empty
+                        <tr>
+                            <td colspan="14" align="center">Data Kosong</td>
+                        </tr>
+                    @endforelse
                 </tbody>
                 </table>
             </div>
         </div>
-    </div>
-    <!-- Modals Tambah data -->
-<div id="add_data_Modal" class="modal fade">
-    <div class="modal-dialog">
-    <div class="modal-content">
-    <div class="modal-header">
-        <h4 class="modal-title">Input Gaji</h4>
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-    </div>
-    <div class="modal-body">
-        <form method="post" id="insert_form" action="proses_gaji.php">
-        <label>Nama Karyawan</label>
-        <select class="form-control" name="nama_karyawan" id="gaji" required>
-            <option value="" selected="">Pilih Karyawan</option>
-        </select>
-        <br />
-        <label>Tanggal Pembayaran</label>
-        <input type="date" name="tanggal_priode" class="form-control"></input>
-        <br>
-        <label>Jumlah Hari</label>
-        <input type="number" name="jumlah_hari" class="form-control" id="jmlh_hari" readonly></input>
-        <br>
-        <label>Gaji Harian</label>
-        <input type="number" name="gaji_harian" class="form-control"></input>
-        <br>
-        <label>BPJS</label>
-        <input type="number" name="tun_bpjs" class="form-control"></input>
-        <br>
-        <label>Bonus</label>
-        <input type="number" name="bonus" class="form-control"></input>
-        <br>
-        <label>lembur</label>
-        <input type="number" name="jumlah_lembur" id="lembur" class="form-control" readonly></input>
-        <br>
-        <label>Upah lembur</label>
-        <input type="number" name="uang_lembur" id="uang_lembur" class="form-control"></input>
-        <br>
-        <label>Potongan</label>
-        <input type="number" name="potongan" class="form-control"></input>
-        <br>
-        <input type="submit" name="insert" id="insert" value="Insert" class="btn btn-success" />
-        </form>
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-    </div>
-    </div>
-    </div>
     </div>
 @endsection

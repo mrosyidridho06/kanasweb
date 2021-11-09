@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Gaji;
+use App\Models\Karyawan;
+use App\Models\Kehadiran;
+use App\Models\MasterGaji;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -13,9 +16,17 @@ class GajiController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('gaji.index');
+        $month = $request->get('bulan');
+        $year = $request->get('tahun');
+
+        $filter = Gaji::with('karyawan')
+                ->whereMonth('created_at', '=', $month)
+                ->whereYear('created_at', '=', $year)
+                ->get();
+
+        return view('gaji.index', compact('filter'));
     }
 
     /**
@@ -23,9 +34,29 @@ class GajiController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $mgaji = MasterGaji::get();
+
+
+        $karyawan = $request->get('nama_karyawan');
+
+
+        $karya = Kehadiran::with('karyawan')
+        ->where('id', '=', $karyawan)
+        ->get();
+
+        // dd($karya);
+
+        $month = $request->get('bulan');
+        $year = $request->get('tahun');
+
+        $filter = Kehadiran::with('karyawan')
+                ->whereMonth('from_date', '=', $month)
+                ->whereYear('from_date', '=', $year)
+                ->get();
+
+        return view('gaji.create', compact('filter', 'mgaji', 'karya'));
     }
 
     /**
@@ -36,15 +67,40 @@ class GajiController extends Controller
      */
     public function store(Request $request)
     {
-        $gaji = $request->validate([
-            'nama_bahan' => 'required',
-            'supplier_id' => 'required|numeric',
-            'jumlah_bahan' => 'required|numeric',
-            'satuan_bahan' => 'required',
-            'harga_bahan' => 'required|numeric',
+
+        // dd($request);
+
+        $request->validate([
+            'id_karyawan' => 'required|numeric',
+            'masuk' => 'required|numeric',
+            'lembur' => 'required|numeric',
+            'uang_lembur' => 'required|numeric',
+            'uang_harian' => 'required|numeric',
+            'bpjs' => 'required|numeric',
+            'bonus' => 'required|numeric',
+            'tunjangan' => 'required|numeric',
+            'potongan' => 'required|numeric',
         ]);
 
-        Gaji::create($gaji);
+        $upah_harian = $request['uang_harian']*$request['masuk'];
+        $lembur = $request['lembur']*$request['uang_lembur'];
+
+        $total_gaji = $lembur+$upah_harian+$request['bonus']+$request['tunjangan']+$request['bpjs']-$request['potongan'];
+
+        // dd($total_gaji);
+
+        $gaji = Gaji::create([
+            'karyawan_id' => $request->id_karyawan,
+            'uang_lembur' => $lembur,
+            'bonus' => $request->bonus,
+            'potongan' => $request->potongan,
+            'gaji_harian' => $upah_harian,
+            'total_gaji' => $total_gaji,
+        ]);
+
+        // dd($bah);
+
+        // Bahan::create($bah);
         if($gaji){
             //redirect dengan pesan sukses
             Alert::toast('Data Berhasil Ditambahkan', 'success');

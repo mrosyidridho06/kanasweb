@@ -14,7 +14,9 @@ class ResepController extends Controller
      */
     public function index()
     {
-        return view('resep.index');
+        $bahan = Bahan::get();
+
+        return view('resep.index', compact('bahan'));
     }
 
     /**

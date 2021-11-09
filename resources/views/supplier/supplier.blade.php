@@ -8,6 +8,9 @@
             <button type="button" name="age" id="age" data-toggle="modal" data-target="#add_data_Modal" class="btn btn-primary"><i class="fa fa-plus"> Tambah Supplier</i></button>
         </div>
     </div>
+    <div>
+        <a href="{{ route('supplierexport') }}" class="btn btn-primary">Export</a>
+    </div>
     <div class="card shadow mb-4">
         <div class="card-body">
             <table class="table table-hover" id="myTable">
@@ -19,7 +22,7 @@
                     <th class="text-center">Aksi</th>
                 </thead>
                 <tbody>
-                    @foreach ($suppli as $item )
+                    @foreach ($supplier as $item )
                         <tr>
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $item->nama_supplier }}</td>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Karyawan;
 use App\Models\Kehadiran;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class KehadiranController extends Controller
@@ -14,13 +15,25 @@ class KehadiranController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $karya = Karyawan::with('kehadiran')->get();
+        $karyawan = Karyawan::get();
 
-        $keha = Kehadiran::get();
+        $tahun = Kehadiran::select('from_date')
+                ->groupBy('from_date')
+                ->get();
 
-        return view('kehadiran.index', compact('karya', 'keha'));
+        // dd($tahun);
+
+        $month = $request->get('bulan');
+        $year = $request->get('tahun');
+
+        $filter = Kehadiran::with('karyawan')
+                ->whereMonth('from_date', '=', $month)
+                ->whereYear('from_date', '=', $year)
+                ->get();
+
+        return view('kehadiran.index', compact('karyawan', 'filter', 'tahun'));
     }
 
     /**
@@ -30,7 +43,7 @@ class KehadiranController extends Controller
      */
     public function create()
     {
-
+        //
     }
 
     /**
@@ -42,37 +55,28 @@ class KehadiranController extends Controller
     public function store(Request $request)
     {
         // dd($request);
-        $bah = $request->validate([
-            'karyawan_id' => 'required|numeric',
-            'tanggal' => 'required',
-            'masuk' => 'required|numeric',
-            'izin' => 'required|numeric',
-            'lembur' => 'required|numeric',
+        $this->validate($request, [
+            'nama_karyawan' => 'required',
+            'dari_tanggal' => 'required',
+            'ke_tanggal' => 'required',
+            'masuk' => 'required',
+            'izin' => 'required',
+            'lembur' => 'required',
         ]);
 
-        // $bah = Supplier::create([
-        //     'nama_bahan' => $request->nama_bahan,
-        //     'supplier_id' => Supplier::findOrFail($request['nama_supplier']),
-        //     'jumlah_bahan' => $request->jumlah_bahan,
-        //     'satuan' => $request->satuan,
-        //     'harga_bahan' => $request->harga_bahan,
-        // ]);
+        $kehan = Kehadiran::create([
+            'karyawan_id' => $request->nama_karyawan,
+            'from_date' => $request->dari_tanggal,
+            'to_date' => $request->ke_tanggal,
+            'masuk' => $request->masuk,
+            'izin' => $request->izin,
+            'lembur' => $request->lembur,
+        ]);
 
-        // dd($bah);
-
-        // Kehadiran::create([
-        //     'karyawan_id' => $request->karyawan_id,
-        //     'tanggal' => $request->tanggal,
-        //     'masuk' => $request->masuk,
-        //     'izin' => $request->izin,
-        //     'lembur' => $request->lembur,
-        // ]);
-
-        Kehadiran::create($bah);
-        if($bah){
+        if($kehan){
             //redirect dengan pesan sukses
             Alert::toast('Data Berhasil Ditambahkan', 'success');
-            return redirect()->route('kehadiran.index');
+            return redirect()->back();
         }else{
             //redirect dengan pesan error
             Alert::error('Gagal', 'Data Gagal Ditambahkan');
@@ -97,20 +101,18 @@ class KehadiranController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Kehadiran $kehadiran)
     {
-        //
+        // $gaji = Kehadiran::with('karyawan')->get();
+
+        // dd($gaji);
+        $karyawan = Karyawan::get();
+
+        // dd($karyawan);
+
+        return view('kehadiran.edit', compact('kehadiran', 'karyawan'));
     }
 
-    public function pencarian(Request $request)
-    {
-        $dari = $request->from_date;
-        $ke = $request->to_date;
-
-        Kehadiran::whereBetween('tanggal', '>=', $dari)->whereBetween('tanggal', '<=', $ke);
-
-        return view('kehadiran.index');
-    }
     /**
      * Update the specified resource in storage.
      *
@@ -118,9 +120,30 @@ class KehadiranController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Kehadiran $kehadiran)
     {
-        //
+        $request->validate([
+            'karyawan_id' => 'required',
+            'masuk' => 'required',
+            'izin' => 'required',
+            'lembur' => 'required',
+            'from_date' => 'required',
+            'to_date' => 'required',
+        ]);
+
+        $kehadiran->update($request->all());
+
+        // dd($request);
+
+        if($kehadiran){
+            //redirect dengan pesan sukses
+            Alert::toast('Data Berhasil Diupdate', 'success');
+            return redirect()->route('kehadiran.index');
+        }else{
+            //redirect dengan pesan error
+            Alert::error('Gagal', 'Data Gagal Ditambahkan');
+            return redirect()->back();
+        }
     }
 
     /**
@@ -129,11 +152,8 @@ class KehadiranController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Kehadiran $kehadiran)
+    public function destroy($id)
     {
-        $kehadiran->delete();
-
-        Alert::toast('Data Berhasil Dihapus', 'warning');
-        return redirect()->back();
+        //
     }
 }

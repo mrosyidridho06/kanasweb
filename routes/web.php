@@ -4,9 +4,12 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GajiController;
 use App\Http\Controllers\BahanController;
 use App\Http\Controllers\ResepController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\KehadiranController;
+use App\Http\Controllers\MasterGajiController;
+use App\Http\Controllers\TunjanganGajiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,6 +25,9 @@ use App\Http\Controllers\KehadiranController;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/index', function () {
+    return view('index');
+});
 
 Route::group(['middleware' => 'auth'], function () {
 
@@ -29,10 +35,13 @@ Route::group(['middleware' => 'auth'], function () {
         return view('dashboard');
     });
 
+    Route::resource('/profile', ProfileController::class);
+
     Route::group(['middleware' => 'hakakses:admin,user'], function(){
         Route::resource('/supplier', SupplierController::class);
         Route::resource('/resep', ResepController::class);
         Route::resource('/bahan', BahanController::class);
+        Route::get('/supplierexport', [SupplierController::class, 'export'])->name('supplierexport');
     });
 
     Route::group(['middleware' => 'hakakses:admin,hr'], function(){
@@ -43,6 +52,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::group(['middleware' => 'hakakses:admin'], function () {
         Route::resource('/gaji', GajiController::class);
+        Route::resource('/mastergaji', MasterGajiController::class);
+        Route::resource('/tunjangangaji', TunjanganGajiController::class);
     });
 });
 

@@ -11,16 +11,10 @@ class Kehadiran extends Model
 
     protected $table = "kehadirans";
 
-    protected $fillable = ["karyawan_id", "masuk", "izin", "lembur", "tanggal"];
+    protected $fillable = ['karyawan_id', 'masuk', 'lembur', 'izin', 'from_date', 'to_date'];
 
     public function karyawan()
     {
         return $this->belongsTo(Karyawan::class);
     }
-
-    public function gaji()
-    {
-        return $this->hasOne(Gaji::class);
-    }
-
 }

@@ -74,18 +74,35 @@
             <div id="collapsePages" class="collapse" aria-labelledby="headingPages"
                 data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <h6 class="collapse-header">Penggajian</h6>
+                    <h6 class="collapse-header">Kehadiran</h6>
                     <a class="collapse-item {{ request()->is('kehadiran') ? 'active' : ''  }}" href="/kehadiran">Kehadiran</a>
-                    @if (auth()->user()->role == 'admin')
-                    <a class="collapse-item {{ request()->is('gaji') ? 'active' : ''  }}" href="/gaji">Gaji</a>
-                    @endif
                     <div class="collapse-divider"></div>
                     <h6 class="collapse-header">Tambah Karyawan</h6>
                     <a class="collapse-item {{ request()->is('karyawan') ? 'active' : ''  }}" href="/karyawan">Karyawan</a>
                 </div>
             </div>
         </li>
+        @if (auth()->user()->role == 'admin')
+        <li class="nav-item">
+            <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapsePages2" aria-expanded="true"
+                aria-controls="collapsePages">
+                <i class="fas fa-fw fa-hand-holding-usd"></i>
+                <span>Gaji</span>
+            </a>
+            <div id="collapsePages2" class="collapse" aria-labelledby="headingPages"
+                data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Penggajian</h6>
+                    <a class="collapse-item {{ request()->is('gaji') ? 'active' : ''  }}" href="/gaji">Gaji</a>
+                    <a class="collapse-item {{ request()->is('mastergaji') ? 'active' : ''  }}" href="/mastergaji">Master Gaji</a>
+                    <a class="collapse-item {{ request()->is('tunjangangaji') ? 'active' : ''  }}" href="/tunjangangaji">Gaji Tunjangan</a>
+
+                </div>
+            </div>
+        </li>
+        @endif
     @endif
+
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">
 

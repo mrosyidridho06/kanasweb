@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\DataTables\SupplierDataTable;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
+use App\Exports\SupplierExport;
+use Maatwebsite\Excel\Facades\Excel;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class SupplierController extends Controller
 {
     public function index()
     {
-        $suppli = Supplier::get();
-        return view('supplier.supplier', compact('suppli'));
+        $supplier = Supplier::get();
+        return view('supplier.supplier', compact('supplier'));
     }
      /**
      * Show the form for creating a new resource.
@@ -39,13 +40,13 @@ class SupplierController extends Controller
             'hp_supplier' => 'required|min:10',
         ]);
 
-        $karwan = Supplier::create([
+        $supli = Supplier::create([
             'nama_supplier' => $request->nama_supplier,
             'alamat_supplier' => $request->alamat_supplier,
             'hp_supplier' => $request->hp_supplier,
         ]);
 
-        if($karwan){
+        if($supli){
             //redirect dengan pesan sukses
             Alert::toast('Data Berhasil Ditambahkan', 'success');
             return redirect()->back();
@@ -118,5 +119,10 @@ class SupplierController extends Controller
 
         Alert::toast('Data Berhasil Dihapus', 'success');
         return redirect()->back();
+    }
+
+    public function export()
+    {
+        return Excel::download(new SupplierExport, 'supplier.xlsx');
     }
 }

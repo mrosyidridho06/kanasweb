@@ -14,17 +14,14 @@ class CreateGajisTable extends Migration
     public function up()
     {
         Schema::create('gajis', function (Blueprint $table) {
-            $table->id();
-            $table->bigInteger('kehadiran_id')->unsigned();
-            $table->foreign('kehadiran_id')->references('id')->on('kehadirans')->onDelete('cascade');
-            $table->date('tanggal_bayar');
-            $table->bigInteger('gaji_harian');
-            $table->integer('jumlah_hari');
-            $table->bigInteger('bpjs');
+            $table->increments('id');
+            $table->unsignedBigInteger('karyawan_id');
+            $table->foreign('karyawan_id')->references('id')->on('karyawans');
+            $table->bigInteger('uang_lembur');
             $table->bigInteger('bonus');
-            $table->integer('lembur');
             $table->bigInteger('potongan');
-            $table->bigInteger('taotal_gaji');
+            $table->bigInteger('gaji_harian');
+            $table->bigInteger('total_gaji');
             $table->timestamps();
         });
     }
@@ -37,5 +34,6 @@ class CreateGajisTable extends Migration
     public function down()
     {
         Schema::dropIfExists('gajis');
+        Schema::dropIfExists('kehadirans');
     }
 }

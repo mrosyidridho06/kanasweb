@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Gaji extends Model
 {
@@ -11,11 +11,11 @@ class Gaji extends Model
 
     protected $table = "gajis";
 
-    protected $fillable = ['kehadiran_id', 'tanggal_bayar', 'gaji_harian', 'jumlah_hari', 'bpjs', 'bonus', 'lembur', 'potongan', 'total_gaji'];
+    protected $fillable = ['karyawan_id', 'uang_lembur', 'bonus', 'potongan', 'gaji_harian', 'total_gaji'];
 
-    public function kehadiran()
+    public function karyawan()
     {
-        return $this->belongsTo(Kehadiran::class);
+        return $this->belongsTo(Karyawan::class);
     }
 
 }

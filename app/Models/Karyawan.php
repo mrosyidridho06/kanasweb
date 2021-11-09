@@ -12,8 +12,13 @@ class Karyawan extends Model
     protected $table = 'karyawans';
     protected $fillable = ['nama_karyawan', 'alamat_karyawan', 'jenis_kelamin', 'hp_karyawan', 'agama', 'jabatan', 'tanggal', 'foto'];
 
+
+    public function gaji()
+    {
+        return $this->hasMany(Gaji::class);
+    }
     public function kehadiran()
     {
-        return $this->hasMany(Kehadiran::class);
+        return $this->hasMany(Gaji::class);
     }
 }
