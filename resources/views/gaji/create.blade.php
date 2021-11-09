@@ -78,7 +78,7 @@
                                 <div class="form-group">
                                     <label class="form-control-label">Nama<span class="small text-danger">*</span></label>
                                     <input type="text" class="form-control" value="{{ $kehadiran->karyawan->nama_karyawan }}"  readonly></input>
-                                    <input type="hidden" name="id_karyawan" class="form-control"  value="{{ $kehadiran->karyawan_id }}"></input>
+                                    <input type="hidden" name="id_kehadiran" class="form-control"  value="{{ $kehadiran->karyawan_id }}"></input>
                                 </div>
                             </div>
                             <div class="col-md-6">

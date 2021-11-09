@@ -37,7 +37,9 @@ class TunjanganGajiController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Karyawan::updateOrCreate(['id' => $request->id],
+                ['tunjangan' => $request->tunjangan, 'bpjs' => $request->bpjs]);
+        return response()->json(['success'=>'Tunjangan saved successfully!']);
     }
 
     /**
@@ -57,24 +59,13 @@ class TunjanganGajiController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Request $request, $id)
+    public function edit($id)
     {
-        Karyawan::updateOrCreate(
-            [
-             'id' => $id
-            ],
-            [
-             'nama_karyawan' => $request->nama_karyawan,
-            ],
-            [
-             'tunjangan' => $request->tunjangan,
-            ],
-            [
-             'bpjs' => $request->bpjs,
-            ]
-           );
+        $category = Karyawan::find($id);
 
-        return response()->json([ 'success' => true ]);
+	    return response()->json([
+	      'data' => $category
+	    ]);
     }
 
     /**
@@ -86,11 +77,7 @@ class TunjanganGajiController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $category = Karyawan::find($id);
-
-	    return response()->json([
-	      'data' => $category
-	    ]);
+        //
     }
 
     /**

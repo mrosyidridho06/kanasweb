@@ -1,6 +1,9 @@
 @extends('layouts.app')
 @section('title', 'Tunjangan Gaji')
 @section('content')
+<head>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+</head>
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Tunjangan Gaji</h1>
         <div align="right" class="pt-1">
@@ -23,8 +26,8 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->nama_karyawan }}</td>
-                                <td>{{ $item->tunjangan }}</td>
-                                <td>{{ $item->bpjs }}</td>
+                                <td>@currency($item->tunjangan)</td>
+                                <td>@currency($item->bpjs)</td>
                                 <td align="center">
                                     <a href="" id="edittunjangan" data-toggle="modal" data-target='#modal_edit' data-id="{{ $item->id }}">Edit</a>                            </td>
                             </tr>
@@ -43,8 +46,7 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                     <div class="modal-body">
-                        <form id="edittun">
-                            {{ csrf_field() }}
+                        <form id="edittun" name="edittun">
                             <label>Nama Karyawan</label>
                             <input type="hidden" id="id" name="id" value="">
                             <input type="text" name="nama_karyawan" id="nama_karyawan" class="form-control" name="nama_karyawan" readonly />
@@ -95,16 +97,14 @@
             $('body').on('click', '#submit', function (event) {
                 event.preventDefault()
                 var id = $("#id").val();
-                var karyawan = $("#nama_karyawan").val();
                 var tunjangan = $("#tunjangan").val();
                 var bpjs = $("#bpjs").val();
 
                 $.ajax({
-                url: 'tunjangangaji/' + id,
+                url: "",
                 type: "POST",
                 data: {
                     id: id,
-                    nama_karyawan: nama_karyawan,
                     tunjangan: tunjangan,
                     bpjs: bpjs,
                 },
@@ -114,7 +114,11 @@
                     $('#edittun').trigger("reset");
                     $('#modal_edit').modal('hide');
                     window.location.reload(true);
-                }
+                },
+                error: function (data) {
+                console.log('Error:', data);
+                $('#saveBtn').html('Save Changes');
+            }
             });
             });
 
@@ -124,8 +128,8 @@
                 var id = $(this).data('id');
                 console.log(id)
                 $.get('tunjangangaji/' + id + '/edit', function (data) {
-                    $('#userCrudModal').html("Edit category");
-                    $('#submit').val("Edit category");
+                    $('#userCrudModal').html("Edit Tunjangan");
+                    $('#submit').val("Edit Tunjangan");
                     $('#modal_edit').modal('show');
                     $('#karyawan_id').val(data.data.karyawan_id);
                     $('#nama_karyawan').val(data.data.nama_karyawan);

@@ -21,8 +21,8 @@ class CreateKaryawansTable extends Migration
             $table->string('hp_karyawan');
             $table->enum('agama', ['islam', 'protestan', 'katolik', 'hindu', 'buddha']);
             $table->string('jabatan');
-            $table->bigInteger('bpjs')->nullable();
-            $table->bigInteger('tunjangan')->nullable();
+            $table->integer('bpjs')->nullable();
+            $table->integer('tunjangan')->nullable();
             $table->date('tanggal');
             $table->string('foto');
             $table->timestamps();

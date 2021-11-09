@@ -17,4 +17,8 @@ class Kehadiran extends Model
     {
         return $this->belongsTo(Karyawan::class);
     }
+    public function gaji()
+    {
+        return $this->hasMany(Kehadiran::class);
+    }
 }

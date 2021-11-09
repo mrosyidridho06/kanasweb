@@ -14,14 +14,12 @@ class CreateGajisTable extends Migration
     public function up()
     {
         Schema::create('gajis', function (Blueprint $table) {
-            $table->increments('id');
-            $table->unsignedBigInteger('karyawan_id');
-            $table->foreign('karyawan_id')->references('id')->on('karyawans');
-            $table->bigInteger('uang_lembur');
-            $table->bigInteger('bonus');
-            $table->bigInteger('potongan');
-            $table->bigInteger('gaji_harian');
-            $table->bigInteger('total_gaji');
+            $table->id();
+            $table->integer('uang_lembur');
+            $table->integer('bonus');
+            $table->integer('potongan');
+            $table->integer('gaji_harian');
+            $table->integer('total_gaji');
             $table->timestamps();
         });
     }

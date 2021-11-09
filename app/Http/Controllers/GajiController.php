@@ -21,7 +21,7 @@ class GajiController extends Controller
         $month = $request->get('bulan');
         $year = $request->get('tahun');
 
-        $filter = Gaji::with('karyawan')
+        $filter = Gaji::with('kehadiran')
                 ->whereMonth('created_at', '=', $month)
                 ->whereYear('created_at', '=', $year)
                 ->get();
@@ -71,7 +71,7 @@ class GajiController extends Controller
         // dd($request);
 
         $request->validate([
-            'id_karyawan' => 'required|numeric',
+            'id_kehadiran' => 'required|numeric',
             'masuk' => 'required|numeric',
             'lembur' => 'required|numeric',
             'uang_lembur' => 'required|numeric',
@@ -90,7 +90,7 @@ class GajiController extends Controller
         // dd($total_gaji);
 
         $gaji = Gaji::create([
-            'karyawan_id' => $request->id_karyawan,
+            'kehadiran_id' => $request->id_kehadiran,
             'uang_lembur' => $lembur,
             'bonus' => $request->bonus,
             'potongan' => $request->potongan,

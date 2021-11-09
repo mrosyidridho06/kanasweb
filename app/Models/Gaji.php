@@ -11,11 +11,10 @@ class Gaji extends Model
 
     protected $table = "gajis";
 
-    protected $fillable = ['karyawan_id', 'uang_lembur', 'bonus', 'potongan', 'gaji_harian', 'total_gaji'];
+    protected $fillable = ['kehadiran_id', 'uang_lembur', 'bonus', 'potongan', 'gaji_harian', 'total_gaji'];
 
-    public function karyawan()
+    public function kehadiran()
     {
-        return $this->belongsTo(Karyawan::class);
+        return $this->belongsTo(Kehadiran::class);
     }
-
 }

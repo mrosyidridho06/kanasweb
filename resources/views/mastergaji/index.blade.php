@@ -25,8 +25,8 @@
                         @forelse ($mgaji as $gaji)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $gaji->harian }}</td>
-                                <td>{{ $gaji->lembur }}</td>
+                                <td>@currency($gaji->harian)</td>
+                                <td>@currency($gaji->lembur)</td>
                                 <td align="center">
                                     <a href="{{ route('mastergaji.edit',$gaji->id) }}" class="btn btn-primary"><i class="fa fa-edit"></i> Edit</a>
                                     <form class="d-inline" action="{{route('mastergaji.destroy',$gaji->id)}}" method="POST">

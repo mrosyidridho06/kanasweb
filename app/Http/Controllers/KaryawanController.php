@@ -6,7 +6,6 @@ use App\DataTables\KaryawanDataTable;
 use App\Models\Karyawan;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
-use File;
 
 class KaryawanController extends Controller
 {

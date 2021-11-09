@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('title', 'Gaji')
 @section('content')
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Penggajian</h1>
@@ -82,23 +82,30 @@
                     @forelse ($filter as $gaji)
                     <tr>
                         <td>{{ $loop->iteration }}</td>
-                        <td>{{ $gaji->karyawan->nama_karyawan }}</td>
-                        <td>{{ $gaji->karyawan->kehadiran->masuk }}</td>
-                        <td>{{ $gaji->karyawan->kehadiran->lembur }}</td>
-                        <td>{{ $gaji->uang_lembur }}</td>
-                        <td>{{ $gaji->karyawan->bpjs }}</td>
-                        <td>{{ $gaji->bonus }}</td>
-                        <td>{{ $gaji->karyawan->tunjangan }}</td>
-                        <td>{{ $gaji->gaji_harian }}</td>
-                        <td>{{ $gaji->potongan }}</td>
-                        <td>{{ $gaji->total_gaji }}</td>
+                        <td>{{ $gaji->kehadiran->karyawan->nama_karyawan }}</td>
+                        <td>{{ $gaji->kehadiran->masuk }}</td>
+                        <td>{{ $gaji->kehadiran->lembur }}</td>
+                        <td>@currency($gaji->uang_lembur)</td>
+                        <td>@currency($gaji->kehadiran->karyawan->bpjs)</td>
+                        <td>@currency($gaji->bonus)</td>
+                        <td>@currency($gaji->kehadiran->karyawan->tunjangan)</td>
+                        <td>@currency($gaji->gaji_harian)</td>
+                        <td>@currency($gaji->potongan)</td>
+                        <td>@currency($gaji->total_gaji)</td>
                         <td align="center">
-                            <a href="{{ route('gaji.edit',$gaji->id) }}" class="btn btn-primary"><i class="fa fa-edit"></i> Edit</a>
-                            <form class="d-inline" action="{{route('gaji.destroy',$gaji->id)}}" method="POST">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" onclick="return confirm ('Apakah ingin dihapus')" class="btn btn-danger d-inline"><i class="fa fa-trash"></i> Hapus</button>
-                            </form>
+                            <div class="dropdown">
+                                <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                  <i class="fa fa-cog"></i>
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                    <a class="dropdown-item" href="{{route('gaji.edit',$gaji->id)}}"><i class="fa fa-edit"></i> Edit</a>
+                                    <form action="{{route('gaji.destroy', $gaji->id)}}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')" class="dropdown-item btn"><i class="fa fa-trash"></i> Hapus</button>
+                                    </form>
+                                </div>
+                            </div>
                         </td>
                     </tr>
                     @empty

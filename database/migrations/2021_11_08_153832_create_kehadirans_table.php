@@ -15,8 +15,6 @@ class CreateKehadiransTable extends Migration
     {
         Schema::create('kehadirans', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('karyawan_id');
-            $table->foreign('karyawan_id')->references('id')->on('karyawans')->onDelete('restrict');
             $table->integer('masuk');
             $table->integer('izin');
             $table->integer('lembur');
