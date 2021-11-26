@@ -15,6 +15,7 @@ class Karyawan extends Model
 
     public function kehadiran()
     {
-        return $this->hasMany(Kehadiran::class);
+        return $this->hasManyThrough(Kehadiran::class, Gaji::class);
     }
+
 }

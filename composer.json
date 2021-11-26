@@ -6,6 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.3|^8.0",
+        "barryvdh/laravel-debugbar": "^3.6",
         "bluemmb/faker-picsum-photos-provider": "^2.0",
         "dompdf/dompdf": "^1.0",
         "fruitcake/laravel-cors": "^2.0",

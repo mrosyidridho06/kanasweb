@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\DataTables\KaryawanDataTable;
 use App\Models\Karyawan;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Facades\File;
 
 class KaryawanController extends Controller
 {
@@ -17,7 +17,7 @@ class KaryawanController extends Controller
     public function index(Karyawan $karyawans)
     {
         $karyawans = Karyawan::get();
-        return view('karyawan.karyawan', compact('karyawans'));
+        return view('karyawan.index', compact('karyawans'));
     }
 
     /**
@@ -50,7 +50,7 @@ class KaryawanController extends Controller
             'foto' => 'required|file|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
         ]);
 
-        $newNameImage = time(). '-' . $request->nama_karyawan . '.' . $request->foto->extension();
+        $newNameImage = date('YmdHis'). '-' . $request->nama_karyawan . '.' . $request->foto->extension();
 
         $request->file('foto')->move(public_path('images'), $newNameImage);
 
@@ -94,7 +94,7 @@ class KaryawanController extends Controller
      */
     public function edit(Karyawan $karyawan)
     {
-        //
+        return view('karyawan.edit', compact('karyawan'));
     }
 
     /**
@@ -106,7 +106,39 @@ class KaryawanController extends Controller
      */
     public function update(Request $request, Karyawan $karyawan)
     {
-        //
+        $this->validate($request, [
+            'nama_karyawan' => 'required',
+            'alamat_karyawan' => 'required',
+            'jenis_kelamin' => 'required',
+            'hp_karyawan' => 'required',
+            'agama' => 'required',
+            'jabatan' => 'required',
+            'foto' => 'file|mimes:jpg,png,jpeg,gif,svg,jfif|max:2048',
+            // 'tanggal_masuk' => 'required',
+        ]);
+
+        $karya = $request->all();
+
+        if ($foto = $request->file('foto')) {
+            File::delete('images/'.$karyawan->foto);
+            $destinationPath = 'images/';
+            $profileImage = date('YmdHis'). '-' . $request->nama_karyawan . '.' . $request->foto->extension();
+            $foto->move($destinationPath, $profileImage);
+            $karya['foto'] = "$profileImage";
+        }else{
+            unset($karya['foto']);
+        }
+
+        $karyawan->update($karya);
+
+        if($karyawan){
+            //redirect dengan pesan sukses
+            Alert::toast('Data Berhasil Diubah', 'success');
+            return redirect()->route('karyawan.index');
+        }else{
+            //redirect dengan pesan error
+            return redirect()->route('karyawan.index')->with(['error' => 'Data Gagal Disimpan!']);
+        }
     }
 
     /**

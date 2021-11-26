@@ -64,21 +64,21 @@
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </form>
                 </div>
+            </div>
         </div>
-    </div>
-    <div class="col-12 col-md-8">
-        <div class="card shadow mb-4">
+        @foreach ($karya as $kehadiran)
+        <div class="col-12 col-md-8">
+        <div class="card shadow">
             <div class="card-header">Penggajian</div>
             <div class="card-body">
-                <form class="py-4" action="{{ route('gaji.store') }}" method="POST">
+                <form action="{{ route('gaji.store') }}" method="POST">
                     @csrf
-                    @foreach ($karya as $kehadiran)
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="form-control-label">Nama<span class="small text-danger">*</span></label>
                                     <input type="text" class="form-control" value="{{ $kehadiran->karyawan->nama_karyawan }}"  readonly></input>
-                                    <input type="hidden" name="id_kehadiran" class="form-control"  value="{{ $kehadiran->karyawan_id }}"></input>
+                                    <input type="hidden" name="id_kehadiran" class="form-control"  value="{{ $kehadiran->id }}"></input>
                                 </div>
                             </div>
                             <div class="col-md-6">

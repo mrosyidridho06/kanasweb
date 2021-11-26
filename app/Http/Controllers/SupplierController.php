@@ -52,7 +52,7 @@ class SupplierController extends Controller
             return redirect()->back();
         }else{
             //redirect dengan pesan error
-            Alert::error('Gagal', 'Data Gagal Ditambahkan');
+            Alert::toast('Gagal', 'Data Gagal Ditambahkan');
             return redirect()->back();
         }
     }

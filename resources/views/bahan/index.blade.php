@@ -8,7 +8,7 @@
     <div align="right" class="pt-1">
         <a href="" class="btn btn-success btn-xs"><i class="fa fa-sync"></i></a>
         {{-- <a href="{{route('bahan.create')}}" class="btn btn-primary">Tambah bahan</a> --}}
-        <button type="button" name="age" id="age" data-toggle="modal" data-target="#add_data_Modal" class="btn btn-primary"><i class="fa fa-plus"> Tambah Bahan</i></button>
+        <button type="button" data-toggle="modal" data-target="#add_data_Modal" class="btn btn-primary"><i class="fa fa-plus"> Tambah Bahan</i></button>
     </div>
 </div>
 <div class="card shadow mb-4">
@@ -75,7 +75,7 @@
                             @enderror
                         <br />
                         <label>Supplier</label>
-                            <select class="form-control @error('supplier_id') is-invalid @enderror" name="supplier_id" value="{{ old('supplier_id') }}" name="supplier_id">
+                            <select class="form-control suppliers @error('supplier_id') is-invalid @enderror" height="100%" name="supplier_id" value="{{ old('supplier_id') }}" name="supplier_id">
                                 <option value="" selected disabled>Pilih Supplier</option>
                                 @foreach ($supp as $supplier )
                                     @if (old('supplier_id') == $supplier->id)
@@ -91,6 +91,7 @@
                                 </div>
                             @enderror
                         <br/>
+                        <br>
                         <label>Jumlah bahan</label>
                             <input type="number" name="jumlah_bahan" id="jumlah_bahan" class="form-control @error('jumlah_bahan') is-invalid @enderror" name="jumlah_bahan" value="{{ old('jumlah_bahan') }}"></input>
                             @error('jumlah_bahan')
@@ -137,5 +138,11 @@
             $('#myTable').DataTable();
         } );
     </script>
+    <script>
+        $(document).ready(function() {
+            $('.suppliers').select2({
+                width: '100%', dropdownCssClass: "bigdrop"
+            });
+        });
+    </script>
 @endpush
-

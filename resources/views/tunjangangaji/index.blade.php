@@ -29,7 +29,15 @@
                                 <td>@currency($item->tunjangan)</td>
                                 <td>@currency($item->bpjs)</td>
                                 <td align="center">
-                                    <a href="" id="edittunjangan" data-toggle="modal" data-target='#modal_edit' data-id="{{ $item->id }}">Edit</a>                            </td>
+                                    <button
+                                        style="border-radius: 15px"
+                                        value="{{ $item->id}}"
+                                        class="btn waves-effect waves-light btn-outline-primary pt-1 pb-1 edittunjanganButton"
+                                        data-toggle="modal"
+                                        data-target="#editModal">
+                                        <i class="fas fa-edit"></i> Edit
+                                    </button>
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -37,18 +45,20 @@
             </div>
         </div>
     </div>
+
     <!-- Modals Tambah data -->
-    <div class="modal fade" id="modal_edit">
+    <div class="modal fade" id="editModal">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title">Input Tunjangan Gaji</h4>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
+                    <form method="post" id="editModalForm" action="{{route('tunjangangaji.store')}}">
+                    @csrf
+                    @method("PUT")
                     <div class="modal-body">
-                        <form id="edittun" name="edittun">
                             <label>Nama Karyawan</label>
-                            <input type="hidden" id="id" name="id" value="">
                             <input type="text" name="nama_karyawan" id="nama_karyawan" class="form-control" name="nama_karyawan" readonly />
                             <br />
                             <label>Tunjangan</label>
@@ -68,14 +78,14 @@
                             @enderror
                             <br />
                             <input type="submit" name="submit" id="submit" value="Submit" class="btn btn-success" />
-                        </form>
-                    </div>
+                        </div>
+                    </form>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
-    </div>
+    </div> {{-- modal --}}
 @endsection
 
 @push('scripts')
@@ -83,62 +93,20 @@
         $(document).ready( function () {
             $('#myTable').DataTable();
         } );
-    </script>
-
-    <script>
-        $(document).ready(function () {
-
-            $.ajaxSetup({
-                headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-            });
-
-            $('body').on('click', '#submit', function (event) {
-                event.preventDefault()
-                var id = $("#id").val();
-                var tunjangan = $("#tunjangan").val();
-                var bpjs = $("#bpjs").val();
-
+        $(document).on("click", ".edittunjanganButton", function()
+            {
+                let id = $(this).val();
                 $.ajax({
-                url: "",
-                type: "POST",
-                data: {
-                    id: id,
-                    tunjangan: tunjangan,
-                    bpjs: bpjs,
-                },
-                dataType: 'json',
-                success: function (data) {
-
-                    $('#edittun').trigger("reset");
-                    $('#modal_edit').modal('hide');
-                    window.location.reload(true);
-                },
-                error: function (data) {
-                console.log('Error:', data);
-                $('#saveBtn').html('Save Changes');
-            }
+                    method: "get",
+                    url :  "tunjangangaji/"+id+"/edit",
+                }).done(function(response)
+                {
+                    $("#nama_karyawan").val(response.nama_karyawan);
+                    $("#tunjangan").val(response.tunjangan);
+                    $("#bpjs").val(response.bpjs);
+                    $("#editModalForm").attr("action", "tunjangangaji/" + id)
+                });
             });
-            });
-
-            $('body').on('click', '#edittunjangan', function (event) {
-
-                event.preventDefault();
-                var id = $(this).data('id');
-                console.log(id)
-                $.get('tunjangangaji/' + id + '/edit', function (data) {
-                    $('#userCrudModal').html("Edit Tunjangan");
-                    $('#submit').val("Edit Tunjangan");
-                    $('#modal_edit').modal('show');
-                    $('#karyawan_id').val(data.data.karyawan_id);
-                    $('#nama_karyawan').val(data.data.nama_karyawan);
-                    $('#tunjangan').val(data.data.tunjangan);
-                    $('#bpjs').val(data.data.bpjs);
-                })
-            });
-
-        });
     </script>
 @endpush
 

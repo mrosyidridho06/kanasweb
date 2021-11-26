@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Karyawan;
 use Illuminate\Http\Request;
+use App\Models\TunjanganGaji;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class TunjanganGajiController extends Controller
 {
@@ -37,8 +39,10 @@ class TunjanganGajiController extends Controller
      */
     public function store(Request $request)
     {
-        Karyawan::updateOrCreate(['id' => $request->id],
-                ['tunjangan' => $request->tunjangan, 'bpjs' => $request->bpjs]);
+        Karyawan::updateOrCreate([
+            'tunjangan' => $request->tunjangan,
+            'bpjs' => $request->bpjs
+        ]);
         return response()->json(['success'=>'Tunjangan saved successfully!']);
     }
 
@@ -61,11 +65,9 @@ class TunjanganGajiController extends Controller
      */
     public function edit($id)
     {
-        $category = Karyawan::find($id);
+        $tunjangan = TunjanganGaji::find($id);
 
-	    return response()->json([
-	      'data' => $category
-	    ]);
+        return $tunjangan;
     }
 
     /**
@@ -77,7 +79,21 @@ class TunjanganGajiController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            // 'id_karyawan' => 'required',
+            'tunjangan' => 'required',
+            'bpjs' => 'required',
+        ]);
+
+        $kegiatan = TunjanganGaji::findOrFail($id);
+
+        $kegiatan->tunjangan = $request->tunjangan;
+        $kegiatan->bpjs = $request->bpjs;
+        // $kegiatan->id_karyawan = $request->id_karyawan;
+        $kegiatan->save();
+
+        Alert::toast('Data Berhasil Diupdate', 'success');
+        return redirect()->route('tunjangangaji.index');
     }
 
     /**

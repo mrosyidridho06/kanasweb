@@ -1,11 +1,11 @@
 @extends('layouts.app')
-@section('title', 'Kehadiran')
+@section('title', 'Master Gaji')
 @section('content')
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Master Gaji</h1>
         <div align="right" class="pt-1">
             <a href="" class="btn btn-success btn-xs"><i class="fa fa-sync"></i></a>
-            <button type="button" name="age" id="age" data-toggle="modal" data-target="#add_data_Modal" class="btn btn-primary"><i class="fa fa-plus"> Tambah Kehadiran</i></button>
+            <button type="button" name="age" id="age" data-toggle="modal" data-target="#add_data_Modal" class="btn btn-primary"><i class="fa fa-plus"> Tambah Master Gaji</i></button>
         </div>
     </div>
 <div class="row justify-content-center">
@@ -52,7 +52,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Input Kehadiran</h4>
+                <h4 class="modal-title">Input Master Gaji</h4>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
                 <div class="modal-body">
