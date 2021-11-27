@@ -20,12 +20,15 @@
 
             <div class="card shadow mb-4">
                 <div class="card-profile-image mt-4">
-                    <figure class="rounded-circle avatar avatar font-weight-bold" style="font-size: 60px; height: 180px; width: 180px;" data-initial="{{ Auth::user()->name[0] }}"></figure>
+                <img id="preview-image" class="rounded-circle avatar" style="height: 180px; width: 180px;" src="{{ Auth::user()->foto }}">
+                    {{-- <figure class="rounded-circle avatar avatar font-weight-bold" style="font-size: 60px; height: 180px; width: 180px;" data-initial="{{ Auth::user()->name[0] }}"></figure> --}}
                 </div>
                 <div class="card-body">
 
                     <div class="row">
                         <div class="col-lg-12">
+                            <input type="file" class="form-control" name="foto" id="foto">
+                            <br>
                             <div class="text-center">
                                 <h5 class="font-weight-bold">{{  Auth::user()->name }}</h5>
                                 <p>{{  Auth::user()->role }}</p>
@@ -113,3 +116,16 @@
 
     </div>
 @endsection
+@push('scripts')
+    <script type="text/javascript">
+        $('#foto').change(function(){
+
+        let reader = new FileReader();
+        reader.onload = (e) => {
+        $('#preview-image').attr('src', e.target.result);
+        }
+        reader.readAsDataURL(this.files[0]);
+
+    });
+    </script>
+@endpush

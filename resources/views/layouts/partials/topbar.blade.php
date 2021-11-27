@@ -64,6 +64,12 @@
                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                     Profile
                 </a>
+                @if (auth()->user()->role == 'admin')
+                <a class="dropdown-item" href={{ route('register') }}>
+                    <i class="fas fa-user-plus fa-sm fa-fw mr-2 text-gray-400"></i>
+                    Tambah User
+                </a>
+                @endif
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>

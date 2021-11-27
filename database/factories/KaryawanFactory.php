@@ -26,7 +26,7 @@ class KaryawanFactory extends Factory
             'alamat_karyawan' => $this->faker->address(),
             'jenis_kelamin' => $this->faker->randomElement(array('Laki-laki', 'Perempuan')),
             'hp_karyawan' => $this->faker->phoneNumber(),
-            'agama' => $this->faker->randomElement(array('islam', 'protestan', 'katolik', 'hindu', 'buddha')),
+            'agama' => $this->faker->randomElement(array('islam', 'kristen', 'katolik', 'hindu', 'buddha')),
             'jabatan' => $this->faker->title(),
             'tanggal' => $this->faker->date($format = 'Y-m-d', $max = 'now'),
             'foto' => $this->faker->imageUrl(public_path('images'),400,300, null, false)

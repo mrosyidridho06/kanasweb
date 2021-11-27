@@ -107,7 +107,14 @@
                             </div>
                             <label>Agama</label>
                             <div class="form-group" style="margin: 1px;padding: 0px;padding-bottom: 6px;">
-                                <input class="form-control @error('agama') is-invalid @enderror" name="agama" value="{{ old('agama') }}" type="text" name="agama" placeholder="Agama" >
+                                <select class="form-control @error('agama') is-invalid @enderror" name="agama" value="{{ old('agama') }}" name="agama">
+                                    <option value="" selected="">Pilih Agama</option>
+                                    <option value="islam" {{ old('agama') == 'islam' ? 'selected' : '' }}>Islam</option>
+                                    <option value="kristen" {{ old('agama') == 'kristen' ? 'selected' : '' }}>Kristen</option>
+                                    <option value="buddha" {{ old('agama') == 'buddha' ? 'selected' : '' }}>Buddha</option>
+                                    <option value="hindu" {{ old('agama') == 'hindu' ? 'selected' : '' }}>Hindu</option>
+                                    <option value="katolik" {{ old('agama') == 'katolik' ? 'selected' : '' }}>Katolik</option>
+                                </select>
                                 @error('agama')
                                     <div class="alert alert-danger mt-2">
                                         {{ $message }}

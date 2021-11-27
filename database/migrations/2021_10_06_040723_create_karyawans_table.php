@@ -19,7 +19,7 @@ class CreateKaryawansTable extends Migration
             $table->string('alamat_karyawan');
             $table->enum('jenis_kelamin',['Laki-laki', 'Perempuan']);
             $table->string('hp_karyawan');
-            $table->enum('agama', ['islam', 'protestan', 'katolik', 'hindu', 'buddha']);
+            $table->enum('agama', ['islam', 'kristen', 'katolik', 'hindu', 'buddha']);
             $table->string('jabatan');
             $table->integer('bpjs')->nullable();
             $table->integer('tunjangan')->nullable();

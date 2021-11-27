@@ -1,59 +1,95 @@
-<x-guest-layout>
-    <x-auth-card>
-        <x-slot name="logo">
-            <a href="/">
-                <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
-            </a>
-        </x-slot>
+@extends('layouts.app')
+@section('title', 'Tambah User')
+@section('content')
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Tambah User</h6>
+    </div>
+<div class="card-body">
+    <form method="POST" action="{{ route('register') }}">
+        @csrf
 
-        <!-- Validation Errors -->
-        <x-auth-validation-errors class="mb-4" :errors="$errors" />
-
-        <form method="POST" action="{{ route('register') }}">
-            @csrf
-
+        <div class="row">
             <!-- Name -->
-            <div>
-                <x-label for="name" :value="__('Name')" />
+            <div class="col-md-6">
+                <label class="form-control-label" >Nama</label>
+                <input class="form-control @error('name') is-invalid @enderror " type="text" name="name" value="{{ old('name') }}" required autofocus />
+                @error('name')
+                    <div class="alert alert-danger mt-2">
+                        {{ $message }}
+                    </div>
+                @enderror
+            </div>
 
-                <x-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus />
+            <!-- Username -->
+            <div class="col-md-6">
+                <label class="form-control-label">Username</label>
+                <input id="username" class="form-control @error('username') is-invalid @enderror" type="text" name="username" value="{{ old('username')  }}" required autofocus />
+                @error('username')
+                    <div class="alert alert-danger mt-2">
+                        {{ $message }}
+                    </div>
+                @enderror
             </div>
 
             <!-- Email Address -->
-            <div class="mt-4">
-                <x-label for="email" :value="__('Email')" />
+            <div class="col-md-6 mt-4">
+                <label class="form-control-label">Email</label>
+                <input id="email" class="form-control @error('email') is-invalid @enderror" type="email" name="email" value="{{ old('email') }}" required />
+                @error('email')
+                    <div class="alert alert-danger mt-2">
+                        {{ $message }}
+                    </div>
+                @enderror
+            </div>
 
-                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required />
+            <!-- Email Address -->
+            <div class="col-md-6 mt-4">
+                <label class="form-control-label">Role</label>
+                <select class="form-control @error('role') is-invalid @enderror" name="role" required>
+                    <option value="" selected="">Pilih Role</option>
+                    <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Pemilik</option>
+                    <option value="user" {{ old('role') == 'user' ? 'selected' : '' }}>Pegawai</option>
+                    <option value="hr" {{ old('role') == 'hr' ? 'selected' : '' }}>HR</option>
+                </select>
+                @error('role')
+                    <div class="alert alert-danger mt-2">
+                        {{ $message }}
+                    </div>
+                @enderror
             </div>
 
             <!-- Password -->
-            <div class="mt-4">
-                <x-label for="password" :value="__('Password')" />
-
-                <x-input id="password" class="block mt-1 w-full"
-                                type="password"
-                                name="password"
-                                required autocomplete="new-password" />
+            <div class="col-md-6 mt-4">
+                <label class="form-control-label">Password</label>
+                <input id="password" class="form-control @error('password') is-invalid @enderror" type="password" name="password" required autocomplete="new-password" />
+                @error('password')
+                    <div class="alert alert-danger mt-2">
+                        {{ $message }}
+                    </div>
+                @enderror
             </div>
 
             <!-- Confirm Password -->
-            <div class="mt-4">
-                <x-label for="password_confirmation" :value="__('Confirm Password')" />
+            <div class="col-md-6 mt-4">
+                <label class="form-control-label">Confirm Password</label>
 
-                <x-input id="password_confirmation" class="block mt-1 w-full"
+                <input id="password_confirmation" class="form-control @error('password_confirmation') is-invalid @enderror"
                                 type="password"
                                 name="password_confirmation" required />
+                @error('password_confirmation')
+                    <div class="alert alert-danger mt-2">
+                        {{ $message }}
+                    </div>
+                @enderror
             </div>
 
-            <div class="flex items-center justify-end mt-4">
-                <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('login') }}">
-                    {{ __('Already registered?') }}
-                </a>
-
-                <x-button class="ml-4">
+            <div class="col-md-12 mt-4">
+                <button class="btn btn-primary">
                     {{ __('Register') }}
-                </x-button>
+                </button>
             </div>
-        </form>
-    </x-auth-card>
-</x-guest-layout>
+        </div>
+    </form>
+</div>
+@endsection
