@@ -46,7 +46,6 @@
                                     <input type="text" name="namaresep" placeholder="Nama Resep" class="form-control" required>
                                     <input type="hidden" name="total" value="">
                                 </div>
-                                <hr class="col-4 justify-content-start">Test<hr class="d-flex col-4">
                                 <div class="input-group mb-2">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="basic-addon1">Jumlah Produksi</span>

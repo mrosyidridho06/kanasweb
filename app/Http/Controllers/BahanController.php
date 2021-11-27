@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\DataTables\BahanDataTable;
 use App\Models\Bahan;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
 
-use function GuzzleHttp\Promise\all;
 
 class BahanController extends Controller
 {

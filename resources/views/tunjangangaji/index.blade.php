@@ -29,14 +29,15 @@
                                 <td>@currency($item->tunjangan)</td>
                                 <td>@currency($item->bpjs)</td>
                                 <td align="center">
-                                    <button
+                                    <button class="btn btn-primary edittunjanganButton" data-toggle="modal" data-target="#editModal" value="{{ $item->id}}"><i class="fa fa-edit"></i> Edit</button>
+                                    {{-- <button
                                         style="border-radius: 15px"
                                         value="{{ $item->id}}"
                                         class="btn waves-effect waves-light btn-outline-primary pt-1 pb-1 edittunjanganButton"
                                         data-toggle="modal"
                                         data-target="#editModal">
                                         <i class="fas fa-edit"></i> Edit
-                                    </button>
+                                    </button> --}}
                                 </td>
                             </tr>
                         @endforeach
