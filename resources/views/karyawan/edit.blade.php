@@ -12,7 +12,7 @@
 
         <div class="card shadow">
             <a class="card-profile-image mt-4" href="{{asset('images/'. $karyawan->foto)}}" target="_blank">
-                <img src="{{asset('images/'.$karyawan->foto)}}" />
+                <img id="preview-image" src="{{asset('images/'.$karyawan->foto)}}" />
             </a>
             <div class="card-body">
 
@@ -20,11 +20,7 @@
                     <div class="col-lg-12">
                         <form method="POST" id="insert_form" action="{{ route('karyawan.update',$karyawan->id) }}" enctype="multipart/form-data">
                             {{ csrf_field() }}
-                        <input type="file" class="form-control" name="foto">
-                        {{-- <div class="text-center">
-                            <h5 class="font-weight-bold">{{  Auth::user()->name }}</h5>
-                            <p>{{  Auth::user()->role }}</p>
-                        </div> --}}
+                        <input type="file" class="form-control" name="foto" id="foto">
                     </div>
                 </div>
             </div>
@@ -118,3 +114,16 @@
     </div>
 </div>
 @endsection
+@push('scripts')
+    <script type="text/javascript">
+        $('#foto').change(function(){
+
+        let reader = new FileReader();
+        reader.onload = (e) => {
+        $('#preview-image').attr('src', e.target.result);
+        }
+        reader.readAsDataURL(this.files[0]);
+
+    });
+    </script>
+@endpush

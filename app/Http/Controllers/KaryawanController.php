@@ -150,9 +150,8 @@ class KaryawanController extends Controller
     public function destroy(Karyawan $karyawan)
     {
         // $karyawan = Karyawan::find($karyawan);
-        File::delete('images/'.$karyawan->foto);
-
         $karyawan->delete();
+        File::delete('images/'.$karyawan->foto);
 
         Alert::toast('Data Berhasil Dihapus', 'success');
         return redirect()->back();
