@@ -24,7 +24,7 @@ class CreateKaryawansTable extends Migration
             $table->integer('bpjs')->nullable();
             $table->integer('tunjangan')->nullable();
             $table->date('tanggal');
-            $table->string('foto');
+            $table->string('foto')->nullable();
             $table->timestamps();
         });
     }

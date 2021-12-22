@@ -15,12 +15,13 @@ class CreateKehadiransTable extends Migration
     {
         Schema::create('kehadirans', function (Blueprint $table) {
             $table->id();
-            $table->integer('masuk');
-            $table->integer('izin');
+            $table->float('masuk');
+            $table->float('izin');
             $table->integer('lembur');
             $table->date('from_date');
             $table->date('to_date');
             $table->timestamps();
+            $table->foreignId('karyawan_id')->constrained('karyawans')->onDelete('restrict')->onUpdate('cascade');
         });
     }
 

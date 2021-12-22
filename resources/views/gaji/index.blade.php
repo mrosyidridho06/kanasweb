@@ -82,13 +82,13 @@
                     @forelse ($filter as $gaji)
                     <tr>
                         <td>{{ $loop->iteration }}</td>
-                        <td>{{ $gaji->kehadiran->karyawan->nama_karyawan }}</td>
-                        <td>{{ $gaji->kehadiran->masuk }}</td>
-                        <td>{{ $gaji->kehadiran->lembur }}</td>
+                        <td>{{ $gaji->nama_karyawan }}</td>
+                        <td>{{ $gaji->masuk }}</td>
+                        <td>{{ $gaji->lembur }}</td>
                         <td>@currency($gaji->uang_lembur)</td>
-                        <td>@currency($gaji->kehadiran->karyawan->bpjs)</td>
+                        <td>@currency($gaji->bpjs)</td>
                         <td>@currency($gaji->bonus)</td>
-                        <td>@currency($gaji->kehadiran->karyawan->tunjangan)</td>
+                        <td>@currency($gaji->tunjangan)</td>
                         <td>@currency($gaji->gaji_harian)</td>
                         <td>@currency($gaji->potongan)</td>
                         <td>@currency($gaji->total_gaji)</td>

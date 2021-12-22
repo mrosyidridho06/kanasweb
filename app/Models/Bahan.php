@@ -16,4 +16,9 @@ class Bahan extends Model
     {
         return $this->belongsTo(Supplier::class);
     }
+
+    public function resepdetails()
+    {
+        return $this->hasMany(ResepDetails::class);
+    }
 }

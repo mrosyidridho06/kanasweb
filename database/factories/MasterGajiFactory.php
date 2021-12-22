@@ -22,7 +22,8 @@ class MasterGajiFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'harian' => '50000',
+            'lembur' => '10000'
         ];
     }
 }

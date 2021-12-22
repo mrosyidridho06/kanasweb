@@ -25,9 +25,9 @@ class BahanController extends Controller
 
     public function index()
     {
-        $supp = Supplier::with('bahan')->get();
+        $supp = Supplier::get();
 
-        $bah = Bahan::get();
+        $bah = Bahan::with('supplier')->get();
 
         return view('bahan.index', compact('supp', 'bah'));
     }

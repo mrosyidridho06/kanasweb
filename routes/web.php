@@ -42,6 +42,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::resource('/resep', ResepController::class);
         Route::resource('/bahan', BahanController::class);
         Route::get('/supplierexport', [SupplierController::class, 'export'])->name('supplierexport');
+        Route::post('/supplierimport', [SupplierController::class, 'import'])->name('supplierimport');
     });
 
     Route::group(['middleware' => 'hakakses:admin,hr'], function(){

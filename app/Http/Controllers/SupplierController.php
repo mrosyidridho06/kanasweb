@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
 use App\Exports\SupplierExport;
+use App\Imports\SupplierImport;
 use Maatwebsite\Excel\Facades\Excel;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -94,7 +95,12 @@ class SupplierController extends Controller
             'hp_supplier' => 'required|min:10',
         ]);
 
-        $supplier->update($request->all());
+        $supplier->update([
+            'nama_supplier' => $request->nama_supplier,
+            'alamat_supplier' => $request->alamat_supplier,
+            'hp_supplier' => $request->hp_supplier,
+
+        ]);
 
         if($supplier){
             //redirect dengan pesan sukses
@@ -124,5 +130,17 @@ class SupplierController extends Controller
     public function export()
     {
         return Excel::download(new SupplierExport, 'supplier.xlsx');
+    }
+
+    public function import(Request $request)
+    {
+        $file = $request->file('supplier');
+        $namaFile = $file->getClientOriginalName();
+        $file->move('DataSupplier', $namaFile);
+
+        Excel::import(new SupplierImport, public_path('/DataSupplier/'.$namaFile));
+
+        Alert::toast('Data Berhasil Ditambah', 'success');
+        return redirect()->back();
     }
 }

@@ -15,12 +15,13 @@ class CreateGajisTable extends Migration
     {
         Schema::create('gajis', function (Blueprint $table) {
             $table->id();
-            $table->integer('uang_lembur');
-            $table->integer('bonus');
-            $table->integer('potongan');
-            $table->integer('gaji_harian');
-            $table->integer('total_gaji');
+            $table->bigInteger('uang_lembur');
+            $table->bigInteger('bonus');
+            $table->bigInteger('potongan');
+            $table->bigInteger('gaji_harian');
+            $table->bigInteger('total_gaji');
             $table->timestamps();
+            $table->foreignId('kehadiran_id')->constrained('kehadirans')->onUpdate('cascade')->onDelete('restrict');
         });
     }
 

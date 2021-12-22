@@ -71,7 +71,7 @@
                                     <th>Masuk</th>
                                     <th>Izin</th>
                                     <th>Lembur</th>
-                                    <th class="text-center" colspan="2">Tanggal Periode</th>
+                                    <th class="text-center">Tanggal Periode</th>
                                     <th class="text-center">Aksi</th>
                                 </tr>
                             </thead>
@@ -84,7 +84,7 @@
                                         <td>{{ $keha->masuk }}</td>
                                         <td>{{ $keha->izin }}</td>
                                         <td>{{ $keha->lembur }}</td>
-                                        <td align="center" colspan="2">{{ date("d F Y", strtotime($keha->from_date)) }} - {{ date("d F Y", strtotime($keha->to_date)) }}</td>
+                                        <td align="center">{{ date("d F Y", strtotime($keha->from_date)) }} - {{ date("d F Y", strtotime($keha->to_date)) }}</td>
                                         <td align="center">
                                             <a href="{{ route('kehadiran.edit',$keha->id) }}" class="btn btn-primary"><i class="fa fa-edit"></i> Edit</a>
                                             <form class="d-inline" action="{{route('kehadiran.destroy',$keha->id)}}" method="POST">
@@ -150,7 +150,7 @@
     @enderror
     <br>
     <label>Masuk</label>
-    <input type="number" name="masuk" class="form-control @error('masuk') is-invalid @enderror" name="masuk" value="{{ old('masuk') }}"></input>
+    <input type="number" name="masuk" step="0.1" pattern="^\d+(?:\.\d{1,2})?$" class="form-control @error('masuk') is-invalid @enderror" name="masuk" value="{{ old('masuk') }}"></input>
     @error('masuk')
         <div class="alert alert-danger mt-2">
             {{ $message }}
@@ -158,7 +158,7 @@
     @enderror
     <br>
     <label>Izin</label>
-    <input type="number" name="izin" class="form-control @error('izin') is-invalid @enderror" name="izin" value="{{ old('izin') }}"></input>
+    <input type="number" name="izin" step="0.1" pattern="^\d+(?:\.\d{1,2})?$" class="form-control @error('izin') is-invalid @enderror" name="izin" value="{{ old('izin') }}"></input>
     @error('izin')
         <div class="alert alert-danger mt-2">
             {{ $message }}

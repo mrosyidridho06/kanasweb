@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Gaji;
-use App\Models\MasterGaji;
 use App\Models\Kehadiran;
+use App\Models\MasterGaji;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class GajiController extends Controller
@@ -20,12 +21,20 @@ class GajiController extends Controller
         $month = $request->get('bulan');
         $year = $request->get('tahun');
 
-        $filter = Gaji::with('kehadiran.karyawan')
-                ->whereMonth('created_at', '=', $month)
-                ->whereYear('created_at', '=', $year)
+        $filter = DB::table('gajis')
+                ->join('kehadirans', 'gajis.kehadiran_id', '=', 'kehadirans.id')
+                ->join('karyawans', 'kehadirans.karyawan_id', '=', 'karyawans.id')
+                ->whereMonth('to_date', '=', $month)
+                ->whereYear('to_date', '=', $year)
+                ->select('gajis.*','kehadirans.from_date', 'kehadirans.masuk', 'kehadirans.lembur', 'karyawans.nama_karyawan', 'karyawans.bpjs', 'karyawans.tunjangan',  'karyawans.jabatan')
                 ->get();
 
-        return view('gaji.index', compact('filter'));
+        $tahun = DB::table('kehadirans')
+                ->selectRaw('YEAR(to_date)')
+                ->get();
+        $dataTahun = $tahun[0];
+
+        return view('gaji.index', compact('filter', 'dataTahun'));
     }
 
     /**
@@ -45,17 +54,24 @@ class GajiController extends Controller
         ->where('id', '=', $karyawan)
         ->get();
 
-        // dd($karya);
+        $tahun = DB::table('kehadirans')
+                ->selectRaw('YEAR(from_date)')
+                ->get();
+
+        $dataTahun = $tahun;
+
+        // dd($dataTahun);
 
         $month = $request->get('bulan');
         $year = $request->get('tahun');
 
         $filter = Kehadiran::with('karyawan')
-                ->whereMonth('from_date', '=', $month)
-                ->whereYear('from_date', '=', $year)
+                ->whereMonth('to_date', '=', $month)
+                ->whereYear('to_date', '=', $year)
                 ->get();
 
-        return view('gaji.create', compact('filter', 'mgaji', 'karya'));
+
+        return view('gaji.create', compact('filter', 'mgaji', 'karya', 'dataTahun'));
     }
 
     /**

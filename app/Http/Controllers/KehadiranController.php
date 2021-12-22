@@ -19,18 +19,21 @@ class KehadiranController extends Controller
     {
         $karyawan = Karyawan::get();
 
-        $tahun = Kehadiran::select('from_date')
-                ->groupBy('from_date')
+        $tahun = Kehadiran::select('to_date')
+                ->groupBy('to_date')
                 ->get();
 
         // dd($tahun);
+        // $tes = Kehadiran::addSelect(['ke' => Kehadiran::select('to_date')])->get();
+
+        // dd($tes);
 
         $month = $request->get('bulan');
         $year = $request->get('tahun');
 
         $filter = Kehadiran::with('karyawan')
-                ->whereMonth('from_date', '=', $month)
-                ->whereYear('from_date', '=', $year)
+                ->whereMonth('to_date', '=', $month)
+                ->whereYear('to_date', '=', $year)
                 ->get();
 
         return view('kehadiran.index', compact('karyawan', 'filter', 'tahun'));
@@ -152,8 +155,11 @@ class KehadiranController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Kehadiran $kehadiran)
     {
-        //
+        $kehadiran->delete();
+
+        Alert::toast('Data Berhasil Dihapus', 'success');
+        return redirect()->back();
     }
 }
