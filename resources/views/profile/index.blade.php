@@ -20,13 +20,16 @@
 
             <div class="card shadow mb-4">
                 <div class="card-profile-image mt-4">
-                <img id="preview-image" class="rounded-circle avatar" style="height: 180px; width: 180px;" src="{{ Auth::user()->foto }}">
+                <img id="preview-image" class="rounded-circle avatar" style="height: 180px; width: 180px;" src="{{ asset('images/users/' . $user->foto) }}">
                     {{-- <figure class="rounded-circle avatar avatar font-weight-bold" style="font-size: 60px; height: 180px; width: 180px;" data-initial="{{ Auth::user()->name[0] }}"></figure> --}}
                 </div>
                 <div class="card-body">
 
                     <div class="row">
                         <div class="col-lg-12">
+                            <form method="POST" action="{{ route('profile.update', $user->id) }}" enctype="multipart/form-data">
+                                @csrf
+                                @method('PUT')
                             <input type="file" class="form-control" name="foto" id="foto">
                             <br>
                             <div class="text-center">
@@ -50,10 +53,7 @@
 
                 <div class="card-body">
 
-                    <form method="POST" action="{{ route('profile.index') }}" autocomplete="off">
-                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
-                        <input type="hidden" name="_method" value="PUT">
 
                         <h6 class="heading-small text-muted mb-4">User information</h6>
 
@@ -63,6 +63,15 @@
                                     <div class="form-group focused">
                                         <label class="form-control-label" for="name">Name<span class="small text-danger">*</span></label>
                                         <input type="text" id="name" class="form-control" name="name" placeholder="Name" value="{{ old('name', Auth::user()->name) }}">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="form-group focused">
+                                        <label class="form-control-label" for="username">Username<span class="small text-danger">*</span></label>
+                                        <input type="text" id="username" class="form-control" name="username" placeholder="username" value="{{ old('username', Auth::user()->username) }}">
                                     </div>
                                 </div>
                             </div>
@@ -101,7 +110,7 @@
                         <!-- Button -->
                         <div class="pl-lg-4">
                             <div class="row">
-                                <div class="col text-center">
+                                <div class="col">
                                     <button type="submit" class="btn btn-primary">Save Changes</button>
                                 </div>
                             </div>
