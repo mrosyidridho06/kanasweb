@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Karyawan;
 use App\Models\Kehadiran;
 use Illuminate\Http\Request;
+use App\Exports\KehadiranExport;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class KehadiranController extends Controller
@@ -161,5 +163,13 @@ class KehadiranController extends Controller
 
         Alert::toast('Data Berhasil Dihapus', 'success');
         return redirect()->back();
+    }
+
+    public function export(Request $request)
+    {
+        $bulan= $request->get('bulan');
+        $tahun = $request->get('tahun');
+
+        return Excel::download(new KehadiranExport($bulan, $tahun), 'kehadiran.csv');
     }
 }

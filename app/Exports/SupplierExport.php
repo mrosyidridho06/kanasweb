@@ -22,7 +22,7 @@ class SupplierExport implements FromCollection, ShouldAutoSize, WithHeadings
     public function headings(): array
     {
         return [
-            '#',
+            'No',
             'Nama Supplier',
             'Alamat Supplier',
             'Nomor Telepon',

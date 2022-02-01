@@ -50,7 +50,7 @@ class KaryawanController extends Controller
             'foto' => 'required|file|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
         ]);
 
-        $newNameImage = date('YmdHis'). '-' . $request->nama_karyawan . '.' . $request->foto->extension();
+        $newNameImage = date('Ymd'). '-' . $request->nama_karyawan . '.' . $request->foto->extension();
 
         $request->file('foto')->move(public_path('images'), $newNameImage);
 
@@ -122,7 +122,7 @@ class KaryawanController extends Controller
         if ($foto = $request->file('foto')) {
             File::delete('images/'.$karyawan->foto);
             $destinationPath = 'images/';
-            $profileImage = date('YmdHis'). '-' . $request->nama_karyawan . '.' . $request->foto->extension();
+            $profileImage = date('Ymd'). '-' . $request->nama_karyawan . '.' . $request->foto->extension();
             $foto->move($destinationPath, $profileImage);
             $karya['foto'] = "$profileImage";
         }else{

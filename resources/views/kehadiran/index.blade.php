@@ -8,7 +8,7 @@
             <button type="button" name="age" id="age" data-toggle="modal" data-target="#add_data_Modal" class="btn btn-primary"><i class="fa fa-plus"> Tambah Kehadiran</i></button>
         </div>
     </div>
-<div class="row justify-content-center">
+        <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card mt-2">
                     <div class="card-body">
