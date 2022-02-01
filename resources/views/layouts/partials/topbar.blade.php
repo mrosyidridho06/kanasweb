@@ -53,7 +53,12 @@
             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ Auth::user()->name }}</span>
-                <figure class="rounded-circle avatar avatar font-weight-bold img-profile" data-initial="{{ Auth::user()->name[0] }}"></figure>
+                @if (Auth::user()->foto != null)
+                    <img src="{{ asset('images/users/' . Auth::user()->foto) }}" class="rounded-circle img-profile" style="object-fit: cover">
+                @else
+                    <figure class="rounded-circle avatar avatar font-weight-bold img-profile" data-initial="{{ Auth::user()->name[0] }}"></figure>
+                @endif
+                {{-- <figure class="rounded-circle avatar avatar font-weight-bold img-profile" data-initial="{{ Auth::user()->name[0] }}"></figure> --}}
                 {{-- <img class="img-profile rounded-circle"
                     src="img/undraw_profile.svg"> --}}
             </a>

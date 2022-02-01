@@ -15,6 +15,7 @@ class CreateResepsTable extends Migration
     {
         Schema::create('reseps', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained('users')->onUpdate('cascade')->onDelete('restrict');
             $table->string('nama_resep');
             $table->integer('jumlah_produksi');
             $table->bigInteger('total');

@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GajiController;
 use App\Http\Controllers\BahanController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ResepController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\KaryawanController;
@@ -31,9 +32,7 @@ Route::get('/index', function () {
 
 Route::group(['middleware' => 'auth'], function () {
 
-    Route::get('/dashboard', function(){
-        return view('dashboard');
-    });
+    Route::get('/dashboard', [DashboardController::class, 'index']);
 
     Route::resource('/profile', ProfileController::class);
 

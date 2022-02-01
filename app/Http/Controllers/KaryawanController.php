@@ -38,7 +38,7 @@ class KaryawanController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request);
+        dd($request);
         $this->validate($request, [
             'nama_karyawan' => 'required',
             'alamat_karyawan' => 'required',
@@ -156,4 +156,5 @@ class KaryawanController extends Controller
         Alert::toast('Data Berhasil Dihapus', 'success');
         return redirect()->back();
     }
+
 }

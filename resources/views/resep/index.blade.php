@@ -7,6 +7,7 @@
             <div class="col-md-12">
                 <div class="card card-primary">
                     <form method="post" action="{{ route('resep.store') }}">
+                        @csrf
                         <div class="card-header font-weight-bold text-primary">Pilih Bahan</div>
                         <div class="card-body">
                         <label>Nama Bahan</label>
