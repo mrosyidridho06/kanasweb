@@ -17,6 +17,7 @@ class CreateGajisTable extends Migration
             $table->id();
             $table->bigInteger('uang_lembur');
             $table->bigInteger('bonus');
+            $table->bigInteger('bpjs');
             $table->bigInteger('potongan');
             $table->bigInteger('gaji_harian');
             $table->bigInteger('total_gaji');

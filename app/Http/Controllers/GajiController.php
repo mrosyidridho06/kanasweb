@@ -108,6 +108,7 @@ class GajiController extends Controller
             'kehadiran_id' => $request->id_kehadiran,
             'uang_lembur' => $lembur,
             'bonus' => $request->bonus,
+            'bpjs' => $request->bpjs,
             'potongan' => $request->potongan,
             'gaji_harian' => $upah_harian,
             'total_gaji' => $total_gaji,
@@ -133,9 +134,11 @@ class GajiController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Gaji $gaji)
     {
-        //
+        $gajis = Gaji::with('kehadiran')->get();
+
+        return view('gaji.show', compact('gaji', 'gajis'));
     }
 
     /**
@@ -173,6 +176,7 @@ class GajiController extends Controller
         $gaji->update([
             'uang_lembur' => $uang_lembur,
             'bonus' => $request->bonus,
+            'bpjs' => $request->bpjs,
             'potongan' => $request->potongan,
             'gaji_harian' => $upah_harian,
             'total_gaji' => $total_gaji,
