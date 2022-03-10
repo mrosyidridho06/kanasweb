@@ -2,30 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Bahan;
-use App\Models\Resep;
+use App\Models\Riwayat;
 use Illuminate\Http\Request;
 
-class ResepController extends Controller
+class RiwayatController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        $bahan = Bahan::get();
+        $riwayats = Riwayat::with('user')->get();
 
-        // $itemuser = $request->user();//ambil data user
-        // $itemcart = Resep::where('user_id', $itemuser->id)
-        //                 // ->where('status_cart', 'cart')
-        //                 ->first();
-        // $data = array('title' => 'Shopping Cart',
-        //             'itemcart' => $itemcart);
-        // return view('cart.index', $data)->with('no', 1);
-
-        return view('resep.index', compact('bahan'));
+        return view('riwayat.index', compact('riwayats'));
     }
 
     /**
@@ -52,10 +43,10 @@ class ResepController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\Riwayat  $riwayat
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Riwayat $riwayat)
     {
         //
     }
@@ -63,10 +54,10 @@ class ResepController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\Riwayat  $riwayat
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Riwayat $riwayat)
     {
         //
     }
@@ -75,10 +66,10 @@ class ResepController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Models\Riwayat  $riwayat
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Riwayat $riwayat)
     {
         //
     }
@@ -86,10 +77,10 @@ class ResepController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Models\Riwayat  $riwayat
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Riwayat $riwayat)
     {
         //
     }

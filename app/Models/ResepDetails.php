@@ -21,4 +21,10 @@ class ResepDetails extends Model
     {
         return $this->belongsTo(Resep::class);
     }
+
+    public function updatedetail($itemdetail, $qty, $harga) {
+        $this->attributes['qty'] = $itemdetail->qty + $qty;
+        $this->attributes['subtotal'] = $itemdetail->subtotal + ($qty * $harga);
+        self::save();
+    }
 }

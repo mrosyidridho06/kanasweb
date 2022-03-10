@@ -32,8 +32,8 @@
                         <td>{{$item->supplier->nama_supplier}}</td>
                         <td>{{$item->jumlah_bahan}}</td>
                         <td>{{$item->satuan_bahan}}</td>
-                        <td>Rp. {{number_format($item->harga_satuan)}}</td>
-                        <td>Rp. {{number_format($item->harga_bahan)}}</td>
+                        <td>Rp{{ $item->harga_satuan }}</td>
+                        <td>Rp{{ $item->harga_bahan }}</td>
                         <td>
                             <div class="dropdown">
                                 <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

@@ -3,13 +3,15 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GajiController;
 use App\Http\Controllers\BahanController;
-use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ResepController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KehadiranController;
 use App\Http\Controllers\MasterGajiController;
+use App\Http\Controllers\ResepDetailsController;
+use App\Http\Controllers\RiwayatController;
 use App\Http\Controllers\TunjanganGajiController;
 
 /*
@@ -39,6 +41,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::group(['middleware' => 'hakakses:admin,user'], function(){
         Route::resource('/supplier', SupplierController::class);
         Route::resource('/resep', ResepController::class);
+        Route::resource('/resepdetails', ResepDetailsController::class);
+        Route::patch('kosongkan/{id}', 'ResepController@kosongkan');
         Route::resource('/bahan', BahanController::class);
         Route::get('/supplierexport', [SupplierController::class, 'export'])->name('supplierexport');
         Route::post('/supplierimport', [SupplierController::class, 'import'])->name('supplierimport');
@@ -56,6 +60,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::resource('/gaji', GajiController::class);
         Route::resource('/mastergaji', MasterGajiController::class);
         Route::resource('/tunjangangaji', TunjanganGajiController::class);
+        Route::resource('/riwayat', RiwayatController::class);
     });
 });
 

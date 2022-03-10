@@ -74,6 +74,10 @@
                     <i class="fas fa-user-plus fa-sm fa-fw mr-2 text-gray-400"></i>
                     Tambah User
                 </a>
+                <a class="dropdown-item" href="/riwayat">
+                    <i class="fas fa-history fa-sm fa-fw mr-2 text-gray-400"></i>
+                    Riwayat Aktivitas
+                </a>
                 @endif
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">

@@ -84,15 +84,60 @@
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-striped">
-                                    <tr>
-                                        <th>Nama Bahan</th>
-                                        <!-- <th>Jumlah</th> -->
-                                        <th>Satuan</th>
-                                        <th>Quantity</th>
-                                        <th align="right">Harga</th>
-                                        <th align="center">Aksi</th>
-                                        <th>Sub Total</th>
-                                    </tr>
+                                    <thead>
+                                        <tr>
+                                            <th>Nama Bahan</th>
+                                            <th>Satuan</th>
+                                            <th>Quantity</th>
+                                            <th align="right">Harga</th>
+                                            <th align="center">Aksi</th>
+                                            <th>Sub Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {{-- @foreach ($itemcart->detail as $detail)
+                                        <tr>
+                                            <td>
+                                                {{ $loop->iteration }}
+                                            </td>
+                                            <td>
+                                                {{ $detail->bahan->nama_bahan }}
+                                            </td>
+                                            <td>
+                                                {{ $detail->bahan->satuan_bahan }}
+                                            </td>
+                                            <td>
+                                                {{ $details->qty }}
+                                            </td>
+                                            <td>
+                                                {{ $detail->harga }}
+                                            </td>
+                                            <td>
+                                                <div class="btn-group" role="group">
+                                                    <form action="{{ route('cartdetail.update',$detail->id) }}" method="post">
+                                                    @method('patch')
+                                                    @csrf()
+                                                      <input type="hidden" name="param" value="kurang">
+                                                      <button class="btn btn-primary btn-sm">
+                                                      -
+                                                      </button>
+                                                    </form>
+                                                    <button class="btn btn-outline-primary btn-sm" disabled="true">
+                                                    {{ number_format($detail->qty, 2) }}
+                                                    </button>
+                                                    <form action="{{ route('cartdetail.update',$detail->id) }}" method="post">
+                                                    @method('patch')
+                                                    @csrf()
+                                                      <input type="hidden" name="param" value="tambah">
+                                                      <button class="btn btn-primary btn-sm">
+                                                      +
+                                                      </button>
+                                                    </form>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        @endforeach --}}
+                                    </tbody>
                                 </table>
                                 <div class="text-right">
                                     <h5>Total Rp.</h5>

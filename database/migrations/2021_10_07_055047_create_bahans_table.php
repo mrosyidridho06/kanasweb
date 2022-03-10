@@ -19,8 +19,8 @@ class CreateBahansTable extends Migration
             $table->string('nama_bahan');
             $table->integer('jumlah_bahan');
             $table->string('satuan_bahan');
-            $table->bigInteger('harga_bahan');
-            $table->bigInteger('harga_satuan')->nullable();
+            $table->double('harga_bahan');
+            $table->double('harga_satuan')->nullable();
             $table->timestamps();
         });
     }

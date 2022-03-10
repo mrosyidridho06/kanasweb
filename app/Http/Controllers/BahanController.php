@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Bahan;
+use App\Models\Riwayat;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use RealRashid\SweetAlert\Facades\Alert;
 
 
@@ -77,6 +79,11 @@ class BahanController extends Controller
             'harga_satuan' => $harga_satuan,
         ]);
 
+        Riwayat::create([
+            'user_id' => Auth::user()->id,
+            'aktivitas' => ('Tambah Bahan'. $request->nama_bahan),
+        ]);
+
         // dd($bah);
 
         // Bahan::create($bah);
@@ -138,6 +145,11 @@ class BahanController extends Controller
             'harga_satuan' => $harga_satuan,
         ]);
 
+        Riwayat::create([
+            'user_id' => Auth::user()->id,
+            'aktivitas' => ('Mengubah bahan'. $request->nama_bahan),
+        ]);
+
         if($bahan){
             //redirect dengan pesan sukses
             Alert::toast('Data Berhasil Diubah', 'success');
@@ -158,6 +170,11 @@ class BahanController extends Controller
     public function destroy(Bahan $bahan)
     {
         $bahan->delete();
+
+        Riwayat::create([
+            'user_id' => Auth::user()->id,
+            'aktivitas' => ('Menghapus Bahan'.'-'.$bahan->nama_bahan),
+        ]);
 
         Alert::toast('Data Berhasil Dihapus', 'success');
         return redirect()->back();

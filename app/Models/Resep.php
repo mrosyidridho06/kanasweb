@@ -20,9 +20,10 @@ class Resep extends Model
         return $this->hasMany(ResepDetails::class);
     }
 
-    public function updatetotal($itemcart, $subtotal) {
-        $this->attributes['subtotal'] = $itemcart->subtotal + $subtotal;
-        $this->attributes['total'] = $itemcart->total + $subtotal;
-        self::save();
+    public function kosongkan($id) {
+        $itemcart = Resep::findOrFail($id);
+        $itemcart->detail()->delete();//hapus semua item di cart detail
+        $itemcart->updatetotal($itemcart, '-'.$itemcart->subtotal);
+        return back()->with('success', 'Cart berhasil dikosongkan');
     }
 }
