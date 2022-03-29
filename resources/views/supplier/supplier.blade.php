@@ -10,7 +10,7 @@
     </div>
     <div class="my-2 row">
         <div class="col-md-4">
-            <a href="{{ route('supplierexport') }}" class="btn btn-primary">Export</a>
+            {{-- <a href="{{ route('supplierexport') }}" class="btn btn-primary">Export</a> --}}
             {{-- <button class="btn btn-success" name="import" id="importbut" data-toggle="modal" data-target="#import" type="submit">Import</button>
             <div id="import" class="modal fade">
                 <div class="modal-dialog">
@@ -123,7 +123,63 @@
 @push('scripts')
     <script>
         $(document).ready( function () {
-            $('#myTable').DataTable();
+            $('#myTable').DataTable({
+                dom: 'lBfrtip',
+                orderable: [
+                    [3, "asc"]
+                ],
+                lengthMenu: [
+                    [ 10, 25, 50, 100, 1000, -1 ],
+                    [ '10', '25', '50', '100', '1000', 'All' ]
+                ],
+                columnDefs: [
+                    {
+                        "searchable": false,
+                        "orderable": false,
+                        "targets": 4,
+                    },
+                ],
+                buttons: [
+                    {
+                        extend: 'csv',
+                        text: 'Export',
+                        exportOptions: {
+                            modifier: {
+                                page: 'all',
+                                search: 'none'
+                            },
+                            columns: [ 0, 1, 2, 3 ]
+                        }
+                    },
+                    {
+                        extend: 'pdf',
+                        text: 'Pdf',
+                        exportOptions: {
+                            modifier: {
+                                page: 'all',
+                                search: 'none'
+                            },
+                            columns: [ 0, 1, 2, 3 ]
+                        }
+                    },
+                    {
+                        extend: 'print',
+                        text: 'Print',
+                        exportOptions: {
+                            modifier: {
+                                page: 'all'
+                            },
+                            columns: [ 0, 1, 2, 3 ]
+                        }
+                    },
+
+                ],
+                language: {
+                    "searchPlaceholder": "Cari nama supplier",
+                    "zeroRecords": "Tidak ditemukan data yang sesuai",
+                    "emptyTable": "Tidak terdapat data di tabel"
+                }
+            });
         } );
     </script>
 @endpush

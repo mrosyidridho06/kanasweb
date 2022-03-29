@@ -95,16 +95,34 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group focused">
-                                    @foreach ($mgaji as $master)
                                     <label class="form-control-label" for="uang_lembur">Uang Lembur<span class="small text-danger">*</span></label>
-                                    <input type="number" class="form-control" name="uang_lembur" value="{{ $master->lembur }}" readonly>
+                                    {{-- <input type="number" class="form-control" name="uang_lembur" value="{{ $master->lembur }}" readonly> --}}
+                                    <select class="form-control @error('uang_lembur') is-invalid @enderror" name="uang_lembur" value="{{ old('uang_lembur') }}">
+                                        <option value="" selected disabled>Pilih Uang Lembur</option>
+                                        @foreach ($mgaji as $lembur )
+                                        @if (old('uang_lembur') == $lembur->lembur)
+                                            <option value="{{ $lembur->lembur }}" selected>{{ $lembur->lembur }}</option>
+                                        @else
+                                            <option value="{{ $lembur->lembur }}">{{ $lembur->lembur }}</option>
+                                        @endif
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group focused">
                                     <label class="form-control-label" for="uang_harian">Uang Harian<span class="small text-danger">*</span></label>
-                                    <input type="number" class="form-control" name="uang_harian" value="{{ $master->harian }}" readonly>
-                                    @endforeach
+                                    <select class="form-control @error('uang_harian') is-invalid @enderror" name="uang_harian" value="{{ old('uang_harian') }}">
+                                        <option value="" selected disabled>Pilih Gaji Harian</option>
+                                        @foreach ($mgaji as $harian )
+                                            @if (old('uang_harian') == $harian->harian)
+                                                <option value="{{ $harian->harian }}" selected>{{ $harian->harian }}</option>
+                                            @else
+                                                <option value="{{ $harian->harian }}">{{ $harian->harian }}</option>
+                                            @endif
+                                        @endforeach
+                                    </select>
+                                    {{-- <input type="number" class="form-control" name="uang_harian" value="{{ $master->harian }}" readonly> --}}
                                 </div>
                             </div>
                             <div class="col-md-6">

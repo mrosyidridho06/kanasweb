@@ -13,46 +13,48 @@
 </div>
 <div class="card shadow mb-4">
     <div class="card-body">
-        <table class="table table-hover" id="myTable">
-            <thead>
-                <th>No.</th>
-                <th>Nama Bahan</th>
-                <th>Nama Supplier</th>
-                <th>Jumlah Bahan</th>
-                <th>Satuan</th>
-                <th>Harga Satuan</th>
-                <th>Harga</th>
-                <th>Aksi</th>
-            </thead>
-            <tbody>
-                @foreach ($bah as $item )
-                    <tr>
-                        <td>{{$loop->iteration}}</td>
-                        <td>{{$item->nama_bahan}}</td>
-                        <td>{{$item->supplier->nama_supplier}}</td>
-                        <td>{{$item->jumlah_bahan}}</td>
-                        <td>{{$item->satuan_bahan}}</td>
-                        <td>Rp{{ $item->harga_satuan }}</td>
-                        <td>Rp{{ $item->harga_bahan }}</td>
-                        <td>
-                            <div class="dropdown">
-                                <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                  <i class="fa fa-cog"></i>
-                                </button>
-                                <div class="dropdown-menu dropdown-primary">
-                                    <a class="dropdown-item" href="{{route('bahan.edit',$item->id)}}"><i class="fa fa-edit"></i> Edit</a>
-                                    <form action="{{route('bahan.destroy', $item->id)}}" method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')" class="dropdown-item btn"><i class="fa fa-trash"></i> Hapus</button>
-                                    </form>
+        <div class="table-responsive">
+            <table class="table table-hover" id="myTable">
+                <thead>
+                    <th>No.</th>
+                    <th>Nama Bahan</th>
+                    <th>Nama Supplier</th>
+                    <th>Jumlah Bahan</th>
+                    <th>Satuan</th>
+                    <th>Harga Satuan</th>
+                    <th>Harga</th>
+                    <th>Aksi</th>
+                </thead>
+                <tbody>
+                    @foreach ($bah as $item )
+                        <tr>
+                            <td>{{$loop->iteration}}</td>
+                            <td>{{$item->nama_bahan}}</td>
+                            <td>{{$item->supplier->nama_supplier}}</td>
+                            <td>{{$item->jumlah_bahan}}</td>
+                            <td>{{$item->satuan_bahan}}</td>
+                            <td>Rp{{ number_format($item->harga_satuan,0,',','.') }}</td>
+                            <td>Rp{{ number_format($item->harga_bahan,0,',','.') }}</td>
+                            <td>
+                                <div class="dropdown">
+                                    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                      <i class="fa fa-cog"></i>
+                                    </button>
+                                    <div class="dropdown-menu dropdown-primary">
+                                        <a class="dropdown-item" href="{{route('bahan.edit',$item->id)}}"><i class="fa fa-edit"></i> Edit</a>
+                                        <form action="{{route('bahan.destroy', $item->id)}}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')" class="dropdown-item btn"><i class="fa fa-trash"></i> Hapus</button>
+                                        </form>
+                                    </div>
                                 </div>
-                            </div>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 <!-- Modals Tambah data -->
@@ -135,10 +137,64 @@
 @push('scripts')
     <script>
         $(document).ready( function () {
-            $('#myTable').DataTable();
+            $('#myTable').DataTable({
+                dom: 'lBfrtip',
+                orderable: [
+                    [6, "asc"]
+                ],
+                // buttons: ['copy', 'csv', 'excel', 'pdf', 'print', 'colvis'],
+                lengthMenu: [
+                    [ 10, 25, 50, 100, 1000, -1 ],
+                    [ '10', '25', '50', '100', '1000', 'All' ]
+                ],
+                columnDefs: [
+                    {
+                        "searchable": false,
+                        "orderable": false,
+                        "targets": 7,
+                    },
+                ],
+                buttons: [
+                    {
+                        extend: 'csv',
+                        text: 'Export',
+                        exportOptions: {
+                            modifier: {
+                                page: 'all'
+                            },
+                            columns: [ 0, 1, 2, 3, 4, 5, 6 ]
+                        }
+                    },
+                    {
+                        extend: 'pdf',
+                        text: 'Pdf',
+                        exportOptions: {
+                            modifier: {
+                                page: 'all'
+                            },
+                            columns: [ 0, 1, 2, 3, 4, 5, 6 ]
+                        }
+                    },
+                    {
+                        extend: 'print',
+                        text: 'Print',
+                        exportOptions: {
+                            modifier: {
+                                page: 'all'
+                            },
+                            columns: [ 0, 1, 2, 3, 4, 5, 6 ]
+                        }
+                    },
+
+                ],
+                language: {
+                    "searchPlaceholder": "Cari nama bahan/supplier",
+                    "zeroRecords": "Tidak ditemukan data yang sesuai",
+                    "emptyTable": "Tidak terdapat data di tabel"
+                }
+            });
         } );
-    </script>
-    <script>
+
         $(document).ready(function() {
             $('.suppliers').select2({
                 width: '100%', dropdownCssClass: "bigdrop"

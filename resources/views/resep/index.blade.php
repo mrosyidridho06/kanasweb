@@ -6,31 +6,34 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="card card-primary">
-                    <form method="post" action="{{ route('resep.store') }}">
-                        @csrf
-                        <div class="card-header font-weight-bold text-primary">Pilih Bahan</div>
-                        <div class="card-body">
-                        <label>Nama Bahan</label>
-                        <select class="form-control bahans @error('bahan') is-invalid @enderror" name="bahan" value="{{ old('bahan') }}" name="bahan">
-                            <option value="" selected disabled>Pilih Bahan</option>
+                    <div class="card-header font-weight-bold text-primary">Pilih Bahan</div>
+                    <div class="card-body">
+                    <label>Nama Bahan</label>
+                    <form action="{{ route('tambahCart') }}" method="POST">
+                    @csrf
+                    <select class="form-control bahans @error('bahan') is-invalid @enderror" name="bahan" value="{{ old('bahan') }}">
+                        <option value="" selected disabled>Pilih Bahan</option>
                             @foreach ($bahan as $bahans )
-                                @if (old('bahan') == $bahans->id)
-                                    <option value="{{ $bahans->id }}" selected> {{ $bahans->nama_bahan }}, {{ $bahans->satuan_bahan }} </option>
-                                @else
-                                    <option value="{{ $bahans->id }}">{{ $bahans->nama_bahan }}, {{ $bahans->satuan_bahan }}</option>
-                                @endif
-                            @endforeach
-                        </select>
-                        </div>
-                        <div class="card-body d-flex">
-                            <div class="row">
-                                <div class="col-11">
-                                    <input type="number" name="qty" class="form-control" placeholder="Jumlah" required>
-                                </div>
+                            @if (old('bahan') == $bahans->id)
+                                <option value="{{ $bahans->id }}" selected> {{ $bahans->nama_bahan }}, {{ $bahans->satuan_bahan }} </option>
+                            @else
+                                <option value="{{ $bahans->id }}">{{ $bahans->nama_bahan }}, {{ $bahans->satuan_bahan }}</option>
+                            @endif
+                        @endforeach
+                    </select>
+                    </div>
+                    <div class="card-body d-flex">
+                        <div class="row">
+                            <div class="col-11">
+                                <input type="number" name="qty" class="form-control" placeholder="Jumlah" required>
                             </div>
-                            <button class="btn btn-primary" type="submit">Tambah</button>
                         </div>
-                    </form>
+                        {{-- <button type="button" class="btn btn-sm btn-outline-secondary add-to-cart" data-id="{{$bahans->id}}" data-nama_bahan="{{$bahans->nama_bahan}}" data-harga_satuan="{{$bahans->harga_satuan}}">Add to Cart</button> --}}
+                        <button class="btn btn-primary" type="submit">Tambah</button>
+                        {{-- <a href="{{ url('add-to-cart/'.$bahans->id) }}" class="btn btn-warning btn-block text-center" role="button">Tambah</a> --}}
+                        {{-- <p>{{ $bahans->nama_bahan }}</p> --}}
+                    </div>
+                </form>
                 </div>
             </div>
         </div>
@@ -45,7 +48,13 @@
                                         <span class="input-group-text" id="basic-addon1">Nama Resep</span>
                                     </div>
                                     <input type="text" name="namaresep" placeholder="Nama Resep" class="form-control" required>
-                                    <input type="hidden" name="total" value="">
+                                    <?php $total = 0 ?>
+                                    @if ($cart_data  != null)
+                                    @foreach ($cart_data as $key => $detail)
+                                    <?php $total += $detail['harga_satuan'] * $detail['qty'] ?>
+                                        <input type="hidden" name="total" id="total" value="<?=$total?>">
+                                    @endforeach
+                                    @endif
                                 </div>
                                 <div class="input-group mb-2">
                                     <div class="input-group-prepend">
@@ -90,31 +99,35 @@
                                             <th>Satuan</th>
                                             <th>Quantity</th>
                                             <th align="right">Harga</th>
-                                            <th align="center">Aksi</th>
                                             <th>Sub Total</th>
+                                            <th align="center">Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {{-- @foreach ($itemcart->detail as $detail)
+                                        <?php $total = 0 ?>
+                                        @if ($cart_data  != null)
+                                        @forelse ($cart_data as $key => $detail)
+
+                                        <?php $total += $detail['harga_satuan'] * $detail['qty'] ?>
                                         <tr>
                                             <td>
-                                                {{ $loop->iteration }}
+                                                {{ $detail['nama_bahan'] }}
                                             </td>
                                             <td>
-                                                {{ $detail->bahan->nama_bahan }}
+                                                {{ $detail['satuan_bahan'] }}
                                             </td>
                                             <td>
-                                                {{ $detail->bahan->satuan_bahan }}
+                                                {{ $detail['qty'] }}
                                             </td>
                                             <td>
-                                                {{ $details->qty }}
+                                                {{ $detail['harga_satuan'] }}
                                             </td>
                                             <td>
-                                                {{ $detail->harga }}
+                                                {{ $detail['subtotal'] }}
                                             </td>
                                             <td>
                                                 <div class="btn-group" role="group">
-                                                    <form action="{{ route('cartdetail.update',$detail->id) }}" method="post">
+                                                    <form action="{{ route('updateresep') }}" method="post">
                                                     @method('patch')
                                                     @csrf()
                                                       <input type="hidden" name="param" value="kurang">
@@ -123,9 +136,9 @@
                                                       </button>
                                                     </form>
                                                     <button class="btn btn-outline-primary btn-sm" disabled="true">
-                                                    {{ number_format($detail->qty, 2) }}
+                                                    {{ number_format($detail['qty']) }}
                                                     </button>
-                                                    <form action="{{ route('cartdetail.update',$detail->id) }}" method="post">
+                                                    <form action="{{ route('updateresep') }}" method="post">
                                                     @method('patch')
                                                     @csrf()
                                                       <input type="hidden" name="param" value="tambah">
@@ -136,11 +149,19 @@
                                                 </div>
                                             </td>
                                         </tr>
-                                        @endforeach --}}
+                                        @empty
+                                        <tr>
+                                            <td colspan="14" align="center">Data Kosong</td>
+                                        </tr>
+                                        @endforelse
+                                        @else
+                                            <td colspan="6">kosong</td>
+                                        @endif
+
                                     </tbody>
                                 </table>
                                 <div class="text-right">
-                                    <h5>Total Rp.</h5>
+                                    <h5>Total Rp. {{ $total }}</h5>
                                 </div>
                             </div>
                         </div>
@@ -155,5 +176,26 @@
     $(document).ready(function() {
         $('.bahans').select2();
     });
+
+    function sum() {
+              var produksi = document.getElementById('produksi').value;
+              var total = document.getElementById('total').value;
+              
+              var result = parseFloat(total) / parseFloat(produksi);
+              if (!isNaN(result)) {
+                 document.getElementById('hpp').value = result;
+              }
+        }
+    function hargajual() {
+            var hpp = document.getElementById('hpp').value;
+            var jual = document.getElementById('jual').value;
+            
+            var result = parseFloat(hpp) * parseFloat(jual);
+            if (!isNaN(result)) {
+                document.getElementById('harga_jual').value = result;
+            }else{
+                document.getElementById('harga_jual').value = "kosong";
+            }
+    }
 </script>
 @endpush

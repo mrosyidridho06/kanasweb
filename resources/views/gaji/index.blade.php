@@ -98,8 +98,9 @@
                                   <i class="fa fa-cog"></i>
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                    <a class="dropdown-item" href="{{route('gaji.edit',$gaji->id)}}"><i class="fa fa-edit"></i> Edit</a>
-                                    <a class="dropdown-item" target="_blank" href="{{route('gaji.show',$gaji->id)}}"><i class="fa fa-eye"></i> Lihat</a>
+                                    <a class="dropdown-item" href="{{route('gaji.edit', $gaji->id)}}"><i class="fa fa-edit"></i> Edit</a>
+                                    <a class="dropdown-item" target="_blank" href="{{route('gaji.show', $gaji->id)}}"><i class="fa fa-eye"></i> Lihat</a>
+                                    <a class="dropdown-item" href="{{route('gajiexport', $gaji->id)}}"><i class="fa fa-download"></i> Download</a>
                                     <form action="{{route('gaji.destroy', $gaji->id)}}" method="POST">
                                         @csrf
                                         @method('DELETE')

@@ -11,8 +11,8 @@
     <div class="col-lg-4 order-lg-2">
 
         <div class="card shadow">
-            <a class="card-profile-image mt-4" href="{{asset('images/'. $karyawan->foto)}}" target="_blank">
-                <img id="preview-image" src="{{asset('images/'.$karyawan->foto)}}" />
+            <a class="card-profile-image mt-4" href="{{asset('images/karyawan/'. $karyawan->foto)}}" target="_blank">
+                <img id="preview-image" src="{{asset('images/karyawan/'.$karyawan->foto)}}" />
             </a>
             <div class="card-body">
 

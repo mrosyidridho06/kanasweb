@@ -28,9 +28,7 @@ use App\Http\Controllers\TunjanganGajiController;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/index', function () {
-    return view('index');
-});
+
 
 Route::group(['middleware' => 'auth'], function () {
 
@@ -41,8 +39,12 @@ Route::group(['middleware' => 'auth'], function () {
     Route::group(['middleware' => 'hakakses:admin,user'], function(){
         Route::resource('/supplier', SupplierController::class);
         Route::resource('/resep', ResepController::class);
+        Route::post('/tambahCart', [ResepController::class, 'cartSession'])->name('tambahCart');
+        Route::get('/resepcart', [ResepController::class, 'Cart'])->name('resepcart');
+        // Route::post('/updateresep', [ResepController::class, 'updateToCart'])->name('updateresep');
+        // Route::get('/hapusresep', [ResepController::class, 'deleteFromCart'])->name('hapusresep');
+        Route::get('/clearcart', [ResepController::class, 'clearCart'])->name('clearcart');
         Route::resource('/resepdetails', ResepDetailsController::class);
-        Route::patch('kosongkan/{id}', 'ResepController@kosongkan');
         Route::resource('/bahan', BahanController::class);
         Route::get('/supplierexport', [SupplierController::class, 'export'])->name('supplierexport');
         Route::post('/supplierimport', [SupplierController::class, 'import'])->name('supplierimport');
@@ -58,6 +60,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::group(['middleware' => 'hakakses:admin'], function () {
         Route::resource('/gaji', GajiController::class);
+        Route::get('/gaji-pdf/{id}', [GajiController::class, 'exportPDF'])->name('gajiexport');
         Route::resource('/mastergaji', MasterGajiController::class);
         Route::resource('/tunjangangaji', TunjanganGajiController::class);
         Route::resource('/riwayat', RiwayatController::class);

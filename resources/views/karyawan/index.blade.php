@@ -34,7 +34,7 @@
                             <td>{{ $karyawan->agama }}</td>
                             <td>{{ $karyawan->jabatan }}</td>
                             <td>{{ $karyawan->tanggal }}</td>
-                            <td><a href="{{asset('images/'. $karyawan->foto)}}" target="_blank"><img src="{{asset('images/'.$karyawan->foto)}}" width="50px" height="50px" alt=""></td>
+                            <td><a href="{{asset('images/karyawan/'. $karyawan->foto)}}" target="_blank"><img src="{{asset('images/karyawan/'.$karyawan->foto)}}" width="50px" height="50px" alt=""></td>
                             <td>
                                 <div class="dropdown">
                                     <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

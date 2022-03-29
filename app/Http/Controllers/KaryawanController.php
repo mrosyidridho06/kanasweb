@@ -38,7 +38,7 @@ class KaryawanController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request);
+        // dd($request);
         $this->validate($request, [
             'nama_karyawan' => 'required',
             'alamat_karyawan' => 'required',
@@ -52,7 +52,7 @@ class KaryawanController extends Controller
 
         $newNameImage = date('Ymd'). '-' . $request->nama_karyawan . '.' . $request->foto->extension();
 
-        $request->file('foto')->move(public_path('images'), $newNameImage);
+        $request->file('foto')->move(public_path('images/karyawan'), $newNameImage);
 
         $karwan = Karyawan::create([
             'nama_karyawan' => $request->nama_karyawan,
@@ -120,8 +120,8 @@ class KaryawanController extends Controller
         $karya = $request->all();
 
         if ($foto = $request->file('foto')) {
-            File::delete('images/'.$karyawan->foto);
-            $destinationPath = 'images/';
+            File::delete('images/karyawan/'.$karyawan->foto);
+            $destinationPath = 'images/karyawan/';
             $profileImage = date('Ymd'). '-' . $request->nama_karyawan . '.' . $request->foto->extension();
             $foto->move($destinationPath, $profileImage);
             $karya['foto'] = "$profileImage";
@@ -151,7 +151,7 @@ class KaryawanController extends Controller
     {
         // $karyawan = Karyawan::find($karyawan);
         $karyawan->delete();
-        File::delete('images/'.$karyawan->foto);
+        File::delete('images/karyawan/'.$karyawan->foto);
 
         Alert::toast('Data Berhasil Dihapus', 'success');
         return redirect()->back();

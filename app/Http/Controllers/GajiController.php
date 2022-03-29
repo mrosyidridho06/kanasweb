@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Gaji;
+use PDF;
 use App\Models\Kehadiran;
 use App\Models\MasterGaji;
 use Illuminate\Http\Request;
@@ -134,11 +135,11 @@ class GajiController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Gaji $gaji)
+    public function show($id)
     {
-        $gajis = Gaji::with('kehadiran')->get();
+        $gajis = Gaji::with('kehadiran')->where('id', $id)->get();
 
-        return view('gaji.show', compact('gaji', 'gajis'));
+        return view('gaji.show', compact('gajis'));
     }
 
     /**
@@ -206,5 +207,28 @@ class GajiController extends Controller
 
         Alert::toast('Data Berhasil Dihapus', 'success');
         return redirect()->back();
+    }
+
+    public function exportPDF(Gaji $gaji)
+    {
+        $gajis = Gaji::with('kehadiran')->get();
+
+        // $gajis = Gaji::with('kehadiran')->findOrFail($gaji);
+
+        // $path = public_path('kanas.png');
+        // $type = pathinfo($path, PATHINFO_EXTENSION);
+        // $data = file_get_contents($path);
+        // $pic = 'data:image/' . $type . ';base64,' . base64_encode($data);
+
+        $pdf = PDF::setOptions([
+            'defaultFont' => 'dejavu serif',
+            ])
+            ->setPaper('a4', 'portrait')
+            ->loadView('gaji.gajipdf', compact('gajis'));
+        $filename = 'tes' ;
+        return $pdf->stream($filename.'.pdf');
+        // $pdf = PDF::loadView('gaji.gajipdf', compact('gajis'));
+        // // $pdf->loadView('gaji.gajipdf', compact('gajis'));
+        // return $pdf->download('gaji.pdf');
     }
 }
