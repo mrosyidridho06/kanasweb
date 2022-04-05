@@ -37,15 +37,22 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('/profile', ProfileController::class);
 
     Route::group(['middleware' => 'hakakses:admin,user'], function(){
-        Route::resource('/supplier', SupplierController::class);
+        // resep
         Route::resource('/resep', ResepController::class);
         Route::post('/tambahCart', [ResepController::class, 'cartSession'])->name('tambahCart');
         Route::get('/resepcart', [ResepController::class, 'Cart'])->name('resepcart');
-        // Route::post('/updateresep', [ResepController::class, 'updateToCart'])->name('updateresep');
-        // Route::get('/hapusresep', [ResepController::class, 'deleteFromCart'])->name('hapusresep');
+        Route::post('/updateresep', [ResepController::class, 'updateToCart'])->name('updateresep');
+        Route::delete('/hapusresep', [ResepController::class, 'deleteFromCart'])->name('hapusresep');
         Route::get('/clearcart', [ResepController::class, 'clearCart'])->name('clearcart');
+
+        // resepdetails
         Route::resource('/resepdetails', ResepDetailsController::class);
+
+        // bahan
         Route::resource('/bahan', BahanController::class);
+
+        // supplier
+        Route::resource('/supplier', SupplierController::class);
         Route::get('/supplierexport', [SupplierController::class, 'export'])->name('supplierexport');
         Route::post('/supplierimport', [SupplierController::class, 'import'])->name('supplierimport');
     });

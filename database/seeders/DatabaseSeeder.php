@@ -19,7 +19,31 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        User::factory(1)->create();
+        User::create([
+            'name' => 'Muhammad Rosyid Ridho',
+            'username' => 'ridho',
+            'email' => 'ridho@gmail.com',
+            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'role' => 'admin',
+        ]);
+
+        User::create([
+            'name' => 'Fulan',
+            'username' => 'fulan',
+            'email' => 'fulan@gmail.com',
+            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'role' => 'user',
+        ]);
+
+        User::create([
+            'name' => 'Muhammad Fulan Syam',
+            'username' => 'hr',
+            'email' => 'hr@gmail.com',
+            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'role' => 'hr',
+        ]);
+
+
         Bahan::factory(15)->create();
         MasterGaji::factory(1)->create();
         Kehadiran::factory(10)->create();

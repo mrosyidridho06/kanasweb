@@ -9,7 +9,7 @@ class Resep extends Model
 {
     use HasFactory;
     protected $table='reseps';
-    protected $fillable = [ 'user_id', 'nama_resep', 'jumlah_produksi', 'total', 'hpp', 'harga_jual' ];
+    protected $fillable = ['nama_resep', 'jumlah_produksi', 'total', 'hpp', 'harga_jual' ];
 
     public function user() {
         return $this->belongsTo(User::class);
@@ -20,10 +20,10 @@ class Resep extends Model
         return $this->hasMany(ResepDetails::class);
     }
 
-    public function kosongkan($id) {
-        $itemcart = Resep::findOrFail($id);
-        $itemcart->detail()->delete();//hapus semua item di cart detail
-        $itemcart->updatetotal($itemcart, '-'.$itemcart->subtotal);
-        return back()->with('success', 'Cart berhasil dikosongkan');
-    }
+    // public function kosongkan($id) {
+    //     $itemcart = Resep::findOrFail($id);
+    //     $itemcart->detail()->delete();//hapus semua item di cart detail
+    //     $itemcart->updatetotal($itemcart, '-'.$itemcart->subtotal);
+    //     return back()->with('success', 'Cart berhasil dikosongkan');
+    // }
 }

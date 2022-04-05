@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Models\Bahan;
 use App\Models\Supplier;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Arr;
 
 class BahanFactory extends Factory
 {
@@ -24,9 +25,9 @@ class BahanFactory extends Factory
     {
         return [
             'nama_bahan' => $this->faker->name(),
-            'jumlah_bahan' => $this->faker->numberBetween($min = 1000, $max=10000),
+            'jumlah_bahan' => $this->faker->numberBetween($min = 1, $max=1000),
             'satuan_bahan' => $this->faker->randomElement(array('Gram', 'mL', 'Pcs')),
-            'harga_bahan' => $this->faker->numberBetween($min = 6000, $max=15000),
+            'harga_bahan' => $this->faker->randomElement(array('13400', '15000', '20000', '25000', '12000')),
             'supplier_id' => Supplier::factory()
         ];
     }

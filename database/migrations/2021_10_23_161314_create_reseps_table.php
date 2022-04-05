@@ -15,12 +15,11 @@ class CreateResepsTable extends Migration
     {
         Schema::create('reseps', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users')->onUpdate('cascade')->onDelete('restrict');
             $table->string('nama_resep');
             $table->integer('jumlah_produksi');
-            $table->bigInteger('total');
-            $table->bigInteger('hpp');
-            $table->bigInteger('harga_jual');
+            $table->decimal('total', 10,0);
+            $table->decimal('hpp', 10,0);
+            $table->decimal('harga_jual', 10,0);
             $table->timestamps();
         });
     }

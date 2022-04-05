@@ -9,7 +9,8 @@ class ResepDetails extends Model
 {
     use HasFactory;
 
-    protected $table='resepdetails';
+    protected $table='resep_details';
+
     protected $fillable = [ 'resep_id', 'bahan_id', 'qty', 'harga', 'subtotal' ];
 
     public function bahan()
@@ -22,9 +23,9 @@ class ResepDetails extends Model
         return $this->belongsTo(Resep::class);
     }
 
-    public function updatedetail($itemdetail, $qty, $harga) {
-        $this->attributes['qty'] = $itemdetail->qty + $qty;
-        $this->attributes['subtotal'] = $itemdetail->subtotal + ($qty * $harga);
-        self::save();
-    }
+    // public function updatedetail($itemdetail, $qty, $harga) {
+    //     $this->attributes['qty'] = $itemdetail->qty + $qty;
+    //     $this->attributes['subtotal'] = $itemdetail->subtotal + ($qty * $harga);
+    //     self::save();
+    // }
 }

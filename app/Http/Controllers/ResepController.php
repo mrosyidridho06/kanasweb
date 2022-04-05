@@ -7,6 +7,7 @@ use App\Models\Resep;
 use App\Models\ResepDetails;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class ResepController extends Controller
 {
@@ -43,13 +44,35 @@ class ResepController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'nama_resep' => 'required'
-        ]);
+        $resep = new Resep();
+        $resep->nama_resep = $request->input('namaresep');
+        $resep->jumlah_produksi = $request->input('jumlah_produksi');
+        $resep->total = $request->input('total');
+        $resep->hpp = $request->input('hpp');
+        $resep->harga_jual = $request->input('harga_jual');
+        $resep->save();
 
-        $resep = Resep::create([
-            'nama_resep' => $request->nama_resep
-        ]);
+        $cookie_data = stripslashes(Cookie::get('shopping_cart'));
+        $cart_data = json_decode($cookie_data, true);
+
+        // dd($cart_data);
+
+        foreach($cart_data as $key => $item)
+        {
+            $subtotal = $item['qty']*$item['harga_satuan'];
+
+            ResepDetails::create([
+                'resep_id' => $resep->id,
+                'bahan_id' => $item['id'],
+                'qty' => $item['qty'],
+                'harga' => $item['harga_satuan'],
+                'subtotal' => $subtotal
+            ]);
+        }
+        Cookie::queue(Cookie::forget('shopping_cart'));
+
+        Alert::toast('Data Berhasil Ditambahkan', 'success');
+        return redirect()->back();
 
 
 
@@ -183,7 +206,7 @@ class ResepController extends Controller
             $nama_bahan = $produk->nama_bahan;
             $satuan_bahan = $produk->satuan_bahan;
             $harga_satuan = $produk->harga_satuan;
-            $subtotal = $harga_satuan*$request->qty;
+            // $subtotal = $harga_satuan*$request->qty;
 
             if ($produk) {
                 $item_array = array(
@@ -192,7 +215,6 @@ class ResepController extends Controller
                     'satuan_bahan' => $satuan_bahan,
                     'qty' => $qty,
                     'harga_satuan' => $harga_satuan,
-                    'subtotal' => $subtotal
                 );
                 $cart_data[] = $item_array;
 
@@ -221,35 +243,63 @@ class ResepController extends Controller
     public function updateToCart(Request $request)
     {
 
-        $bahan = $request->input('bahan');
-        $qty = $request->input('qty');
+        $prod_id = $request->input('bahan');
+        $quantity = $request->input('qty');
 
-        if (Cookie::get('shopping_cart')) {
+        if(Cookie::get('shopping_cart'))
+        {
             $cookie_data = stripslashes(Cookie::get('shopping_cart'));
             $cart_data = json_decode($cookie_data, true);
 
-            $data_cart = array_column($cart_data, 'item_id');
-            $list_bahan = $bahan;
+            $item_id_list = array_column($cart_data, 'id');
+            $prod_id_is_there = $prod_id;
 
-            if (in_array($list_bahan, $data_cart)) {
-                foreach ($cart_data as $keys => $values) {
-                    if ($cart_data[$keys]["item_id"] == $bahan) {
-                        $cart_data[$keys]["qty"] =  $qty;
+            if(in_array($prod_id_is_there, $item_id_list))
+            {
+                foreach($cart_data as $keys => $values)
+                {
+                    if($cart_data[$keys]["id"] == $prod_id)
+                    {
+                        $cart_data[$keys]["qty"] =  $quantity;
                         $item_data = json_encode($cart_data);
                         $minutes = 60;
                         Cookie::queue(Cookie::make('shopping_cart', $item_data, $minutes));
-                        return response()->json(['status' => '"' . $cart_data[$keys]["nama_produk"] . '" qty Updated']);
+                        return response()->json(['status'=>'"'.$cart_data[$keys]["nama_bahan"].'" Quantity Updated']);
                     }
                 }
             }
         }
-    }
-    
+        // $bahan = $request->input('bahan');
+        // $qty = $request->input('qty');
 
-    public function deleteFromCart($id)
+        // if (Cookie::get('shopping_cart')) {
+        //     $cookie_data = stripslashes(Cookie::get('shopping_cart'));
+        //     $cart_data = json_decode($cookie_data, true);
+
+        //     $data_cart = array_column($cart_data, 'id');
+        //     $list_bahan = $bahan;
+
+        //     if (in_array($list_bahan, $data_cart)) {
+        //         foreach ($cart_data as $keys => $values) {
+
+        //             if ($cart_data[$keys]["id"] == $bahan)
+        //                 {
+        //                     $cart_data[$keys]["qty"] =  $qty;
+        //                     $item_data = json_encode($cart_data);
+        //                     $minutes = 60;
+        //                     Cookie::queue(Cookie::make('shopping_cart', $item_data, $minutes));
+        //                     return response()->json(['status' => '"' . $cart_data[$keys]["nama_produk"] . '" qty Updated']);
+        //                 }
+        //         }
+        //     }
+        // }
+    }
+
+
+    public function deleteFromCart(Request $request)
     {
 
-        $bahan = $id;
+        $bahan = $request->input('bahan');
 
         $cookie_data = stripslashes(Cookie::get('shopping_cart'));
         $cart_data = json_decode($cookie_data, true);
@@ -259,7 +309,7 @@ class ResepController extends Controller
 
         if (in_array($list_bahan, $data_cart)) {
             foreach ($cart_data as $keys => $values) {
-                if ($cart_data[$keys]["item_id"] == $bahan) {
+                if ($cart_data[$keys]["id"] == $bahan) {
                     unset($cart_data[$keys]);
                     $item_data = json_encode($cart_data);
                     $minutes = 60;
