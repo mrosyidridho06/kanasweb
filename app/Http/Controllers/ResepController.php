@@ -18,7 +18,7 @@ class ResepController extends Controller
      */
     public function index(Request $request)
     {
-        $bahan = Bahan::get();
+        $bahan = Bahan::orderBy('nama_bahan', 'asc')->get();
 
         $cookie_data = stripslashes(Cookie::get('shopping_cart'));
         $cart_data = json_decode($cookie_data, true);

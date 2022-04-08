@@ -38,15 +38,11 @@
                             <label>Tahun</label>
                             <select name='tahun' id="tahun" class="form-control" onChange="document.getElementById('form_id').submit();">
                                 <option>-- Pilih Tahun --</option>
-                                    <?php
-                                    $year = date('Y');
-                                    $min = $year - 60;
-                                    $max = $year;
-                                    for( $i=$max; $i>=$min; $i-- ) {
-                                    echo '<option value='.$i.'>'.$i.'</option>';
-                                    } ?>
-                                <script>document.getElementById('tahun').value = "<?php if (isset($_GET['tahun']) && $_GET['tahun']) echo $_GET['tahun'];?>";</script>
+                                    @foreach ($dataTahun as $tahun)
+                                        <option value="{{ $tahun }}">{{ $tahun }}</option>
+                                    @endforeach
                             </select>
+                            <script>document.getElementById('tahun').value = "<?php if (isset($_GET['tahun']) && $_GET['tahun']) echo $_GET['tahun'];?>";</script>
                         </div>
                     </form>
                     <form>
@@ -59,7 +55,7 @@
                                     <option value="{{ $item->id }}"> {{ $item->karyawan->nama_karyawan }}</option>
                                 @endforeach
                             </select>
-                            <script>document.getElementById('nama_karyawan').value = "<?php if (isset($_GET['nama_karyawan']) && $_GET['nama_karyawan']) echo $_GET['nama_karyawan'];?>";</script>
+                            {{-- <script>document.getElementById('nama_karyawan').value = "<?php if (isset($_GET['nama_karyawan']) && $_GET['nama_karyawan']) echo $_GET['nama_karyawan'];?>";</script> --}}
                         </div>
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </form>

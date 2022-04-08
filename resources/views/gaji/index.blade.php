@@ -17,6 +17,7 @@
                         <div class="form-group">
                             <label>Bulan</label>
                             <select name="bulan" class="form-control" id="bulan">
+                                <option value="" selected disabled>Pilih Bulan</option>
                                 <option value="01">Januari</option>
                                 <option value="02">Februari</option>
                                 <option value="03">Maret</option>
@@ -37,13 +38,10 @@
                         <div class="form-group">
                             <label>Tahun</label>
                             <select name="tahun" id="tahun" class="form-control">
-                                <?php
-                                $year = date('Y');
-                                $min = $year - 60;
-                                $max = $year;
-                                for( $i=$max; $i>=$min; $i-- ) {
-                                echo '<option value='.$i.'>'.$i.'</option>';
-                                } ?>
+                                <option value="" selected disabled>Pilih Tahun</option>
+                                @foreach ($dataTahun as $tahun)
+                                    <option value="{{ $tahun }}">{{ $tahun }}</option>
+                                @endforeach
                             </select>
                             <script>document.getElementById('tahun').value = "<?php if (isset($_GET['tahun']) && $_GET['tahun']) echo $_GET['tahun'];?>";</script>
                         </div>

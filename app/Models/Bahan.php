@@ -17,7 +17,7 @@ class Bahan extends Model
         return $this->belongsTo(Supplier::class);
     }
 
-    public function resepdetails()
+    public function detail()
     {
         return $this->hasMany(ResepDetails::class);
     }

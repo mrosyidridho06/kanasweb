@@ -21,11 +21,14 @@ class KehadiranController extends Controller
     {
         $karyawan = Karyawan::get();
 
-        $tahun = Kehadiran::select('to_date')
-                ->groupBy('to_date')
-                ->get();
+        // $tahun = Kehadiran::select('to_date')
+        //         ->groupBy('to_date')
+        //         ->get();
+
+        $tahun = DB::table('kehadirans')->selectRaw('substr(to_date,1,4) as to_date')->pluck('to_date')->unique();
 
         // dd($tahun);
+
         // $tes = Kehadiran::addSelect(['ke' => Kehadiran::select('to_date')])->get();
 
         // dd($tes);

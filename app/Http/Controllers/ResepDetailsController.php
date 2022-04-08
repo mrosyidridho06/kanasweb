@@ -16,7 +16,10 @@ class ResepDetailsController extends Controller
      */
     public function index()
     {
-        //
+        $details = Resep::with('resepdetail', 'resepdetail.bahan')->orderBy('nama_resep', 'asc')->get();
+
+        return view('resepdetails.index', compact('details'));
+
     }
 
     /**
@@ -48,7 +51,12 @@ class ResepDetailsController extends Controller
      */
     public function show(ResepDetails $resepDetails)
     {
-        //
+        $daftar = Resep::with('resepdetail')->where('id', $resepDetails)->get();
+        $bahan = ResepDetails::with('bahan')->where('bahan_id', $resepDetails)->get();
+
+        dd($daftar);
+
+        return view('resepdetails.show', compact('daftar', 'bahan'));
     }
 
     /**

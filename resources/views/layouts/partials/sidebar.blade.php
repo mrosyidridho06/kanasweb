@@ -43,7 +43,7 @@
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Resep Menu</h6>
                     <a class="collapse-item {{ request()->is('resep') ? 'active' : ''  }}" href="/resep">Tambah Resep</a>
-                    <a class="collapse-item {{ request()->is('resep-details') ? 'active' : ''  }}" href="/resep-details">Resep Details</a>
+                    <a class="collapse-item {{ request()->is('resep-details') ? 'active' : ''  }}" href="/resepdetails">Resep Details</a>
                 </div>
             </div>
         </li>

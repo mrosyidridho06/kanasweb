@@ -43,18 +43,20 @@
         </div>
         <div class="row">
             <div class="col-12 col-md-8 pt-3">
-                <div class="card card-primary">
+                <form method="post" action="{{ route('resep.store') }}">
+                    @csrf
+                <div class="card shadow resepcard">
                     <div class="card-header font-weight-bold text-primary">Daftar Bahan</div>
                     <div class="card-body">
                         {{-- @if (isset($cart_data))
                             @if (Cookie::get('shopping_cart'))
-                                @php $total="0" @endphp --}}
-                        <div class="table-responsive">
-                            @if (Cookie::get('shopping_cart'))
-                            <div class="col-md-12 text-right mb-3">
-                                <a href="/clearcart" class="font-weight-bold">Clear Cart</a>
-                            </div>
-                            @endif
+                            @php $total="0" @endphp --}}
+                            <div class="table-responsive">
+                                @if (Cookie::get('shopping_cart'))
+                                <div class="col-md-12 text-right mb-3">
+                                    <a href="/clearcart" class="font-weight-bold">Clear Cart</a>
+                                </div>
+                                @endif
                                 <table class="table table-striped">
                                     <thead>
                                         <tr>
@@ -71,9 +73,9 @@
                                         @php $total="0" @endphp
                                         @if ($cart_data  != null)
                                         @forelse ($cart_data as $key => $detail)
-                                            <?php $total += $detail['harga_satuan'] * $detail['qty']; ?>
-                                            <tr class="cartpage">
-                                                <td>
+                                        <?php $total += $detail['harga_satuan'] * $detail['qty']; ?>
+                                        <tr class="cartpage">
+                                            <td>
                                                     {{ $detail['nama_bahan'] }}
                                                 </td>
                                                 <td>
@@ -126,11 +128,11 @@
                                                                 </div>
                                                             </td> --}}
                                             </tr>
-                                        @empty
+                                            @empty
                                                 <tr>
                                                     <td colspan="7" align="center">Data Kosong</td>
                                                 </tr>
-                                        @endforelse
+                                                @endforelse
                                         @else
                                             <td class="text-center" colspan="7">kosong</td>
                                         @endif
@@ -138,6 +140,7 @@
                                 </table>
                                 <div class="text-right">
                                     <h5>Total Rp{{ $total }}</h5>
+                                    <input type="hidden" name="total" id="totalhp" value="<?= $total ?>">
                                 </div>
                             {{-- @endif
                         @else
@@ -152,14 +155,12 @@
                 </div>
             </div>
             <div class="col-12 col-md-4 pt-3">
-                <div class="card card-primary">
+                <div class="card shadow hargacard">
                     <div class="card-header font-weight-bold text-primary">Input Harga</div>
-                    <form method="post" action="{{ route('resep.store') }}">
-                        @csrf
-                        <div class="card-body">
-                            <div class="input-group mb-2">
-                                <input type="number" name="total" id="total" value="<?= $total ?>">
-                                <div class="input-group-prepend">
+                    <div class="card-body">
+                        <div class="input-group mb-2">
+                            {{-- <input type="number" name="total" value="<?= $total ?>"> --}}
+                            <div class="input-group-prepend">
                                     <span class="input-group-text" id="basic-addon1">Nama Resep</span>
                                 </div>
                                 <input type="text" name="namaresep" placeholder="Nama Resep" class="form-control"
@@ -183,7 +184,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" id="basic-addon1">HPP</span>
                                 </div>
-                                <input type="hidden" class="form-control" id="total" value="" onkeyup="sum();" readonly>
+                                <input type="hidden" class="form-control" id="totalhp" value="" onkeyup="sum();" readonly>
                                 <input type="number" name="hpp" class="form-control" id="hpp" onkeyup="hargajual();"
                                     aria-describedby="basic-addon3" readonly>
                             </div>
@@ -219,9 +220,7 @@
         });
 
 
-        $(document).ready(function() {
-
-            $('.delete_cart_data').click(function(e) {
+            $(document).on('click', '.delete_cart_data', function(e) {
                 e.preventDefault();
 
                 var product_id = $(this).closest(".cartpage").find('.bahan').val();
@@ -239,75 +238,63 @@
                     type: 'DELETE',
                     data: data,
                     success: function(response) {
-                        window.location.reload();
-                        alertify.set('notifier','position','top-right');
-                        alertify.success(response.status);
+                        $('.resepcard').load(location.href + " .resepcard");
                     }
                 });
             });
 
+        $(document).on("click", '.tambah-btn', function(e) {
+            e.preventDefault();
+            var incre_value = $(this).parents('.quantity').find('.qty-input').val();
+            var value = parseInt(incre_value, 10);
+            value = isNaN(value) ? 0 : value;
+            if (value) {
+                value++;
+                $(this).parents('.quantity').find('.qty-input').val(value);
+            }
         });
 
-        $(document).ready(function() {
-            $('.tambah-btn').click(function(e) {
-                e.preventDefault();
-                var incre_value = $(this).parents('.quantity').find('.qty-input').val();
-                var value = parseInt(incre_value, 10);
-                value = isNaN(value) ? 0 : value;
-                if (value) {
-                    value++;
-                    $(this).parents('.quantity').find('.qty-input').val(value);
+        $(document).on('click', '.kurang-btn', function(e) {
+            e.preventDefault();
+            var decre_value = $(this).parents('.quantity').find('.qty-input').val();
+            var value = parseInt(decre_value, 10);
+            value = isNaN(value) ? 0 : value;
+            if (value > 1) {
+                value--;
+                $(this).parents('.quantity').find('.qty-input').val(value);
+            }
+        });
+
+        $(document).on('click', '.changeQuantity', function(e) {
+            e.preventDefault();
+
+            var quantity = $(this).closest(".cartpage").find('.qty-input').val();
+            var product_id = $(this).closest(".cartpage").find('.bahan').val();
+
+            var data = {
+                '_token': $('input[name=_token]').val(),
+                'qty': quantity,
+                'bahan': product_id,
+            };
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
 
-            $('.kurang-btn').click(function(e) {
-                e.preventDefault();
-                var decre_value = $(this).parents('.quantity').find('.qty-input').val();
-                var value = parseInt(decre_value, 10);
-                value = isNaN(value) ? 0 : value;
-                if (value > 1) {
-                    value--;
-                    $(this).parents('.quantity').find('.qty-input').val(value);
+            $.ajax({
+                url: '/updateresep',
+                type: 'POST',
+                data: data,
+                success: function(response) {
+                    $('.resepcard').load(location.href + " .resepcard");
                 }
             });
-
-        });
-
-        $(document).ready(function() {
-            $('.changeQuantity').click(function(e) {
-                e.preventDefault();
-
-                var quantity = $(this).closest(".cartpage").find('.qty-input').val();
-                var product_id = $(this).closest(".cartpage").find('.bahan').val();
-
-                var data = {
-                    '_token': $('input[name=_token]').val(),
-                    'qty': quantity,
-                    'bahan': product_id,
-                };
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-
-                $.ajax({
-                    url: '/updateresep',
-                    type: 'POST',
-                    data: data,
-                    success: function(response) {
-                        window.location.reload();
-                        alertify.set('notifier', 'position', 'top-right');
-                        alertify.success(response.status);
-                    }
-                });
-            });
-
         });
 
         function sum() {
             var produksi = document.getElementById('produksi').value;
-            var total = document.getElementById('total').value;
+            var total = document.getElementById('totalhp').value;
 
             var result = parseFloat(total) / parseFloat(produksi);
             if (!isNaN(result)) {

@@ -1,4 +1,5 @@
-{{-- @include('layouts.partials.head')
+@include('layouts.partials.head')
+{{--
 <body>
     <div class="text-center">
         <img src="{{ asset('kanas.png') }}" style="height: 60px;">
@@ -54,19 +55,19 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Example 1</title>
     <link rel="stylesheet" href="{{ asset('css/styleinvoice.css') }}" media="all" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 </head>
 
 <body>
-    <button class="btn-print" style="position: absolute; right: 1rem; top: rem;" onclick="window.print()">Print</button>
+    <button class="btn btn-sm" onclick="window.print()">Print</button>
     <header class="clearfix">
         <div id="logo">
             <img src="{{ asset('kanas.png') }}">
         </div>
-        <h1>INVOICE 3-2-1</h1>
+        @foreach ($gajis as $item )
+        <h1>INVOICE GAJI {{ $item->id }}</h1>
         <div id="company" class="clearfix">
 
         </div>
@@ -75,7 +76,7 @@
             <div>Wika<br /> Gunung Samarinda</div>
             <div>0542-111111</div>
             <div><a href="mailto:kanaskitchen@gmail.com">kanaskitchen@gmail.com</a></div>
-            <div>August 17, 2015</div>
+            <div>{{ $item->created_at->format('l, d F Y') }}</div>
         </div>
     </header>
     <main>
@@ -91,7 +92,6 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($gajis as $item )
                 <tr>
                     <td >{{ $item->kehadiran->karyawan->nama_karyawan }}</td>
                     <td >{{ $item->kehadiran->masuk }}</td>

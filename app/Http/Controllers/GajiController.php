@@ -30,10 +30,7 @@ class GajiController extends Controller
                 ->select('gajis.*','kehadirans.from_date', 'kehadirans.masuk', 'kehadirans.lembur', 'karyawans.nama_karyawan', 'karyawans.bpjs', 'karyawans.tunjangan',  'karyawans.jabatan')
                 ->get();
 
-        $tahun = DB::table('kehadirans')
-                ->selectRaw('YEAR(to_date)')
-                ->get();
-        $dataTahun = $tahun[0];
+        $dataTahun = DB::table('kehadirans')->selectRaw('substr(to_date,1,4) as to_date')->pluck('to_date')->unique();
 
         return view('gaji.index', compact('filter', 'dataTahun'));
     }
@@ -55,11 +52,7 @@ class GajiController extends Controller
         ->where('id', '=', $karyawan)
         ->get();
 
-        $tahun = DB::table('kehadirans')
-                ->selectRaw('YEAR(from_date)')
-                ->get();
-
-        $dataTahun = $tahun;
+        $dataTahun = DB::table('kehadirans')->selectRaw('substr(to_date,1,4) as to_date')->pluck('to_date')->unique();
 
         // dd($dataTahun);
 
@@ -209,9 +202,9 @@ class GajiController extends Controller
         return redirect()->back();
     }
 
-    public function exportPDF(Gaji $gaji)
+    public function exportPDF($id)
     {
-        $gajis = Gaji::with('kehadiran')->get();
+        $gajis = Gaji::with('kehadiran')->where('id', $id)->get();
 
         // $gajis = Gaji::with('kehadiran')->findOrFail($gaji);
 

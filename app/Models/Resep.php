@@ -11,11 +11,7 @@ class Resep extends Model
     protected $table='reseps';
     protected $fillable = ['nama_resep', 'jumlah_produksi', 'total', 'hpp', 'harga_jual' ];
 
-    public function user() {
-        return $this->belongsTo(User::class);
-    }
-
-    public function detail()
+    public function resepdetail()
     {
         return $this->hasMany(ResepDetails::class);
     }
