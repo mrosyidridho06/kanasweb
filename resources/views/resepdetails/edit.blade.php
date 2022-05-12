@@ -79,11 +79,15 @@
                                                     <input class="form-control" type="number" name="qtyres" id="" value="{{ $detail->qty }}">
                                                 </td>
                                                 <td>
-                                                    <input class="form-control" readonly name="hargasatuan" value="Rp{{ $detail->bahan->harga_satuan }}">
+                                                    <input class="form-control" readonly name="hargasatuan" value="{{ $detail->bahan->harga_satuan }}">
                                                 </td>
                                                 <td>
                                                     @currency($detail->subtotal)
                                                 </td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-primary" type="submit">Update</button>
+                                                </td>
+                                            </form>
                                                 <td>
                                                     <form action="{{route('resepdetails.destroy', $detail->id)}}" method="POST">
                                                         @csrf
@@ -91,12 +95,8 @@
                                                         <button type="submit" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')" class="dropdown-item btn"><i class="fa fa-trash"></i></button>
                                                     </form>
                                                 </td>
-                                                <td>
-                                                    <button class="btn btn-sm btn-primary" type="submit">Update</button>
-                                                </td>
                                             </tr>
-                                        </form>
-                                            @endforeach
+                                        @endforeach
                                     </tbody>
                                 </table>
                                     <div class="text-right">

@@ -96,12 +96,14 @@ class ResepDetailsController extends Controller
             $qtydetails = $item->qty;
             // dd($qtydetails);
         }
-        // dd($qtydetails);
+
+        $kurangin = $qtydetails-$qty;
+        $subtot = $kurangin*$hrgsatuan;
 
         if($qty>$qtydetails){
             Resep::where('id',$idresep)->increment('total', $sub);
         }else{
-            Resep::where('id',$idresep)->decrement('total', $sub);
+            Resep::where('id',$idresep)->decrement('total', $subtot);
         }
 
         $upres = ResepDetails::where('id',$id)->update([
