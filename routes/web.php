@@ -30,10 +30,10 @@ Route::get('/', function () {
 });
 
 
-Route::group(['middleware' => 'auth'], function () {
+Route::group(['middleware' => 'auth', 'verified'], function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index']);
-
+    Route::resource('/riwayat', RiwayatController::class);
     Route::resource('/profile', ProfileController::class);
 
     Route::group(['middleware' => 'hakakses:admin,user'], function(){
@@ -47,6 +47,8 @@ Route::group(['middleware' => 'auth'], function () {
 
         // resepdetails
         Route::resource('/resepdetails', ResepDetailsController::class);
+        Route::post('/tambaheditresep', [ResepDetailsController::class, 'tambaheditresep'])->name('tambaheditresep');
+        Route::get('/reseppdf/{id}', [ResepDetailsController::class, 'exportresep'])->name('exportresep');
 
         // bahan
         Route::resource('/bahan', BahanController::class);
@@ -70,7 +72,6 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/gaji-pdf/{id}', [GajiController::class, 'exportPDF'])->name('gajiexport');
         Route::resource('/mastergaji', MasterGajiController::class);
         Route::resource('/tunjangangaji', TunjanganGajiController::class);
-        Route::resource('/riwayat', RiwayatController::class);
     });
 });
 

@@ -29,7 +29,7 @@ class BahanController extends Controller
     {
         $supp = Supplier::get();
 
-        $bah = Bahan::with('supplier')->get();
+        $bah = Bahan::with('supplier')->orderBy('nama_bahan', 'asc')->get();
 
         return view('bahan.index', compact('supp', 'bah'));
     }
@@ -147,7 +147,7 @@ class BahanController extends Controller
 
         Riwayat::create([
             'user_id' => Auth::user()->id,
-            'aktivitas' => ('Mengubah bahan'. $request->nama_bahan),
+            'aktivitas' => ('Mengubah bahan' .$request->nama_bahan),
         ]);
 
         if($bahan){
@@ -169,11 +169,12 @@ class BahanController extends Controller
      */
     public function destroy(Bahan $bahan)
     {
+
         $bahan->delete();
 
         Riwayat::create([
             'user_id' => Auth::user()->id,
-            'aktivitas' => ('Menghapus Bahan'.'-'.$bahan->nama_bahan),
+            'aktivitas' => ('Menghapus Bahan'.''.$bahan->nama_bahan),
         ]);
 
         Alert::toast('Data Berhasil Dihapus', 'success');

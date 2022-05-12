@@ -97,8 +97,10 @@
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                     <a class="dropdown-item" href="{{route('gaji.edit', $gaji->id)}}"><i class="fa fa-edit"></i> Edit</a>
-                                    <a class="dropdown-item" target="_blank" href="{{route('gaji.show', $gaji->id)}}"><i class="fa fa-eye"></i> Lihat</a>
-                                    <a class="dropdown-item" href="{{route('gajiexport', $gaji->id)}}"><i class="fa fa-download"></i> Download</a>
+                                    {{-- <a class="dropdown-item" target="_blank" href="{{route('gaji.show', $gaji->id)}}"><i class="fa fa-eye"></i> Lihat</a> --}}
+                                    <button class="dropdown-item" data-toggle="modal" data-target="#details-modal-{{ $gaji->id }}"><i class="fa fa-eye"></i> Lihat</button>
+                                    <a class="dropdown-item" href="{{ route('gaji.show', $gaji->id) }}" type="button" target="_blank" class="btn btn-primary"><i class="fa fa-print"></i> Print</a>
+                                    {{-- <a class="dropdown-item" href="{{route('gajiexport', $gaji->id)}}"><i class="fa fa-download"></i> Download</a> --}}
                                     <form action="{{route('gaji.destroy', $gaji->id)}}" method="POST">
                                         @csrf
                                         @method('DELETE')
@@ -118,4 +120,61 @@
             </div>
         </div>
     </div>
+    @foreach ($filter as $subitem)
+    <div id="details-modal-{{ $subitem->id }}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="details-modal-{{ $subitem->id }}" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Slip Gaji {{ $subitem->nama_karyawan }}</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-borderless table-responsive-sm"  border="0" cellpadding="3" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th scope="col" class="text-center">Masuk</th>
+                            <th scope="col" class="text-center">Lembur</th>
+                            <th class="text-right">Uang Lembur</th>
+                            <th class="text-right">BPJS</th>
+                            <th class="text-right">Bonus</th>
+                            <th class="text-right">Tunjangan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td align="center">{{ $subitem->masuk }}</td>
+                            <td align="center">{{ $subitem->lembur }}</td>
+                            <td align="right">@currency($subitem->uang_lembur)</td>
+                            <td align="right">@currency($subitem->bpjs)</td>
+                            <td align="right">@currency($subitem->bonus)</td>
+                            <td align="right">@currency($subitem->tunjangan)</td>
+                        </tr>
+                        <td colspan="5">
+                            <hr>
+                        </td>
+                        <tr>
+                            <td class="h6 text-uppercase font-weight-bold" align="right" colspan="5">Gaji Harian</td>
+                            <td align="right">@currency($subitem->gaji_harian)</td>
+                        </tr>
+                        <tr>
+                            <td class="h6 text-uppercase font-weight-bold" align="right" colspan="5">Potongan</td>
+                            <td align="right">@currency($subitem->potongan)</td>
+                        </tr>
+                        <tr>
+                            <td class="h6 text-uppercase font-weight-bold" align="right" colspan="5">Total Gaji</td>
+                            <td align="right">@currency($subitem->total_gaji)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <a href="{{ route('gaji.show', $subitem->id) }}" type="button" target="_blank" class="btn btn-primary"><i class="fa fa-print"></i> Print</a>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              </div>
+          </div>
+        </div>
+    </div>
+    @endforeach
 @endsection

@@ -1,3 +1,10 @@
+@media print {
+    .invoice-box {
+      max-width: unset;
+      box-shadow: none;
+      border: 0px;
+    }
+}
 .clearfix:after {
   content: "";
   display: table;
@@ -16,9 +23,8 @@ body {
   margin: 0 auto;
   color: #001028;
   background: #FFFFFF;
-  font-family: Arial, sans-serif;
+  font-family: sans-serif;
   font-size: 12px;
-  font-family: Arial;
 }
 
 header {
@@ -44,7 +50,6 @@ h1 {
   font-weight: normal;
   text-align: center;
   margin: 0 0 20px 0;
-  background: url(dimension.png);
 }
 
 #project {
@@ -79,11 +84,6 @@ table {
 
 table tr:nth-child(2n-1) td {
   background: #F5F5F5;
-}
-
-table th,
-table td {
-  text-align: center;
 }
 
 table th {

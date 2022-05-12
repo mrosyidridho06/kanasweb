@@ -31,7 +31,7 @@
                             <td>{{ $karyawan->alamat_karyawan }}</td>
                             <td>{{ $karyawan->jenis_kelamin }}</td>
                             <td>{{ $karyawan->hp_karyawan }}</td>
-                            <td>{{ $karyawan->agama }}</td>
+                            <td>{{ ucfirst($karyawan->agama) }}</td>
                             <td>{{ $karyawan->jabatan }}</td>
                             <td>{{ $karyawan->tanggal }}</td>
                             <td><a href="{{asset('images/karyawan/'. $karyawan->foto)}}" target="_blank"><img src="{{asset('images/karyawan/'.$karyawan->foto)}}" width="50px" height="50px" alt=""></td>

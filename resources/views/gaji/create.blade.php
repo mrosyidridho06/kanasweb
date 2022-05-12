@@ -37,10 +37,10 @@
                         <div class="form-group">
                             <label>Tahun</label>
                             <select name='tahun' id="tahun" class="form-control" onChange="document.getElementById('form_id').submit();">
-                                <option>-- Pilih Tahun --</option>
-                                    @foreach ($dataTahun as $tahun)
-                                        <option value="{{ $tahun }}">{{ $tahun }}</option>
-                                    @endforeach
+                                @foreach ($dataTahun as $tahun)
+                                    <option value="">-- Pilih Tahun --</option>
+                                    <option value="{{ $tahun }}">{{ $tahun }}</option>
+                                @endforeach
                             </select>
                             <script>document.getElementById('tahun').value = "<?php if (isset($_GET['tahun']) && $_GET['tahun']) echo $_GET['tahun'];?>";</script>
                         </div>
@@ -130,7 +130,12 @@
                             <div class="col-md-6">
                                 <div class="form-group focused">
                                     <label class="form-control-label" for="name">Bonus<span class="small text-danger">*</span></label>
-                                    <input type="number" name="bonus" class="form-control">
+                                    <input type="number" name="bonus" class="form-control @error('bonus') is-invalid @enderror" value="{{ old('bonus') }}">
+                                    @error('bonus')
+                                    <div class="alert alert-danger mt-2">
+                                        {{ $message }}
+                                    </div>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -142,7 +147,12 @@
                             <div class="col-md-6">
                                 <div class="form-group focused">
                                     <label class="form-control-label" for="satuan">Potongan<span class="small text-danger">*</span></label>
-                                    <input type="number" name="potongan" class="form-control" >
+                                    <input type="number" name="potongan" class="form-control @error('potongan') is-invalid @enderror" value="{{ old('potongan') }}" >
+                                    @error('potongan')
+                                    <div class="alert alert-danger mt-2">
+                                        {{ $message }}
+                                    </div>
+                                    @enderror
                                 </div>
                             </div>
                         </div>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Gaji;
 use App\Models\Karyawan;
 use App\Models\Kehadiran;
 use Illuminate\Http\Request;
@@ -79,6 +80,11 @@ class KehadiranController extends Controller
             'masuk' => $request->masuk,
             'izin' => $request->izin,
             'lembur' => $request->lembur,
+        ]);
+
+        Gaji::create([
+            'kehadiran_id' => $kehan->id,
+            
         ]);
 
         if($kehan){

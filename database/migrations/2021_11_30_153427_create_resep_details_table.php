@@ -15,7 +15,7 @@ class CreateResepDetailsTable extends Migration
     {
         Schema::create('resep_details', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('resep_id')->constrained('reseps')->onDelete('restrict')->onUpdate('cascade');
+            $table->foreignId('resep_id')->constrained('reseps')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('bahan_id')->constrained('bahans')->onDelete('restrict')->onUpdate('cascade');
             $table->integer('qty');
             $table->bigInteger('harga');

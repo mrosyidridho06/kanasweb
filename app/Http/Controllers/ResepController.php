@@ -171,7 +171,10 @@ class ResepController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Resep::where('id', $id)->delete();
+
+        Alert::toast('Data Berhasil Dihapus', 'success');
+        return redirect()->back();
     }
 
     public function cartSession(Request $request)
@@ -193,12 +196,13 @@ class ResepController extends Controller
         if (in_array($list_bahan, $data_cart)) {
             foreach ($cart_data as $keys => $values) {
                 if ($cart_data[$keys]["id"] == $bahan) {
-                    $cart_data[$keys]["qty"] = $request->input('qty');
-                    $item_data = json_encode($cart_data);
-                    $minutes = 60;
-                    Cookie::queue(Cookie::make('shopping_cart', $item_data, $minutes));
-                    // return response()->json(['status' => '"' . $cart_data[$keys]["nama_produk"] . '" Already Added to Cart', 'status2' => '2']);
+                    Alert::toast('Bahan Sudah ada ditambahkan', 'error');
                     return back();
+                    // $minutes = 60;
+                    // $cart_data[$keys]["qty"] = $request->input('qty');
+                    // $item_data = json_encode($cart_data);
+                    // return response()->json(['status' => '"' . $cart_data[$keys]["nama_bahan"] . '" Already Added to Cart', 'status2' => '2']);
+                    // Cookie::queue(Cookie::make('shopping_cart', $item_data, $minutes));
                 }
             }
         } else {
@@ -217,14 +221,12 @@ class ResepController extends Controller
                     'harga_satuan' => $harga_satuan,
                 );
                 $cart_data[] = $item_array;
-
                 $item_data = json_encode($cart_data);
                 $minutes = 60;
                 Cookie::queue(Cookie::make('shopping_cart', $item_data, $minutes));
                 // return response()->json(['status' => '"' . $nama_bahan . '" Added to Cart']);
+                Alert::toast('Bahan ditambahkan', 'success');
                 return back();
-            }else{
-                echo '<script>alert("Item Already Added")</script>';
             }
         }
     }
@@ -269,30 +271,6 @@ class ResepController extends Controller
                 }
             }
         }
-        // $bahan = $request->input('bahan');
-        // $qty = $request->input('qty');
-
-        // if (Cookie::get('shopping_cart')) {
-        //     $cookie_data = stripslashes(Cookie::get('shopping_cart'));
-        //     $cart_data = json_decode($cookie_data, true);
-
-        //     $data_cart = array_column($cart_data, 'id');
-        //     $list_bahan = $bahan;
-
-        //     if (in_array($list_bahan, $data_cart)) {
-        //         foreach ($cart_data as $keys => $values) {
-
-        //             if ($cart_data[$keys]["id"] == $bahan)
-        //                 {
-        //                     $cart_data[$keys]["qty"] =  $qty;
-        //                     $item_data = json_encode($cart_data);
-        //                     $minutes = 60;
-        //                     Cookie::queue(Cookie::make('shopping_cart', $item_data, $minutes));
-        //                     return response()->json(['status' => '"' . $cart_data[$keys]["nama_produk"] . '" qty Updated']);
-        //                 }
-        //         }
-        //     }
-        // }
     }
 
 

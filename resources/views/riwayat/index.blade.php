@@ -11,7 +11,7 @@
     <div class="col-md-12">
         <div class="card mt-4">
             <div class="card-body">
-                <table class="table table-borderd" id="myTable">
+                <table class="table" id="myTable">
                     <thead>
                         <tr>
                             <th>No.</th>
@@ -22,18 +22,33 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse ($riwayats as $item)
-                            <tr>
+                        @if ((auth()->user()->role == 'admin'))
+                        @forelse ($riwyatall as $item)
+                        <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->user->name }}</td>
                                 <td>{{ $item->aktivitas }}</td>
-                                <td>{{ $item->created_at->format('l, d F Y H:i') }}</td>
+                                <td>{{ $item->created_at->translatedFormat('l, d F Y H:i') }}</td>
                             </tr>
                         @empty
                             <tr>
                                 <td colspan="4" align="center">Data Kosong</td>
                             </tr>
                         @endforelse
+                        @else
+                        @forelse ($riwayats as $item)
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $item->user->name }}</td>
+                                <td>{{ $item->aktivitas }}</td>
+                                <td>{{ $item->created_at->translatedFormat('l, d F Y H:i') }}</td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="4" align="center">Data Kosong</td>
+                            </tr>
+                        @endforelse
+                        @endif
                     </tbody>
                 </table>
             </div>
@@ -44,7 +59,68 @@
 @push('scripts')
 <script>
     $(document).ready( function () {
-        $('#myTable').DataTable();
+        $('#myTable').DataTable({
+            dom: 'lBfrtip',
+            orderable: [
+                [3, "asc"]
+            ],
+            // buttons: ['copy', 'csv', 'excel', 'pdf', 'print', 'colvis'],
+            lengthMenu: [
+                [ 10, 25, 50, 100, 1000, -1 ],
+                [ '10', '25', '50', '100', '1000', 'All' ]
+            ],
+            columnDefs: [
+                {
+                    "searchable": false,
+                    "orderable": false,
+                    "targets": 3,
+                },
+            ],
+            buttons: [
+                {
+                    extend: 'csv',
+                    text: 'Export',
+                    exportOptions: {
+                        modifier: {
+                            page: 'all'
+                        },
+                        columns: [ 0, 1, 2, 3, 4, 5, 6 ]
+                    }
+                },
+                {
+                    extend: 'pdf',
+                    text: 'Pdf',
+                    exportOptions: {
+                        modifier: {
+                            page: 'all'
+                        },
+                        columns: [ 0, 1, 2, 3, 4, 5, 6 ]
+                    }
+                },
+                {
+                    extend: 'print',
+                    text: 'Print',
+                    exportOptions: {
+                        modifier: {
+                            page: 'all'
+                        },
+                        columns: [ 0, 1, 2, 3, 4, 5, 6 ]
+                    }
+                },
+
+            ],
+            language: {
+                "searchPlaceholder": "Cari Aktivitas",
+                "zeroRecords": "Tidak ditemukan data yang sesuai",
+                "emptyTable": "Tidak terdapat data di tabel"
+            }
+        });
     } );
+
+    $(document).ready(function() {
+        $('.suppliers').select2({
+            width: '100%', dropdownCssClass: "bigdrop"
+        });
+    });
 </script>
 @endpush

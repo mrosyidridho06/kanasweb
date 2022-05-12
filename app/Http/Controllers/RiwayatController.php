@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Riwayat;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class RiwayatController extends Controller
 {
@@ -14,9 +16,16 @@ class RiwayatController extends Controller
      */
     public function index()
     {
-        $riwayats = Riwayat::with('user')->get();
+        $user = Auth::user()->id;
 
-        return view('riwayat.index', compact('riwayats'));
+        $riwayats = Riwayat::with('user')
+                    ->where('user_id', '=', $user)
+                    ->get();
+
+        $riwyatall = Riwayat::with('user')->get();
+
+
+        return view('riwayat.index', compact('riwayats', 'riwyatall'));
     }
 
     /**

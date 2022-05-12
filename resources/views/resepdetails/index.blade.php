@@ -26,10 +26,9 @@
                                   <i class="fa fa-cog"></i>
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                    <a class="dropdown-item" href="{{route('resep.edit', $item->id)}}"><i class="fa fa-edit"></i> Edit</a>
-                                    {{-- <button type="button" data-toggle="modal" data-target="#add_data_Modal" class="dropdown-item"><i class="fa fa-eye"> Lihat</i></button> --}}
+                                    <a class="dropdown-item" href="{{route('resepdetails.edit', $item->id)}}"><i class="fa fa-edit"></i> Edit</a>
                                     <button class="dropdown-item" data-toggle="modal" data-target="#details-modal-{{ $item->id }}"><i class="fa fa-eye"></i> Lihat</button>
-                                    <a class="dropdown-item" href="{{route('gajiexport', $item->id)}}"><i class="fa fa-download"></i> Download</a>
+                                    {{-- <a class="dropdown-item" href="{{route('exportresep', $item->id)}}"><i class="fa fa-download"></i> Download</a> --}}
                                     <form action="{{route('resep.destroy', $item->id)}}" method="POST">
                                         @csrf
                                         @method('DELETE')
@@ -62,7 +61,7 @@
                             <th scope="col">Nama Bahan</th>
                             <th scope="col" class="text-center">Satuan</th>
                             <th scope="col" class="text-center">Quantity</th>
-                            <th class="text-right">Harga</th>
+                            <th class="text-right">Harga Satuan</th>
                             <th class="text-right">Sub Total</th>
                         </tr>
                     </thead>
@@ -72,8 +71,8 @@
                             <td>{{ $item->bahan->nama_bahan }}</td>
                             <td align="center">{{ $item->bahan->satuan_bahan }}</td>
                             <td align="center">{{ $item->qty }}</td>
-                            <td align="right">Rp{{ $item->bahan->harga_satuan }}</td>
-                            <td align="right">Rp{{ $item->subtotal }}</td>
+                            <td align="right">@currency($item->bahan->harga_satuan)</td>
+                            <td align="right">@currency($item->subtotal)</td>
                         </tr>
                         @endforeach
                         <td colspan="5">
@@ -81,21 +80,21 @@
                         </td>
                         <tr>
                             <td class="h6 text-uppercase font-weight-bold" align="right" colspan="4">Total</td>
-                            <td align="right">Rp{{ $subitem->total }}</td>
+                            <td align="right">@currency($subitem->total)</td>
                         </tr>
                         <tr>
                             <td class="h6 text-uppercase font-weight-bold" align="right" colspan="4">HPP</td>
-                            <td align="right">Rp{{ $subitem->hpp }}</td>
+                            <td align="right">@currency($subitem->hpp)</td>
                         </tr>
                         <tr>
                             <td class="h6 text-uppercase font-weight-bold" align="right" colspan="4">Harga Jual</td>
-                            <td align="right">Rp{{ $subitem->harga_jual }}</td>
+                            <td align="right">@currency($subitem->harga_jual)</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary">Print</button>
+                <a href="{{ route('resepdetails.show', $subitem->id) }}" type="button" target="_blank" class="btn btn-primary"><i class="fa fa-print"></i> Print</a>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
               </div>
           </div>

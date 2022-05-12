@@ -1,116 +1,160 @@
-@include('layouts.partials.head')
-{{--
-<body>
-    <div class="text-center">
-        <img src="{{ asset('kanas.png') }}" style="height: 60px;">
-    </div>
-    <h5 class="text-center">Kana's Kitchen</h5>
-    <hr>
-    <table class="table table-borderless table-responsive-sm" style="max-width: 80%;" align="center">
-        <tr>
-            <th class="text-center">Penggajian</th>
-        </tr>
-        <tr>
-            @foreach ($gajis as $item )
-
-            <td align="left">Kode: {{ $item->id }}</td>
-        </tr>
-        <tr>
-            <td align="left">Tanggal: {{ $item->created_at->format('d-m-Y') }}</td>
-        </tr>
-    </table>
-    <hr>
-    <table class="table table-borderless table-responsive-sm" style="max-width: 80%;" align="center" width="50%" border="0" cellpadding="3" cellspacing="0">
-        <thead>
-            <tr>
-                <th scope="col">Nama Pegawai</th>
-                <th scope="col" >Jumlah Masuk</th>
-                <th scope="col" >Lembur</th>
-                <th scope="col" class="text-right">Gaji Harian</th>
-                <th scope="col" class="text-right">BPJS</th>
-                <th scope="col" class="text-right">Bonus</th>
-                <th scope="col" class="text-right">Potongan</th>
-                <th scope="col" class="text-right">Total Gaji</th>
-            </tr>
-        </thead>
-            <tr>
-                <td >{{ $item->kehadiran->karyawan->nama_karyawan }}</td>
-                <td >{{ $item->kehadiran->masuk }}</td>
-                <td >{{ $item->kehadiran->lembur }}</td>
-                <td align="right">@currency($item->gaji_harian)</td>
-                <td align="right">@currency($item->bpjs)</td>
-                <td align="right">@currency($item->bonus)</td>
-                <td align="right">@currency($item->potongan)</td>
-                <td align="right">@currency($item->total_gaji)</td>
-                @endforeach
-            </tr>
-    </table>
-    <script type="text/javascript">
-        window.print()
-    </script>
-</body> --}}
-
 <!DOCTYPE html>
-<html lang="en">
+<html>
+	<head>
+		<meta charset="utf-8" />
+        @foreach ($gajis as $item)
 
-<head>
-    <meta charset="utf-8">
-    <link rel="stylesheet" href="{{ asset('css/styleinvoice.css') }}" media="all" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-</head>
+		<title>Slip Gaji {{ $item->kehadiran->karyawan->nama_karyawan }}</title>
+		<style>
+			.invoice-box {
+				max-width: 800px;
+				margin: auto;
+				padding: 30px;
+				/* border: 1px solid #eee;
+				box-shadow: 0 0 10px rgba(0, 0, 0, 0.15); */
+				font-size: 16px;
+				line-height: 24px;
+				font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+				color: #555;
+			}
 
-<body>
-    <button class="btn btn-sm" onclick="window.print()">Print</button>
-    <header class="clearfix">
-        <div id="logo">
-            <img src="{{ asset('kanas.png') }}">
-        </div>
-        @foreach ($gajis as $item )
-        <h1>INVOICE GAJI {{ $item->id }}</h1>
-        <div id="company" class="clearfix">
+			.invoice-box table {
+				width: 100%;
+				line-height: inherit;
+				text-align: left;
+			}
 
-        </div>
-        <div id="project">
-            <div>Kana's Kitchen</div>
-            <div>Wika<br /> Gunung Samarinda</div>
-            <div>0542-111111</div>
-            <div><a href="mailto:kanaskitchen@gmail.com">kanaskitchen@gmail.com</a></div>
-            <div>{{ $item->created_at->format('l, d F Y') }}</div>
-        </div>
-    </header>
-    <main>
-        <table>
-            <thead>
-                <tr>
-                    <th>Nama Karyawan</th>
-                    <th>Jumlah Masuk</th>
-                    <th>Lembur</th>
-                    <th class="">Gaji Harian</th>
-                    <th class="">BPJS</th>
-                    <th class="">Bonus</th>
+			.invoice-box table td {
+				padding: 5px;
+				vertical-align: top;
+			}
+
+			.invoice-box table tr td:nth-child(2) {
+				text-align: right;
+			}
+
+			.invoice-box table tr.top table td {
+				padding-bottom: 20px;
+			}
+
+			.invoice-box table tr.top table td.title {
+				font-size: 45px;
+				line-height: 45px;
+				color: #333;
+			}
+
+			.invoice-box table tr.information table td {
+				padding-bottom: 40px;
+			}
+
+			.invoice-box table tr.heading td {
+				background: #eee;
+				border-bottom: 1px solid #ddd;
+				font-weight: bold;
+			}
+
+			.invoice-box table tr.details td {
+				padding-bottom: 20px;
+			}
+
+			.invoice-box table tr.item td {
+				border-bottom: 1px solid #eee;
+			}
+
+			.invoice-box table tr.item.last td {
+				border-bottom: none;
+			}
+
+			.invoice-box table tr.total td:nth-child(3) {
+				/* border-top: 2px solid #eee; */
+				font-weight: bold;
+			}
+
+			@media only screen and (max-width: 600px) {
+				.invoice-box table tr.top table td {
+					width: 100%;
+					display: block;
+					text-align: center;
+				}
+
+				.invoice-box table tr.information table td {
+					width: 100%;
+					display: block;
+					text-align: center;
+				}
+			}
+
+			/** RTL **/
+			.invoice-box.rtl {
+				direction: rtl;
+				font-family: Tahoma, 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+			}
+
+			.invoice-box.rtl table {
+				text-align: right;
+			}
+
+			.invoice-box.rtl table tr td:nth-child(2) {
+				text-align: left;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="invoice-box">
+			<table cellpadding="0" cellspacing="0">
+				<tr class="top">
+					<td colspan="6">
+						<table>
+							<tr>
+								<td style="text-align: center">
+									<img src="{{ asset('kanas.png') }}" style="width: 100%; max-width: 100px" />
+								</td>
+							</tr>
+                            <tr>
+								<td style="text-align: center">
+									Slip Gaji {{ $item->kehadiran->karyawan->nama_karyawan }}
+								</td>
+                            </tr>
+						</table>
+					</td>
+				</tr>
+				<tr class="heading">
+					<td style="text-align: center">Masuk</td>
+					<td style="text-align: center">Lembur</td>
+					<td style="text-align: right">Uang Lembur</td>
+					<td style="text-align: right">BPJS</td>
+					<td style="text-align: right">Bonus</td>
+					<td style="text-align: right">Tunjangan</td>
+				</tr>
+                <tr class="item">
+                    <td style="text-align: center">{{ $item->kehadiran->masuk }}</td>
+                    <td style="text-align: center">{{ $item->kehadiran->lembur }}</td>
+                    <td style="text-align: right">@currency($item->uang_lembur)</td>
+                    <td style="text-align: right">@currency($item->kehadiran->karyawan->bpjs)</td>
+                    <td style="text-align: right">@currency($item->bonus)</td>
+                    <td style="text-align: right">@currency($item->kehadiran->karyawan->tunjangan)</td>
                 </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td >{{ $item->kehadiran->karyawan->nama_karyawan }}</td>
-                    <td >{{ $item->kehadiran->masuk }}</td>
-                    <td >{{ $item->kehadiran->lembur }}</td>
-                    <td>@currency($item->gaji_harian)</td>
-                    <td>@currency($item->bpjs)</td>
-                    <td>@currency($item->bonus)</td>
-                </tr>
-                <tr>
-                    <td colspan="5">Potongan</td>
-                    <td>@currency($item->potongan)</td>
-                </tr>
-                <tr>
-                    <td colspan="5">Total Gaji</td>
-                    <td>@currency($item->total_gaji)</td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </main>
-</body>
+				<tr class="total">
+					<td></td>
+                    <td colspan="4" style="font-weight: bold">Gaji Harian</td>
+					<td style="text-align: right">@currency($item->gaji_harian)</td>
+				</tr>
+				<tr class="total">
+					<td ></td>
+                    <td colspan="4" style="font-weight: bold">Potongan</td>
+					<td style="text-align: right">@currency($item->potongan)</td>
+				</tr>
+				<tr class="total">
+                    <td></td>
+					<td colspan="4" style="font-weight: bold">TOTAL Gaji</td>
+					<td style="text-align: right">@currency($item->total_gaji)</td>
+				</tr>
+			</table>
+		</div>
+	</body>
+    @endforeach
 </html>
+<script>
+    window.addEventListener("load", window.print());
+</script>

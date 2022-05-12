@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use PDF;
 use App\Models\Bahan;
 use App\Models\Resep;
 use App\Models\ResepDetails;
 use Illuminate\Http\Request;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class ResepDetailsController extends Controller
 {
@@ -49,14 +51,11 @@ class ResepDetailsController extends Controller
      * @param  \App\Models\ResepDetails  $resepDetails
      * @return \Illuminate\Http\Response
      */
-    public function show(ResepDetails $resepDetails)
+    public function show($id)
     {
-        $daftar = Resep::with('resepdetail')->where('id', $resepDetails)->get();
-        $bahan = ResepDetails::with('bahan')->where('bahan_id', $resepDetails)->get();
+        $daftar = Resep::with( 'resepdetail', 'resepdetail.bahan', 'resepdetail.bahan.supplier')->where('id', $id)->get();
 
-        dd($daftar);
-
-        return view('resepdetails.show', compact('daftar', 'bahan'));
+        return view('resepdetails.show', compact('daftar'));
     }
 
     /**
@@ -65,9 +64,13 @@ class ResepDetailsController extends Controller
      * @param  \App\Models\ResepDetails  $resepDetails
      * @return \Illuminate\Http\Response
      */
-    public function edit(ResepDetails $resepDetails)
+    public function edit($id)
     {
-        //
+        $daftar = Resep::with( 'resepdetail', 'resepdetail.bahan', 'resepdetail.bahan.supplier')->where('id', $id)->get();
+
+        $bahan = Bahan::with('supplier')->get();
+
+        return view('resepdetails.edit', compact('daftar', 'bahan'));
     }
 
     /**
@@ -79,24 +82,44 @@ class ResepDetailsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $itemdetail = ResepDetails::findOrFail($id);
-        $param = $request->param;
+        $qty = $request->qtyres;
+        $hrgsatuan = $request->hargasatuan;
+        $idresep = $request->input('idresep');
 
-        if ($param == 'tambah') {
-            // update detail cart
-            $qty = 1;
-            $itemdetail->updatedetail($itemdetail, $qty, $itemdetail->harga);
-            // update total cart
-            $itemdetail->cart->updatetotal($itemdetail->cart, $itemdetail->harga);
-            return back()->with('success', 'Item berhasil diupdate');
+
+        // dd($hrgsatuan);
+        $sub = $qty*$hrgsatuan;
+
+        // dd($sub);
+        $produk = ResepDetails::where('id',$id)->get();
+        foreach($produk as $item){
+            $qtydetails = $item->qty;
+            // dd($qtydetails);
         }
-        if ($param == 'kurang') {
-            // update detail cart
-            $qty = 1;
-            $itemdetail->updatedetail($itemdetail, '-'.$qty, $itemdetail->harga);
-            // update total cart
-            $itemdetail->cart->updatetotal($itemdetail->cart, '-'.($itemdetail->harga));
-            return back()->with('success', 'Item berhasil diupdate');
+        // dd($qtydetails);
+
+        if($qty>$qtydetails){
+            Resep::where('id',$idresep)->increment('total', $sub);
+        }else{
+            Resep::where('id',$idresep)->decrement('total', $sub);
+        }
+
+        $upres = ResepDetails::where('id',$id)->update([
+            'qty' => $qty,
+            'subtotal' => $sub
+        ]);
+
+
+
+
+        if($upres){
+            //redirect dengan pesan sukses
+            Alert::toast('Data Berhasil Ditambahkan', 'success');
+            return redirect()->back();
+        }else{
+            //redirect dengan pesan error
+            Alert::error('Gagal', 'Data Gagal Ditambahkan');
+            return redirect()->back();
         }
     }
 
@@ -106,15 +129,85 @@ class ResepDetailsController extends Controller
      * @param  \App\Models\ResepDetails  $resepDetails
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ResepDetails $resepDetails, $id)
+    public function destroy(Request $request, $id)
     {
-        $itemdetail = ResepDetails::findOrFail($id);
-        // update total cart dulu
-        $itemdetail->cart->updatetotal($itemdetail->cart, '-'.$itemdetail->subtotal);
-        if ($itemdetail->delete()) {
-            return back()->with('success', 'Item berhasil dihapus');
-        } else {
-            return back()->with('error', 'Item gagal dihapus');
+        $idresep = $request->input('idresep');
+        $res = ResepDetails::where('id', $id)->get();
+        foreach($res as $item){
+            $subtotal = $item->subtotal;
+        }
+        Resep::where('id',$idresep)->decrement('total', $subtotal);
+
+        ResepDetails::where('id', $id)->delete();
+
+        Alert::toast('Data Berhasil Dihapus', 'success');
+        return redirect()->back();
+    }
+
+    public function exportresep($id)
+    {
+        $daftar = Resep::with( 'resepdetail', 'resepdetail.bahan',)->where('id', $id)->get();
+
+        // $gajis = Gaji::with('kehadiran')->findOrFail($gaji);
+
+        // $path = public_path('kanas.png');
+        // $type = pathinfo($path, PATHINFO_EXTENSION);
+        // $data = file_get_contents($path);
+        // $pic = 'data:image/' . $type . ';base64,' . base64_encode($data);
+
+        $pdf = PDF::setOptions([
+            'defaultFont' => 'dejavu serif',
+            ])
+            ->setPaper('a4', 'portrait')
+            ->loadView('resepdetails.down', compact('daftar'));
+        $filename = 'tes' ;
+        return $pdf->stream($filename.'.pdf');
+        // $pdf = PDF::loadView('gaji.gajipdf', compact('gajis'));
+        // // $pdf->loadView('gaji.gajipdf', compact('gajis'));
+        // return $pdf->download('gaji.pdf');
+    }
+
+    public function updatedetails($id)
+    {
+    }
+
+    public function tambaheditresep(Request $request)
+    {
+        // $daftar = Resep::with( 'resepdetail', 'resepdetail.bahan', 'resepdetail.bahan.supplier')->where('id', $id)->get();
+
+        $bahan = $request->input('bahan');
+        $qty = $request->input('qty');
+        $idresep = $request->input('idresep');
+
+        // $this->validate($request, [
+        //     'bahan' => 'required',
+        //     'qty' => 'required',
+        //     'idresep' => 'required'
+        // ]);
+
+        $produk = Bahan::find($bahan);
+        $harga_satuan = $produk->harga_satuan;
+
+        $harga = $qty*$harga_satuan;
+
+        $resep = ResepDetails::create([
+            'bahan_id' => $bahan,
+            'qty' => $qty,
+            'resep_id' => $idresep,
+            'harga' => $harga_satuan,
+            'subtotal' => $harga,
+        ]);
+
+        Resep::where('id',$idresep)->increment('total', $harga);
+
+        if($resep){
+            //redirect dengan pesan sukses
+            Alert::toast('Data Berhasil Ditambahkan', 'success');
+            return redirect()->back();
+        }else{
+            //redirect dengan pesan error
+            Alert::error('Gagal', 'Data Gagal Ditambahkan');
+            return redirect()->back();
         }
     }
 }

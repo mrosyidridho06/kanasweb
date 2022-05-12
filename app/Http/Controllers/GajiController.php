@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Gaji;
 use PDF;
+use App\Models\Gaji;
+use App\Models\Riwayat;
 use App\Models\Kehadiran;
 use App\Models\MasterGaji;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class GajiController extends Controller
@@ -17,10 +19,27 @@ class GajiController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(Request $request, Gaji $gaji)
     {
         $month = $request->get('bulan');
         $year = $request->get('tahun');
+
+        // $gaji = Gaji::with('kehadiran', 'kehadiran.karyawan')->get();
+        // dd($gaji);
+
+        // $gaji = $gaji->newQuery();
+
+        // if ($request->has('bulan') && $request->has('tahun')) {
+        //     $gaji = Gaji::with('kehadiran', 'kehadiran.karyawan')
+        //         ->whereMonth('to_date', '=', $month)
+        //         ->whereYear('to_date', '=', $year)
+        //         ->get();
+        //     // dd($gaji);
+        //     }
+        // $filter = $gaji->get();
+
+        // dd($filter);
+
 
         $filter = DB::table('gajis')
                 ->join('kehadirans', 'gajis.kehadiran_id', '=', 'kehadirans.id')
@@ -80,7 +99,7 @@ class GajiController extends Controller
         // dd($request);
 
         $request->validate([
-            'id_kehadiran' => 'required|numeric',
+            'id_kehadiran' => 'required|numeric|unique:kehadirans,id',
             'masuk' => 'required|numeric',
             'lembur' => 'required|numeric',
             'uang_lembur' => 'required|numeric',
@@ -108,6 +127,11 @@ class GajiController extends Controller
             'total_gaji' => $total_gaji,
         ]);
 
+        Riwayat::create([
+            'user_id' => Auth::user()->id,
+            'aktivitas' => ('Menambah data gaji'.''.$gaji->kehadiran_id),
+        ]);
+
         // dd($bah);
 
         // Bahan::create($bah);
@@ -130,7 +154,7 @@ class GajiController extends Controller
      */
     public function show($id)
     {
-        $gajis = Gaji::with('kehadiran')->where('id', $id)->get();
+        $gajis = Gaji::with('kehadiran', 'kehadiran.karyawan')->where('id', $id)->get();
 
         return view('gaji.show', compact('gajis'));
     }
