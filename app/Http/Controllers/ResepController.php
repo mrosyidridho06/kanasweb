@@ -158,9 +158,18 @@ class ResepController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Resep $resep)
     {
-        //
+        $resep->update([
+            'nama_resep' => $request->namaresep,
+            'jumlah_produksi' => $request->jumlah_produksi,
+            'total' => $request->total,
+            'hpp' => $request->hpp,
+            'harga_jual' => $request->harga_jual
+        ]);
+
+        Alert::toast('Data Berhasil Diubah', 'success');
+        return redirect('resepdetails');
     }
 
     /**

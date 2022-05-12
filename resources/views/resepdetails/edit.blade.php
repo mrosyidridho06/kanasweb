@@ -101,7 +101,6 @@
                                 </table>
                                     <div class="text-right">
                                     <h5>Total @currency($item->total)</h5>
-                                    {{-- <input type="hidden" name="total" id="totalhp" value="<?= $total ?>"> --}}
                                 </div>
                             </div>
                     </div>
@@ -110,11 +109,13 @@
             </div>
             <div class="col-12 col-md-4 pt-3">
                 <form method="post" action="{{ route('resep.update', $item->id) }}">
+                    @csrf
+                    @method('PUT')
                 <div class="card shadow hargacard">
+                    <input type="hidden" name="total" id="totalhp" value="{{ $item->total }}">
                     <div class="card-header font-weight-bold text-primary">Input Harga</div>
                     <div class="card-body">
                         @foreach ($daftar as $resep)
-
                         <div class="input-group mb-2">
                             <div class="input-group-prepend">
                                     <span class="input-group-text" id="basic-addon1">Nama Resep</span>
@@ -175,7 +176,7 @@
         $(document).ready(function() {
             $('.bahans').select2();
         });
-        
+
         function sum() {
             var produksi = document.getElementById('produksi').value;
             var total = document.getElementById('totalhp').value;

@@ -144,32 +144,28 @@ class ResepDetailsController extends Controller
         return redirect()->back();
     }
 
-    public function exportresep($id)
-    {
-        $daftar = Resep::with( 'resepdetail', 'resepdetail.bahan',)->where('id', $id)->get();
+    // public function exportresep($id)
+    // {
+    //     $daftar = Resep::with( 'resepdetail', 'resepdetail.bahan',)->where('id', $id)->get();
 
-        // $gajis = Gaji::with('kehadiran')->findOrFail($gaji);
+    //     // $gajis = Gaji::with('kehadiran')->findOrFail($gaji);
 
-        // $path = public_path('kanas.png');
-        // $type = pathinfo($path, PATHINFO_EXTENSION);
-        // $data = file_get_contents($path);
-        // $pic = 'data:image/' . $type . ';base64,' . base64_encode($data);
+    //     // $path = public_path('kanas.png');
+    //     // $type = pathinfo($path, PATHINFO_EXTENSION);
+    //     // $data = file_get_contents($path);
+    //     // $pic = 'data:image/' . $type . ';base64,' . base64_encode($data);
 
-        $pdf = PDF::setOptions([
-            'defaultFont' => 'dejavu serif',
-            ])
-            ->setPaper('a4', 'portrait')
-            ->loadView('resepdetails.down', compact('daftar'));
-        $filename = 'tes' ;
-        return $pdf->stream($filename.'.pdf');
-        // $pdf = PDF::loadView('gaji.gajipdf', compact('gajis'));
-        // // $pdf->loadView('gaji.gajipdf', compact('gajis'));
-        // return $pdf->download('gaji.pdf');
-    }
-
-    public function updatedetails($id)
-    {
-    }
+    //     $pdf = PDF::setOptions([
+    //         'defaultFont' => 'dejavu serif',
+    //         ])
+    //         ->setPaper('a4', 'portrait')
+    //         ->loadView('resepdetails.down', compact('daftar'));
+    //     $filename = 'tes' ;
+    //     return $pdf->stream($filename.'.pdf');
+    //     // $pdf = PDF::loadView('gaji.gajipdf', compact('gajis'));
+    //     // // $pdf->loadView('gaji.gajipdf', compact('gajis'));
+    //     // return $pdf->download('gaji.pdf');
+    // }
 
     public function tambaheditresep(Request $request)
     {
