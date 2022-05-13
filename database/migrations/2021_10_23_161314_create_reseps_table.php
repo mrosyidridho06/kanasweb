@@ -17,9 +17,9 @@ class CreateResepsTable extends Migration
             $table->id();
             $table->string('nama_resep');
             $table->integer('jumlah_produksi');
-            $table->decimal('total', 10,0);
-            $table->decimal('hpp', 10,0);
-            $table->decimal('harga_jual', 10,0);
+            $table->decimal('total', 10,1);
+            $table->decimal('hpp', 10,1);
+            $table->decimal('harga_jual', 10,1);
             $table->timestamps();
         });
     }

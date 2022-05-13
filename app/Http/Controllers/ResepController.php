@@ -49,6 +49,7 @@ class ResepController extends Controller
         $resep->jumlah_produksi = $request->input('jumlah_produksi');
         $resep->total = $request->input('total');
         $resep->hpp = $request->input('hpp');
+        $resep->jual = $request->input('jual');
         $resep->harga_jual = $request->input('harga_jual');
         $resep->save();
 
@@ -160,13 +161,19 @@ class ResepController extends Controller
      */
     public function update(Request $request, Resep $resep)
     {
-        $resep->update([
-            'nama_resep' => $request->namaresep,
-            'jumlah_produksi' => $request->jumlah_produksi,
-            'total' => $request->total,
-            'hpp' => $request->hpp,
-            'harga_jual' => $request->harga_jual
+        $this->validate($request, [
+            'nama_resep' => 'required',
+            'jumlah_produksi' => 'required',
+            'total' => 'required',
+            'hpp' => 'required',
+            'jual' => 'required',
         ]);
+
+        $resedit = $request->all();
+
+        // dd($resedit);
+
+        $resep->update($resedit);
 
         Alert::toast('Data Berhasil Diubah', 'success');
         return redirect('resepdetails');

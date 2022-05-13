@@ -88,7 +88,6 @@ class ResepDetailsController extends Controller
 
 
         // dd($hrgsatuan);
-        $sub = $qty*$hrgsatuan;
 
         // dd($sub);
         $produk = ResepDetails::where('id',$id)->get();
@@ -97,7 +96,13 @@ class ResepDetailsController extends Controller
             // dd($qtydetails);
         }
 
+        $tambah = $qty-$qtydetails;
+        $sub = $tambah*$hrgsatuan;
+
+        $subt = $qty*$hrgsatuan;
+
         $kurangin = $qtydetails-$qty;
+        // dd($kurangin);
         $subtot = $kurangin*$hrgsatuan;
 
         if($qty>$qtydetails){
@@ -108,11 +113,8 @@ class ResepDetailsController extends Controller
 
         $upres = ResepDetails::where('id',$id)->update([
             'qty' => $qty,
-            'subtotal' => $sub
+            'subtotal' => $subt
         ]);
-
-
-
 
         if($upres){
             //redirect dengan pesan sukses
@@ -133,12 +135,15 @@ class ResepDetailsController extends Controller
      */
     public function destroy(Request $request, $id)
     {
+
         $idresep = $request->input('idresep');
+
         $res = ResepDetails::where('id', $id)->get();
         foreach($res as $item){
-            $subtotal = $item->subtotal;
+            $sub = $item->subtotal;
+            // dd($sub);
         }
-        Resep::where('id',$idresep)->decrement('total', $subtotal);
+        Resep::where($idresep)->decrement('total', $sub);
 
         ResepDetails::where('id', $id)->delete();
 
@@ -173,15 +178,16 @@ class ResepDetailsController extends Controller
     {
         // $daftar = Resep::with( 'resepdetail', 'resepdetail.bahan', 'resepdetail.bahan.supplier')->where('id', $id)->get();
 
+        $this->validate($request, [
+            'bahan' => 'required|unique:resep_details,resep_id,bahan_id,id',
+            'qty' => 'required',
+            'idresep' => 'required'
+        ]);
+
         $bahan = $request->input('bahan');
         $qty = $request->input('qty');
         $idresep = $request->input('idresep');
 
-        // $this->validate($request, [
-        //     'bahan' => 'required',
-        //     'qty' => 'required',
-        //     'idresep' => 'required'
-        // ]);
 
         $produk = Bahan::find($bahan);
         $harga_satuan = $produk->harga_satuan;

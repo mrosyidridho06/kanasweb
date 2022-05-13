@@ -56,8 +56,8 @@
                                             <th>Quantity</th>
                                             <th align="right">Harga</th>
                                             <th>Sub Total</th>
-                                            <th class="text-center">Hapus</th>
                                             <th class="text-center">Aksi</th>
+                                            <th class="text-center">Hapus</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -112,7 +112,7 @@
                     @csrf
                     @method('PUT')
                 <div class="card shadow hargacard">
-                    <input type="hidden" name="total" id="totalhp" value="{{ $item->total }}">
+                    <input type="number" name="total" id="totalhp" value="{{ $item->total }}">
                     <div class="card-header font-weight-bold text-primary">Input Harga</div>
                     <div class="card-body">
                         @foreach ($daftar as $resep)
@@ -120,7 +120,7 @@
                             <div class="input-group-prepend">
                                     <span class="input-group-text" id="basic-addon1">Nama Resep</span>
                                 </div>
-                                <input type="text" name="namaresep" placeholder="Nama Resep" class="form-control"
+                                <input type="text" name="nama_resep" placeholder="Nama Resep" class="form-control"
                                     required value="{{ $resep->nama_resep }}">
                                 </div>
                                 <div class="input-group mb-2">
@@ -135,7 +135,7 @@
                                     <span class="input-group-text" id="basic-addon1">Jual</span>
                                 </div>
                                 <input type="number" name="jual" placeholder="Jual" class="form-control" id="jual"
-                                    onkeyup="hargajual();" required value="{{ $resep->harga_jual }}">
+                                    onkeyup="hargajual();" required value="{{ $resep->jual }}">
                             </div>
                             <div class="input-group mb-2">
                                 <div class="input-group-prepend">
