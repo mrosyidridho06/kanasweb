@@ -2,8 +2,13 @@
 @section('title', 'Edit Resep')
 @section('content')
 <meta name="csrf-token" content="{{ csrf_token() }}">
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Edit Resep</h1>
+    <div align="right" class="pt-1">
+        <a href="{{route('resepdetails.index')}}" class="btn btn-warning btn-xs"><i class="fa fa-arrow-left"></i> Kembali</a>
+    </div>
+</div>
     <div class="container col-md-12">
-        <h3 class="mb-2 text-gray-800">Edit Resep</h3>
         <div class="row">
             <div class="col-md-12">
                 <div class="card card-primary">
@@ -112,7 +117,7 @@
                     @csrf
                     @method('PUT')
                 <div class="card shadow hargacard">
-                    <input type="number" name="total" id="totalhp" value="{{ $item->total }}">
+                    <input type="hidden" name="total" id="totalhp" value="{{ $item->total }}">
                     <div class="card-header font-weight-bold text-primary">Input Harga</div>
                     <div class="card-body">
                         @foreach ($daftar as $resep)

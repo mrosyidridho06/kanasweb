@@ -46,7 +46,7 @@ class GajiController extends Controller
                 ->join('karyawans', 'kehadirans.karyawan_id', '=', 'karyawans.id')
                 ->whereMonth('to_date', '=', $month)
                 ->whereYear('to_date', '=', $year)
-                ->select('gajis.*','kehadirans.from_date', 'kehadirans.masuk', 'kehadirans.lembur', 'karyawans.nama_karyawan', 'karyawans.bpjs', 'karyawans.tunjangan',  'karyawans.jabatan')
+                ->select('gajis.*','kehadirans.from_date', 'kehadirans.masuk', 'kehadirans.lembur', 'karyawans.nama_karyawan', 'karyawans.jabatan')
                 ->get();
 
         $dataTahun = DB::table('kehadirans')->selectRaw('substr(to_date,1,4) as to_date')->pluck('to_date')->unique();
@@ -237,13 +237,13 @@ class GajiController extends Controller
         // $data = file_get_contents($path);
         // $pic = 'data:image/' . $type . ';base64,' . base64_encode($data);
 
-        $pdf = PDF::setOptions([
-            'defaultFont' => 'dejavu serif',
-            ])
-            ->setPaper('a4', 'portrait')
-            ->loadView('gaji.gajipdf', compact('gajis'));
-        $filename = 'tes' ;
-        return $pdf->stream($filename.'.pdf');
+        // $pdf = PDF::setOptions([
+        //     'defaultFont' => 'dejavu serif',
+        //     ])
+        //     ->setPaper('a4', 'portrait')
+        //     ->loadView('gaji.gajipdf', compact('gajis'));
+        // $filename = 'tes' ;
+        // return $pdf->stream($filename.'.pdf');
         // $pdf = PDF::loadView('gaji.gajipdf', compact('gajis'));
         // // $pdf->loadView('gaji.gajipdf', compact('gajis'));
         // return $pdf->download('gaji.pdf');

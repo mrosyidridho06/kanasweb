@@ -97,7 +97,6 @@
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                     <a class="dropdown-item" href="{{route('gaji.edit', $gaji->id)}}"><i class="fa fa-edit"></i> Edit</a>
-                                    {{-- <a class="dropdown-item" target="_blank" href="{{route('gaji.show', $gaji->id)}}"><i class="fa fa-eye"></i> Lihat</a> --}}
                                     <button class="dropdown-item" data-toggle="modal" data-target="#details-modal-{{ $gaji->id }}"><i class="fa fa-eye"></i> Lihat</button>
                                     <a class="dropdown-item" href="{{ route('gaji.show', $gaji->id) }}" type="button" target="_blank" class="btn btn-primary"><i class="fa fa-print"></i> Print</a>
                                     {{-- <a class="dropdown-item" href="{{route('gajiexport', $gaji->id)}}"><i class="fa fa-download"></i> Download</a> --}}

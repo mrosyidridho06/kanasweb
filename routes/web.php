@@ -30,7 +30,7 @@ Route::get('/', function () {
 });
 
 
-Route::group(['middleware' => 'auth', 'verified'], function () {
+Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index']);
     Route::resource('/riwayat', RiwayatController::class);

@@ -7,6 +7,7 @@ use App\Models\Karyawan;
 use App\Models\Kehadiran;
 use Illuminate\Http\Request;
 use App\Exports\KehadiranExport;
+use App\Models\MasterGaji;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -66,8 +67,8 @@ class KehadiranController extends Controller
         // dd($request);
         $this->validate($request, [
             'nama_karyawan' => 'required',
-            'dari_tanggal' => 'required',
-            'ke_tanggal' => 'required',
+            'dari_tanggal' => 'required|date',
+            'ke_tanggal' => 'required|date|after:dari_tanggal',
             'masuk' => 'required',
             'izin' => 'required',
             'lembur' => 'required',
@@ -82,9 +83,32 @@ class KehadiranController extends Controller
             'lembur' => $request->lembur,
         ]);
 
+        $kar = Karyawan::where('id', $kehan->karyawan_id)->get();
+        foreach($kar as $itemkar){
+            $bpjs = $itemkar->bpjs;
+            $tun = $itemkar->tunjangan;
+        }
+
+        // dd($tun);
+
+        $mgaji = MasterGaji::get();
+        foreach($mgaji as $gj){
+            $uangh = $gj->harian;
+            $uangl = $gj->lembur;
+        }
+
+        $uanghari = $kehan->masuk*$uangh;
+        // dd($uanghari);
+        $uanglembur = $kehan->lembur*$uangl;
+        $totalgaji = $uanghari+$uanglembur+$bpjs+$tun;
+
         Gaji::create([
             'kehadiran_id' => $kehan->id,
-            
+            'gaji_harian' => $uanghari,
+            'uang_lembur' => $uanglembur,
+            'bpjs' => $bpjs,
+            'tunjangan' => $tun,
+            'total_gaji' => $totalgaji
         ]);
 
         if($kehan){

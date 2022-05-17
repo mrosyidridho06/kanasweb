@@ -48,8 +48,6 @@
                     <label>Uang Lembur</label>
                         @foreach ($mgaji as $masgaji )
                         <select class="form-control @error('uang_lembur') is-invalid @enderror" height="100%" name="uang_lembur" value="{{ old('uang_lembur') }}" name="uang_lembur">
-                            <option value="" selected disabled>Pilih Uang Lembur</option>
-
                                 @if (old('uang_lembur') == $masgaji->lembur)
                                     <option value="{{ $masgaji->lembur }}" selected> {{ $masgaji->lembur }} </option>
                                 @else
@@ -60,8 +58,6 @@
                 <div class="col-md-6">
                     <label>Uang Harian</label>
                     <select class="form-control @error('uang_harian') is-invalid @enderror" height="100%" name="uang_harian" value="{{ old('uang_harian') }}" name="uang_harian">
-                        <option value="" selected disabled>Pilih Uang Harian</option>
-
                             @if (old('uang_harian') == $masgaji->harian)
                                 <option value="{{ $masgaji->harian }}" selected> {{ $masgaji->harian }} </option>
                             @else

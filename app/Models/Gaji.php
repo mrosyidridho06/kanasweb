@@ -11,7 +11,7 @@ class Gaji extends Model
 
     protected $table = "gajis";
 
-    protected $fillable = ['kehadiran_id', 'uang_lembur', 'bonus', 'bpjs', 'potongan', 'gaji_harian', 'total_gaji'];
+    protected $fillable = ['kehadiran_id', 'uang_lembur', 'bonus', 'bpjs', 'tunjangan', 'potongan', 'gaji_harian', 'total_gaji'];
 
     public function kehadiran()
     {

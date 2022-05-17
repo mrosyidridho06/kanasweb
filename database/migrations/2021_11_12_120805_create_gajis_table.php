@@ -16,9 +16,10 @@ class CreateGajisTable extends Migration
         Schema::create('gajis', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('uang_lembur');
-            $table->bigInteger('bonus');
             $table->bigInteger('bpjs');
-            $table->bigInteger('potongan');
+            $table->bigInteger('tunjangan');
+            $table->bigInteger('bonus')->nullable();
+            $table->bigInteger('potongan')->nullable();
             $table->bigInteger('gaji_harian');
             $table->bigInteger('total_gaji');
             $table->timestamps();
