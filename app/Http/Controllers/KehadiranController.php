@@ -228,22 +228,19 @@ class KehadiranController extends Controller
 
         $datakar = Karyawan::get();
 
-        // $nama = '';
         foreach($datakar as $item){
             $nama[] = $item->nama_karyawan;
         }
 
         $nam = array_values($nama);
-        // $string = implode(', ', $nam);
 
-        // foreach($string as $key => $data){
-        //     $na = $data;
-        // }
-        // dd($nam);
 
         $absen = DataAbsen::whereIn('nama', $nam)
                             ->whereMonth('tanggal', '=', $bulan)
                             ->whereYear('tanggal', '=', $tahun)
+                            ->where('absen', 0)
+                            ->select('nama', \DB::raw('count(*) as count'))
+                            ->groupBy('nama')
                             ->get();
 
         dd($absen);
