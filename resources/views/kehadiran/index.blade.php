@@ -6,10 +6,95 @@
         <div align="right" class="pt-1">
             <a href="" class="btn btn-success btn-xs"><i class="fa fa-sync"></i></a>
             <button type="button" name="age" id="age" data-toggle="modal" data-target="#add_data_Modal" class="btn btn-primary"><i class="fa fa-plus"> Tambah Kehadiran</i></button>
+            <button class="btn btn-success" name="generate" id="generatebut" data-toggle="modal" data-target="#generate" type="submit">Generate</button>
+            <div id="generate" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Generate Data Kehadiran</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                            <div class="modal-body">
+                                <form action="{{ route('kehadirangenerate') }}" method="POST">
+                                    @csrf
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>Bulan</label>
+                                                    <select name="bulangen" class="form-control" id="bulan">
+                                                        <option value="" selected disabled>Pilih Bulan</option>
+                                                        <option value="01">Januari</option>
+                                                        <option value="02">Februari</option>
+                                                        <option value="03">Maret</option>
+                                                        <option value="04">April</option>
+                                                        <option value="05">Mei</option>
+                                                        <option value="06">Juni</option>
+                                                        <option value="07">Juli</option>
+                                                        <option value="08">Agustus</option>
+                                                        <option value="09">September</option>
+                                                        <option value="10">Oktober</option>
+                                                        <option value="11">November</option>
+                                                        <option value="12">Desember</option>
+                                                    </select>
+                                                    <script>document.getElementById('bulan').value = "<?php if (isset($_GET['bulan']) && $_GET['bulan']) echo $_GET['bulan'];?>";</script>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>Tahun</label>
+                                                    <select name="tahungen" id="tahun" class="form-control">
+                                                        <option value="" selected disabled>Pilih Tahun</option>
+                                                        {{-- @foreach ($tahun as $tah)
+                                                            <option value="{{ $tah }}">{{ $tah }}</option>
+                                                        @endforeach --}}
+                                                        <?php
+                                                                    $year = date('Y');
+                                                                    $min = $year - 10;
+                                                                    $max = $year;
+                                                                    for( $i=$max; $i>=$min; $i-- ) {
+                                                                    echo '<option value='.$i.'>'.$i.'</option>';
+                                                                    } ?>
+                                                    </select>
+                                                    <script>document.getElementById('tahun').value = "<?php if (isset($_GET['tahun']) && $_GET['tahun']) echo $_GET['tahun'];?>";</script>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <br>
+                                    <button class="btn btn-primary" type="submit">Submit</button>
+                                </form>
+                            </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
         <div class="row justify-content-center">
             <div class="col-md-12">
+                <button class="btn btn-success" id="importbut" data-toggle="modal" data-target="#import" type="submit">Import</button>
+                <div id="import" class="modal fade">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Import Data Absen</h4>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                                <div class="modal-body">
+                                    <form action="{{ route('importabsen') }}" method="post" enctype="multipart/form-data">
+                                        @csrf
+                                        <input type="file" name="importabsen" class="form-control" accept=".xls,.xlsx,.csv" required>
+                                        <br>
+                                        <button class="btn btn-primary" type="submit">Submit</button>
+                                    </form>
+                                </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="card mt-2">
                     <div class="card-body">
                         <form action="{{ route('kehadiran.index') }}" method="GET">

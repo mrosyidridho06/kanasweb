@@ -3,11 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Gaji;
+use App\Models\Bahan;
 use App\Models\Karyawan;
+use App\Models\DataAbsen;
 use App\Models\Kehadiran;
+use App\Models\MasterGaji;
 use Illuminate\Http\Request;
 use App\Exports\KehadiranExport;
-use App\Models\MasterGaji;
+use App\Imports\DataAbsenImport;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -204,5 +207,45 @@ class KehadiranController extends Controller
         $tahun = $request->get('tahun');
 
         return Excel::download(new KehadiranExport($bulan, $tahun), 'kehadiran.csv');
+    }
+
+    public function importabsen(Request $request)
+    {
+        $file = $request->file('importabsen');
+        $namaFile = $file->getClientOriginalName();
+        $file->move('DataAbsen', $namaFile);
+
+        Excel::import(new DataAbsenImport, public_path('/DataAbsen/'.$namaFile));
+
+        Alert::toast('Data Berhasil Ditambah', 'success');
+        return redirect()->back();
+    }
+
+    public function absengen(Request $request)
+    {
+        $bulan= $request->get('bulangen');
+        $tahun = $request->get('tahungen');
+
+        $datakar = Karyawan::get();
+
+        // $nama = '';
+        foreach($datakar as $item){
+            $nama[] = $item->nama_karyawan;
+        }
+
+        $nam = array_values($nama);
+        // $string = implode(', ', $nam);
+
+        // foreach($string as $key => $data){
+        //     $na = $data;
+        // }
+        // dd($nam);
+
+        $absen = DataAbsen::whereIn('nama', $nam)
+                            ->whereMonth('tanggal', '=', $bulan)
+                            ->whereYear('tanggal', '=', $tahun)
+                            ->get();
+
+        dd($absen);
     }
 }

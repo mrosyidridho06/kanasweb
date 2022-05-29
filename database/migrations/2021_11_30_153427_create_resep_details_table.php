@@ -17,9 +17,9 @@ class CreateResepDetailsTable extends Migration
             $table->id();
             $table->foreignId('resep_id')->constrained('reseps')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('bahan_id')->constrained('bahans')->onDelete('restrict')->onUpdate('cascade');
-            $table->integer('qty');
-            $table->bigInteger('harga');
-            $table->bigInteger('subtotal');
+            $table->decimal('qty', 10,1);
+            $table->decimal('harga', 10,1);
+            $table->decimal('subtotal', 10,1);
             $table->timestamps();
         });
     }

@@ -62,7 +62,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::group(['middleware' => 'hakakses:admin,hr'], function(){
         Route::resource('/karyawan', KaryawanController::class);
         Route::resource('/kehadiran', KehadiranController::class);
+        Route::post('/kehadirangenerate', [KehadiranController::class, 'absengen'])->name('kehadirangenerate');
         Route::get('/kehadiranexport', [KehadiranController::class, 'export'])->name('kehadiranexport');
+        Route::post('/importabsen', [KehadiranController::class, 'importabsen'])->name('importabsen');
 
 
     });

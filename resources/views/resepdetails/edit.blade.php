@@ -34,7 +34,7 @@
                     <div class="card-body d-flex">
                         <div class="row">
                             <div class="col-11">
-                                <input type="number" name="qty" class="form-control" placeholder="Jumlah" required>
+                                <input type="number" step="0.1" pattern="^\d+(?:\.\d{1,2})?$" name="qty" placeholder="Jumlah" class="form-control" required>
                             </div>
                         </div>
                         <button class="btn btn-primary" type="submit">Tambah</button>
@@ -81,7 +81,7 @@
                                                     {{ $detail->bahan->satuan_bahan }}
                                                 </td>
                                                 <td>
-                                                    <input class="form-control" type="number" name="qtyres" id="" value="{{ $detail->qty }}">
+                                                    <input type="number" step="0.1" pattern="^\d+(?:\.\d{1,2})?$" name="qtyres" class="form-control" value="{{ $detail->qty }}">
                                                 </td>
                                                 <td>
                                                     <input class="form-control" readonly name="hargasatuan" value="{{ $detail->bahan->harga_satuan }}">

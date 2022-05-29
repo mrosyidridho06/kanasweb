@@ -16,7 +16,7 @@ class CreateResepsTable extends Migration
         Schema::create('reseps', function (Blueprint $table) {
             $table->id();
             $table->string('nama_resep');
-            $table->integer('jumlah_produksi');
+            $table->decimal('jumlah_produksi', 10,1);
             $table->decimal('total', 10,1);
             $table->decimal('hpp', 10,1);
             $table->decimal('harga_jual', 10,1);

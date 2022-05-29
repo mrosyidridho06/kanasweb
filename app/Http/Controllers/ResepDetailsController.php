@@ -68,7 +68,7 @@ class ResepDetailsController extends Controller
     {
         $daftar = Resep::with( 'resepdetail', 'resepdetail.bahan', 'resepdetail.bahan.supplier')->where('id', $id)->get();
 
-        $bahan = Bahan::with('supplier')->get();
+        $bahan = Bahan::with('supplier')->orderBy('nama_bahan', 'asc')->get();
 
         return view('resepdetails.edit', compact('daftar', 'bahan'));
     }

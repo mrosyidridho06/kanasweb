@@ -29,7 +29,7 @@
                     <div class="card-body d-flex">
                         <div class="row">
                             <div class="col-11">
-                                <input type="number" name="qty" class="form-control" placeholder="Jumlah" required>
+                                <input type="number" step="0.1" pattern="^\d+(?:\.\d{1,2})?$" name="qty" placeholder="Jumlah" class="form-control" required>
                             </div>
                         </div>
                         {{-- <button type="button" class="btn btn-sm btn-outline-secondary add-to-cart" data-id="{{$bahans->id}}" data-nama_bahan="{{$bahans->nama_bahan}}" data-harga_satuan="{{$bahans->harga_satuan}}">Add to Cart</button> --}}

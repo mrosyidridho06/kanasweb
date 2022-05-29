@@ -104,7 +104,7 @@ class GajiController extends Controller
             'lembur' => 'required|numeric',
             'uang_lembur' => 'required|numeric',
             'uang_harian' => 'required|numeric',
-            'bpjs' => 'required|numeric',
+            'bpjs' => 'required|numeric', 
             'bonus' => 'required|numeric',
             'tunjangan' => 'required|numeric',
             'potongan' => 'required|numeric',
