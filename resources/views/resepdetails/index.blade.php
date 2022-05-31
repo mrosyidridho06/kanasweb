@@ -71,8 +71,8 @@
                             <td>{{ $item->bahan->nama_bahan }}</td>
                             <td align="center">{{ $item->bahan->satuan_bahan }}</td>
                             <td align="center">{{ $item->qty }}</td>
-                            <td align="right">@currency($item->bahan->harga_satuan)</td>
-                            <td align="right">@currency($item->subtotal)</td>
+                            <td align="right">Rp{{ number_format($item->bahan->harga_satuan,1,',','.') }}</td>
+                            <td align="right">Rp{{ number_format($item->subtotal,1,',','.') }}</td>
                         </tr>
                         @endforeach
                         <td colspan="5">
@@ -80,15 +80,15 @@
                         </td>
                         <tr>
                             <td class="h6 text-uppercase font-weight-bold" align="right" colspan="4">Total</td>
-                            <td align="right">@currency($subitem->total)</td>
+                            <td align="right">Rp{{ number_format($subitem->total,1,',','.') }}</td>
                         </tr>
                         <tr>
                             <td class="h6 text-uppercase font-weight-bold" align="right" colspan="4">HPP</td>
-                            <td align="right">@currency($subitem->hpp)</td>
+                            <td align="right">Rp{{ number_format($subitem->hpp,1,',','.') }}</td>
                         </tr>
                         <tr>
                             <td class="h6 text-uppercase font-weight-bold" align="right" colspan="4">Harga Jual</td>
-                            <td align="right">@currency($subitem->harga_jual)</td>
+                            <td align="right">Rp{{ number_format($subitem->harga_jual,1,',','.') }}</td>
                         </tr>
                     </tbody>
                 </table>

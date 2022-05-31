@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Bahan;
+use App\Models\Resep;
+use App\Models\ResepDetails;
 use App\Models\Riwayat;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
@@ -143,6 +145,43 @@ class BahanController extends Controller
             'satuan_bahan' => $request->satuan_bahan,
             'harga_bahan' => $request->harga_bahan,
             'harga_satuan' => $harga_satuan,
+        ]);
+
+        $id = $bahan->id;
+
+        $resdetail = ResepDetails::with('resep', 'bahan')->where('bahan_id', $id)->get();
+
+        foreach($resdetail as $item){
+            $idres = $item->resep_id;
+            $qty = $item->qty;
+        }
+
+        $hrgsub = $harga_satuan*$qty;
+
+        ResepDetails::with('resep', 'bahan')->where('bahan_id', $id)->update([
+            'harga' => $harga_satuan,
+            'subtotal' => $hrgsub,
+        ]);
+
+        $sumtotal = ResepDetails::with('resep', 'bahan')->where('resep_id', $idres)->select('subtotal')->sum('subtotal');
+
+        $resep = Resep::where('id', $idres)->get();
+
+        foreach($resep as $item){
+            $jmlhproduksi = $item->jumlah_produksi;
+            $jual = $item->jual;
+        }
+
+        $hpp =$sumtotal/$jmlhproduksi;
+        $hargajual = $hpp*$jual;
+
+        // dd($hpp);
+
+        Resep::where('id', $idres)->update([
+            'total' => $sumtotal,
+            'hpp' => $hpp,
+            'harga_jual' => $hargajual,
+
         ]);
 
         Riwayat::create([

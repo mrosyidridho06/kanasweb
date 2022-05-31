@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Gaji;
-use App\Models\Bahan;
 use App\Models\Karyawan;
 use App\Models\DataAbsen;
 use App\Models\Kehadiran;
@@ -234,8 +233,24 @@ class KehadiranController extends Controller
 
         $nam = array_values($nama);
 
+    //     Where(function ($query) use($nam) {
+    //         for ($i = 0; $i < count($nam); $i++){
+    //            $query->orwhere('nama', 'like',  '%' . $nam[$i] .'%');
+    //         }
+    //    })
 
-        $absen = DataAbsen::whereIn('nama', $nam)
+    // where(function($query) use($nam){
+    //     foreach($nam as $keyword) {
+    //         $query->orWhere('nama', 'LIKE', "%$nam%")
+    //     }
+    // })
+
+       $absen = DataAbsen::where(function($query) use($nam){
+                                foreach($nam as $keyword) {
+                                    $query->orWhere('nama', 'LIKE', "%$keyword%");
+                                }
+                            })
+                            // ->whereIn('nama', $nam)
                             ->whereMonth('tanggal', '=', $bulan)
                             ->whereYear('tanggal', '=', $tahun)
                             ->where('absen', 0)

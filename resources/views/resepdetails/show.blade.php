@@ -133,24 +133,24 @@
                     <td style="text-align: left">{{ $detail->bahan->supplier->nama_supplier }}</td>
                     <td style="text-align: center">{{ $detail->bahan->satuan_bahan }}</td>
                     <td style="text-align: center">{{ $detail->qty }}</td>
-                    <td style="text-align: right">@currency($detail->bahan->harga_satuan)</td>
-                    <td style="text-align: right">@currency($detail->subtotal)</td>
+                    <td style="text-align: right">Rp{{ number_format($detail->bahan->harga_satuan,1,',','.') }}</td>
+                    <td style="text-align: right">Rp{{ number_format($detail->subtotal,1,',','.') }}</td>
                 </tr>
                 @endforeach
 				<tr class="total">
 					<td></td>
                     <td colspan="4" style="font-weight: bold">HPP</td>
-					<td style="text-align: right">@currency($item->hpp)</td>
+					<td style="text-align: right">Rp{{ number_format($item->hpp,1,',','.') }}</td>
 				</tr>
 				<tr class="total">
 					<td ></td>
                     <td colspan="4" style="font-weight: bold">HARGA JUAL</td>
-					<td style="text-align: right">@currency($item->harga_jual)</td>
+					<td style="text-align: right">Rp{{ number_format($item->harga_jual,1,',','.') }}</td>
 				</tr>
 				<tr class="total">
                     <td></td>
 					<td colspan="4" style="font-weight: bold">TOTAL</td>
-					<td style="text-align: right">@currency($item->total)</td>
+					<td style="text-align: right">Rp{{ number_format($item->total,1,',','.') }}</td>
 				</tr>
 			</table>
 		</div>
