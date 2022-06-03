@@ -245,7 +245,7 @@ class KehadiranController extends Controller
     //     }
     // })
 
-       $absen = DataAbsen::where(function($query) use($nam){
+        $absen = DataAbsen::where(function($query) use($nam){
                                 foreach($nam as $keyword) {
                                     $query->orWhere('nama', 'LIKE', "%$keyword%");
                                 }
@@ -257,6 +257,10 @@ class KehadiranController extends Controller
                             ->select('nama', \DB::raw('count(*) as count'))
                             ->groupBy('nama')
                             ->get();
+
+        Kehadiran::create([
+
+        ]);
 
         dd($absen);
     }

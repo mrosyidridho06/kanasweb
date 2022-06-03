@@ -151,42 +151,44 @@ class BahanController extends Controller
 
         $resdetail = ResepDetails::with('resep', 'bahan')->where('bahan_id', $id)->get();
 
-        foreach($resdetail as $item){
-            $idres = $item->resep_id;
-            $qty = $item->qty;
-        }
+        if($resdetail === $id){
+            foreach($resdetail as $item){
+                $idres = $item->resep_id;
+                $qty = $item->qty;
+            }
 
-        $hrgsub = $harga_satuan*$qty;
+            $hrgsub = $harga_satuan*$qty;
 
-        ResepDetails::with('resep', 'bahan')->where('bahan_id', $id)->update([
-            'harga' => $harga_satuan,
-            'subtotal' => $hrgsub,
-        ]);
+            ResepDetails::with('resep', 'bahan')->where('bahan_id', $id)->update([
+                'harga' => $harga_satuan,
+                'subtotal' => $hrgsub,
+            ]);
 
-        $sumtotal = ResepDetails::with('resep', 'bahan')->where('resep_id', $idres)->select('subtotal')->sum('subtotal');
+            $sumtotal = ResepDetails::with('resep', 'bahan')->where('resep_id', $idres)->select('subtotal')->sum('subtotal');
 
-        $resep = Resep::where('id', $idres)->get();
+            $resep = Resep::where('id', $idres)->get();
 
-        foreach($resep as $item){
-            $jmlhproduksi = $item->jumlah_produksi;
-            $jual = $item->jual;
-        }
+            foreach($resep as $item){
+                $jmlhproduksi = $item->jumlah_produksi;
+                $jual = $item->jual;
+            }
 
-        $hpp =$sumtotal/$jmlhproduksi;
-        $hargajual = $hpp*$jual;
+            $hpp =$sumtotal/$jmlhproduksi;
+            $hargajual = $hpp*$jual;
 
-        // dd($hpp);
+            // dd($hpp);
 
-        Resep::where('id', $idres)->update([
-            'total' => $sumtotal,
-            'hpp' => $hpp,
-            'harga_jual' => $hargajual,
+            Resep::where('id', $idres)->update([
+                'total' => $sumtotal,
+                'hpp' => $hpp,
+                'harga_jual' => $hargajual,
 
-        ]);
+            ]);
+        };
 
         Riwayat::create([
             'user_id' => Auth::user()->id,
-            'aktivitas' => ('Mengubah bahan' .$request->nama_bahan),
+            'aktivitas' => 'Mengubah bahan '.$bahan->nama_bahan.''
         ]);
 
         if($bahan){
