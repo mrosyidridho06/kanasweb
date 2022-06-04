@@ -40,7 +40,7 @@
             <div class="row">
                 <div class="col-12 col-lg-6 col-xl-5 offset-xl-1" style="color: rgb(34, 34, 34);">
                     <h1 style="color: #222222;">Kana's Kitchen</h1>
-                    <p style="color: rgb(34,34,34);">Mauris egestas tellus non ex condimentum, ac ullamcorper sapien dictum. Nam consequat neque quis sapien viverra convallis. In non tempus lorem. </p><button class="btn btn-light btn-lg action-button" type="button">Learn More</button>
+                    <p style="color: rgb(34,34,34);">Kana's Kitchen adalah perusahaan food & beverage, yang memproduksi dan menjual berbagai aneka snack (kue jajanan) dan dessert.</p><button class="btn btn-light btn-lg action-button" type="button">Learn More</button>
                 </div>
                 <div class="col-md-5 col-lg-5 offset-lg-1 offset-xl-0 d-none d-lg-block phone-holder" style="text-align: center;">
                     <div class="phone-mockup"></div><img src="{{ asset('kanas.png') }}" style="width: 300px;margin: 0px;padding: 0px;transform: perspective(0px);">

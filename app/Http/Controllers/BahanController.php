@@ -151,7 +151,12 @@ class BahanController extends Controller
 
         $resdetail = ResepDetails::with('resep', 'bahan')->where('bahan_id', $id)->get();
 
-        if($resdetail === $id){
+        foreach($resdetail as $item){
+            $idb = $item->bahan_id;
+        }
+
+        // dd($idb);
+        if($id === $idb){
             foreach($resdetail as $item){
                 $idres = $item->resep_id;
                 $qty = $item->qty;
@@ -184,13 +189,17 @@ class BahanController extends Controller
                 'harga_jual' => $hargajual,
 
             ]);
+
+            Riwayat::create([
+                'user_id' => Auth::user()->id,
+                'aktivitas' => 'Mengubah bahan '.$bahan->nama_bahan.''
+            ]);
+        }else{
+            Riwayat::create([
+                'user_id' => Auth::user()->id,
+                'aktivitas' => 'Mengubah bahan '.$bahan->nama_bahan.''
+            ]);
         };
-
-        Riwayat::create([
-            'user_id' => Auth::user()->id,
-            'aktivitas' => 'Mengubah bahan '.$bahan->nama_bahan.''
-        ]);
-
         if($bahan){
             //redirect dengan pesan sukses
             Alert::toast('Data Berhasil Diubah', 'success');
