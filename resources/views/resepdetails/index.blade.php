@@ -87,6 +87,10 @@
                             <td align="right">Rp{{ number_format($subitem->hpp,1,',','.') }}</td>
                         </tr>
                         <tr>
+                            <td class="h6 text-uppercase font-weight-bold" align="right" colspan="4">Jumlah Jual</td>
+                            <td align="right">{{ number_format($subitem->jual,0,',','.') }}</td>
+                        </tr>
+                        <tr>
                             <td class="h6 text-uppercase font-weight-bold" align="right" colspan="4">Harga Jual</td>
                             <td align="right">Rp{{ number_format($subitem->harga_jual,1,',','.') }}</td>
                         </tr>

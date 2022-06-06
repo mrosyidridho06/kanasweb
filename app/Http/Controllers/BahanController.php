@@ -151,12 +151,14 @@ class BahanController extends Controller
 
         $resdetail = ResepDetails::with('resep', 'bahan')->where('bahan_id', $id)->get();
 
-        foreach($resdetail as $item){
-            $idb = $item->bahan_id;
-        }
+        $ct = count($resdetail);
+        dd($ct);
 
-        // dd($idb);
-        if($id === $idb){
+        // foreach($resdetail as $item){
+        //     $idb = $item->bahan_id;
+        // }
+
+        if(count($resdetail) == 1 ){
             foreach($resdetail as $item){
                 $idres = $item->resep_id;
                 $qty = $item->qty;
@@ -200,6 +202,8 @@ class BahanController extends Controller
                 'aktivitas' => 'Mengubah bahan '.$bahan->nama_bahan.''
             ]);
         };
+
+
         if($bahan){
             //redirect dengan pesan sukses
             Alert::toast('Data Berhasil Diubah', 'success');

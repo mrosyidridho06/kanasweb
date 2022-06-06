@@ -228,22 +228,11 @@ class KehadiranController extends Controller
         $datakar = Karyawan::get();
 
         foreach($datakar as $item){
+            $idkar[] = $item->id;
             $nama[] = $item->nama_karyawan;
         }
 
         $nam = array_values($nama);
-
-    //     Where(function ($query) use($nam) {
-    //         for ($i = 0; $i < count($nam); $i++){
-    //            $query->orwhere('nama', 'like',  '%' . $nam[$i] .'%');
-    //         }
-    //    })
-
-    // where(function($query) use($nam){
-    //     foreach($nam as $keyword) {
-    //         $query->orWhere('nama', 'LIKE', "%$nam%")
-    //     }
-    // })
 
         $absen = DataAbsen::where(function($query) use($nam){
                                 foreach($nam as $keyword) {
@@ -254,14 +243,44 @@ class KehadiranController extends Controller
                             ->whereMonth('tanggal', '=', $bulan)
                             ->whereYear('tanggal', '=', $tahun)
                             ->where('absen', 0)
-                            ->select('nama', \DB::raw('count(*) as count'))
+                            ->select('nama', \DB::raw('count(*) as masuk'))
+                            // ->pluck('nama', 'check_in');
                             ->groupBy('nama')
                             ->get();
 
-        Kehadiran::create([
 
-        ]);
 
-        dd($absen);
+        foreach($absen as $item){
+            $na[] = $item->nama;
+            $ma[] = $item->masuk;
+        }
+
+        $namakar = Karyawan::whereIn('nama_karyawan', $na)
+                    ->select('id')
+                    ->groupBy('id')
+                    ->get();
+
+        $finalArray = array();
+        foreach($absen as $key=>$value){
+        array_push($finalArray, array(
+                    'nama'=>$value['nama'],
+                    'masuk'=>$value['masuk'],)
+        );
+        }
+
+        // Kehadiran::insert($finalArray);
+
+        // $kehadir = new Kehadiran;
+        // $kehadir->masuk = $absen['tanggal'];
+        // $kehadir->karyawan_id = $absen['nama'];
+
+
+
+        // Kehadiran::create([
+        //     'masuk' => $absen->masuk,
+
+        // ]);
+
+        dd($finalArray);
     }
 }
