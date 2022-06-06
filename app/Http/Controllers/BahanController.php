@@ -151,8 +151,8 @@ class BahanController extends Controller
 
         $resdetail = ResepDetails::with('resep', 'bahan')->where('bahan_id', $id)->get();
 
-        $ct = count($resdetail);
-        dd($ct);
+        // $ct = count($resdetail);
+        // dd($ct);
 
         // foreach($resdetail as $item){
         //     $idb = $item->bahan_id;
