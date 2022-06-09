@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Riwayat;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
 use App\Exports\SupplierExport;
 use App\Imports\SupplierImport;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -45,6 +47,11 @@ class SupplierController extends Controller
             'nama_supplier' => $request->nama_supplier,
             'alamat_supplier' => $request->alamat_supplier,
             'hp_supplier' => $request->hp_supplier,
+        ]);
+
+        Riwayat::create([
+            'user_id' => Auth::user()->id,
+            'aktivitas' => ('Menambah Supplier '.$supli->nama_supplier.''),
         ]);
 
         if($supli){
@@ -100,6 +107,11 @@ class SupplierController extends Controller
             'alamat_supplier' => $request->alamat_supplier,
             'hp_supplier' => $request->hp_supplier,
 
+        ]);
+
+        Riwayat::create([
+            'user_id' => Auth::user()->id,
+            'aktivitas' => ('Mengubah Supplier '.$supplier->nama_supplier.''),
         ]);
 
         if($supplier){

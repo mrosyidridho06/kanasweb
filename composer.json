@@ -9,6 +9,7 @@
         "barryvdh/laravel-debugbar": "^3.6",
         "barryvdh/laravel-dompdf": "^0.9.0",
         "bluemmb/faker-picsum-photos-provider": "^2.0",
+        "doctrine/dbal": "^3.3",
         "dompdf/dompdf": "^1.0",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",

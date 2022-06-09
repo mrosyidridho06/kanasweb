@@ -4,7 +4,7 @@
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Kehadiran Pegawai</h1>
         <div align="right" class="pt-1">
-            <a href="" class="btn btn-success btn-xs"><i class="fa fa-sync"></i></a>
+            <a href="" class="btn btn-success"><i class="fa fa-sync"></i></a>
             <button type="button" name="age" id="age" data-toggle="modal" data-target="#add_data_Modal" class="btn btn-primary"><i class="fa fa-plus"> Tambah Kehadiran</i></button>
             <button class="btn btn-success" name="generate" id="generatebut" data-toggle="modal" data-target="#generate" type="submit">Generate</button>
             <div id="generate" class="modal fade">

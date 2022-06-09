@@ -44,7 +44,7 @@ class DataAbsenImport implements ToModel, WithStartRow
             'check_out' => $this->transformTime($row[7]),
             'terlambat' => $this->transformTime($row[8]),
             'absen' => $row[9],
-            'lembur' => $this->transformTime($row[10]),
+            'lembur' => $row[10],
             'work_time' => $this->transformTime($row[11]),
         ]);
     }

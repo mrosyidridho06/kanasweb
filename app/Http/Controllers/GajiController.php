@@ -39,7 +39,7 @@ class GajiController extends Controller
         // $filter = $gaji->get();
 
         // dd($filter);
-
+        $mgaji = MasterGaji::get();
 
         $filter = DB::table('gajis')
                 ->join('kehadirans', 'gajis.kehadiran_id', '=', 'kehadirans.id')
@@ -51,7 +51,7 @@ class GajiController extends Controller
 
         $dataTahun = DB::table('kehadirans')->selectRaw('substr(to_date,1,4) as to_date')->pluck('to_date')->unique();
 
-        return view('gaji.index', compact('filter', 'dataTahun'));
+        return view('gaji.index', compact('filter', 'dataTahun', 'mgaji'));
     }
 
     /**
@@ -104,7 +104,7 @@ class GajiController extends Controller
             'lembur' => 'required|numeric',
             'uang_lembur' => 'required|numeric',
             'uang_harian' => 'required|numeric',
-            'bpjs' => 'required|numeric', 
+            'bpjs' => 'required|numeric',
             'bonus' => 'required|numeric',
             'tunjangan' => 'required|numeric',
             'potongan' => 'required|numeric',
@@ -247,5 +247,44 @@ class GajiController extends Controller
         // $pdf = PDF::loadView('gaji.gajipdf', compact('gajis'));
         // // $pdf->loadView('gaji.gajipdf', compact('gajis'));
         // return $pdf->download('gaji.pdf');
+    }
+
+    public function generategaji(Request $request)
+    {
+        $bulan= $request->get('bulangen');
+        $tahun = $request->get('tahungen');
+        $harian = $request->get('harian');
+        $lembur = $request->get('uanglembur');
+
+        $datakar = Kehadiran::with('karyawan')
+                ->whereMonth('from_date', '=', $bulan)
+                ->whereYear('from_date', '=', $tahun)
+                ->get();
+
+        // dd($datakar);
+
+        $finalArray = array();
+        foreach($datakar as $key=>$value){
+        array_push($finalArray, array(
+            'kehadiran_id'=> $value['id'],
+            'gaji_harian' => $value['masuk']*$harian,
+            'bpjs' => $value->karyawan['bpjs'],
+            'tunjangan' => $value->karyawan['tunjangan'],
+            'uang_lembur' =>10000,
+            'total_gaji' =>($value['masuk']*$harian)+$value->karyawan['bpjs']+$value->karyawan['tunjangan'],
+            )
+        );
+        }
+
+        // dd($finalArray);
+
+        Gaji::insert($finalArray);
+
+        Alert::toast('Data Berhasil Ditambah', 'success');
+        return redirect()->route('gaji.index');
+
+        // $kehadir = new Kehadiran;
+        // $kehadir->masuk = $datakar['tanggal'];
+        // $kehadir->karyawan_id = $datakar['nama'];
     }
 }

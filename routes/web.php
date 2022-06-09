@@ -74,6 +74,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/gaji-pdf/{id}', [GajiController::class, 'exportPDF'])->name('gajiexport');
         Route::resource('/mastergaji', MasterGajiController::class);
         Route::resource('/tunjangangaji', TunjanganGajiController::class);
+        Route::post('/gajigenerate', [GajiController::class, 'generategaji'])->name('generategaji');
+
     });
 });
 

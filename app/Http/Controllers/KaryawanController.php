@@ -61,7 +61,7 @@ class KaryawanController extends Controller
             'hp_karyawan' => $request->hp_karyawan,
             'agama' => $request->agama,
             'jabatan' => $request->jabatan,
-            'tanggal' => $request->tanggal_masuk,
+            'tanggal_masuk' => $request->tanggal_masuk,
             'foto' => $newNameImage,
         ]);
 
@@ -114,7 +114,7 @@ class KaryawanController extends Controller
             'agama' => 'required',
             'jabatan' => 'required',
             'foto' => 'file|mimes:jpg,png,jpeg,gif,svg,jfif|max:2048',
-            // 'tanggal_masuk' => 'required',
+            'tanggal_masuk' => 'required',
         ]);
 
         $karya = $request->all();

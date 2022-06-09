@@ -83,7 +83,7 @@ class BahanController extends Controller
 
         Riwayat::create([
             'user_id' => Auth::user()->id,
-            'aktivitas' => ('Tambah Bahan'. $request->nama_bahan),
+            'aktivitas' => ('Tambah Bahan '.$request->nama_bahan.''),
         ]);
 
         // dd($bah);
@@ -228,7 +228,7 @@ class BahanController extends Controller
 
         Riwayat::create([
             'user_id' => Auth::user()->id,
-            'aktivitas' => ('Menghapus Bahan'.''.$bahan->nama_bahan),
+            'aktivitas' => ('Menghapus Bahan '.$bahan->nama_bahan.''),
         ]);
 
         Alert::toast('Data Berhasil Dihapus', 'success');

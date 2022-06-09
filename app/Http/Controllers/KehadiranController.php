@@ -85,33 +85,33 @@ class KehadiranController extends Controller
             'lembur' => $request->lembur,
         ]);
 
-        $kar = Karyawan::where('id', $kehan->karyawan_id)->get();
-        foreach($kar as $itemkar){
-            $bpjs = $itemkar->bpjs;
-            $tun = $itemkar->tunjangan;
-        }
+        // $kar = Karyawan::where('id', $kehan->karyawan_id)->get();
+        // foreach($kar as $itemkar){
+        //     $bpjs = $itemkar->bpjs;
+        //     $tun = $itemkar->tunjangan;
+        // }
 
-        // dd($tun);
+        // // dd($tun);
 
-        $mgaji = MasterGaji::get();
-        foreach($mgaji as $gj){
-            $uangh = $gj->harian;
-            $uangl = $gj->lembur;
-        }
+        // $mgaji = MasterGaji::get();
+        // foreach($mgaji as $gj){
+        //     $uangh = $gj->harian;
+        //     $uangl = $gj->lembur;
+        // }
 
-        $uanghari = $kehan->masuk*$uangh;
-        // dd($uanghari);
-        $uanglembur = $kehan->lembur*$uangl;
-        $totalgaji = $uanghari+$uanglembur+$bpjs+$tun;
+        // $uanghari = $kehan->masuk*$uangh;
+        // // dd($uanghari);
+        // $uanglembur = $kehan->lembur*$uangl;
+        // $totalgaji = $uanghari+$uanglembur+$bpjs+$tun;
 
-        Gaji::create([
-            'kehadiran_id' => $kehan->id,
-            'gaji_harian' => $uanghari,
-            'uang_lembur' => $uanglembur,
-            'bpjs' => $bpjs,
-            'tunjangan' => $tun,
-            'total_gaji' => $totalgaji
-        ]);
+        // Gaji::create([
+        //     'kehadiran_id' => $kehan->id,
+        //     'gaji_harian' => $uanghari,
+        //     'uang_lembur' => $uanglembur,
+        //     'bpjs' => $bpjs,
+        //     'tunjangan' => $tun,
+        //     'total_gaji' => $totalgaji
+        // ]);
 
         if($kehan){
             //redirect dengan pesan sukses
@@ -232,55 +232,51 @@ class KehadiranController extends Controller
             $nama[] = $item->nama_karyawan;
         }
 
-        $nam = array_values($nama);
+        // $nam = array_values($nama);
 
-        $absen = DataAbsen::where(function($query) use($nam){
-                                foreach($nam as $keyword) {
-                                    $query->orWhere('nama', 'LIKE', "%$keyword%");
-                                }
-                            })
-                            // ->whereIn('nama', $nam)
-                            ->whereMonth('tanggal', '=', $bulan)
-                            ->whereYear('tanggal', '=', $tahun)
-                            ->where('absen', 0)
-                            ->select('nama', \DB::raw('count(*) as masuk'))
-                            // ->pluck('nama', 'check_in');
-                            ->groupBy('nama')
-                            ->get();
+        // where(function($query) use($nam){
+        //     foreach($nam as $keyword) {
+        //         $query->orWhere('nama', 'LIKE', "%$keyword%");
+        //     }
+        // })
+        $abs = DataAbsen::whereIn("nama", $nama)
+                ->whereMonth('tanggal', '=', $bulan)
+                ->whereYear('tanggal', '=', $tahun)
+                ->select("nama", DB::raw('count(IF(absen = 0, 1, NULL)) as masuk'),DB::raw('count(IF(lembur = 1, 1, NULL)) as lembur'), DB::raw('count(IF(absen = 1, 1, NULL)) as izin'))
+                ->groupBy("nama")
+                ->get();
 
+        dd($abs);
 
-
-        foreach($absen as $item){
+        foreach($abs as $item){
             $na[] = $item->nama;
-            $ma[] = $item->masuk;
+            $ma[] = $item->lembur;
+            $ab[] = $item->izin;
         }
+        // dd($ma);
 
         $namakar = Karyawan::whereIn('nama_karyawan', $na)
                     ->select('id')
                     ->groupBy('id')
                     ->get();
 
-        $finalArray = array();
-        foreach($absen as $key=>$value){
-        array_push($finalArray, array(
-                    'nama'=>$value['nama'],
-                    'masuk'=>$value['masuk'],)
-        );
+
+                    $finalArray = array();
+                    foreach($abs as $key=>$value){
+                        array_push($finalArray, array(
+                    'karyawan_id'=>$value['nama'],
+                    'masuk'=>$value['masuk'],
+                    'lembur'=>$value['lembur'],
+                    'izin' => $value['izin'],
+                    ));
         }
 
+        // $merged = $namakar->merge($finalArray);
+
+        // dd($merged);
         // Kehadiran::insert($finalArray);
 
-        // $kehadir = new Kehadiran;
-        // $kehadir->masuk = $absen['tanggal'];
-        // $kehadir->karyawan_id = $absen['nama'];
+        // dd($finalArray);
 
-
-
-        // Kehadiran::create([
-        //     'masuk' => $absen->masuk,
-
-        // ]);
-
-        dd($finalArray);
     }
 }
