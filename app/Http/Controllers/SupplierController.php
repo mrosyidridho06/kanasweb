@@ -49,13 +49,13 @@ class SupplierController extends Controller
             'hp_supplier' => $request->hp_supplier,
         ]);
 
-        Riwayat::create([
-            'user_id' => Auth::user()->id,
-            'aktivitas' => ('Menambah Supplier '.$supli->nama_supplier.''),
-        ]);
 
         if($supli){
             //redirect dengan pesan sukses
+            Riwayat::create([
+                'user_id' => Auth::user()->id,
+                'aktivitas' => ('Menambah Supplier '.$supli->nama_supplier.''),
+            ]);
             Alert::toast('Data Berhasil Ditambahkan', 'success');
             return redirect()->back();
         }else{
@@ -109,13 +109,13 @@ class SupplierController extends Controller
 
         ]);
 
-        Riwayat::create([
-            'user_id' => Auth::user()->id,
-            'aktivitas' => ('Mengubah Supplier '.$supplier->nama_supplier.''),
-        ]);
 
         if($supplier){
             //redirect dengan pesan sukses
+            Riwayat::create([
+                'user_id' => Auth::user()->id,
+                'aktivitas' => ('Mengubah Supplier '.$supplier->nama_supplier.''),
+            ]);
             Alert::toast('Data Berhasil Diupdate', 'success');
             return redirect()->route('supplier.index');
         }else{
@@ -135,6 +135,10 @@ class SupplierController extends Controller
     {
         $supplier->delete();
 
+        Riwayat::create([
+            'user_id' => Auth::user()->id,
+            'aktivitas' => 'Menghapus Data Supplier '.$supplier->nama_supplier.''
+        ]);
         Alert::toast('Data Berhasil Dihapus', 'success');
         return redirect()->back();
     }

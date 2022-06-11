@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use PDF;
+use Carbon\Carbon;
 use App\Models\Gaji;
 use App\Models\Riwayat;
 use App\Models\Kehadiran;
@@ -129,7 +130,7 @@ class GajiController extends Controller
 
         Riwayat::create([
             'user_id' => Auth::user()->id,
-            'aktivitas' => ('Menambah data gaji'.''.$gaji->kehadiran_id),
+            'aktivitas' => ('Menambah data gaji '.$gaji->kehadiran_id.''),
         ]);
 
         // dd($bah);
@@ -201,7 +202,12 @@ class GajiController extends Controller
             'kehadiran_id' => $request->kehadiran_id,
         ]);
 
+
         if($gaji){
+            Riwayat::create([
+                'user_id' => Auth::user()->id,
+                'aktivitas' => 'Mengubah Gaji '.$gaji->kehadiran->karyawan->nama_karyawan.''
+            ]);
             //redirect dengan pesan sukses
             Alert::toast('Data Berhasil Diubah', 'success');
             return redirect()->route('gaji.index');
@@ -222,6 +228,10 @@ class GajiController extends Controller
     {
         $gaji->delete();
 
+        Riwayat::create([
+            'user_id' => Auth::user()->id,
+            'aktivitas' => 'Menghapus Data gaji '.$gaji->kehadiran->karyawan->nama_karyawan.''
+        ]);
         Alert::toast('Data Berhasil Dihapus', 'success');
         return redirect()->back();
     }
@@ -272,6 +282,8 @@ class GajiController extends Controller
             'tunjangan' => $value->karyawan['tunjangan'],
             'uang_lembur' =>10000,
             'total_gaji' =>($value['masuk']*$harian)+$value->karyawan['bpjs']+$value->karyawan['tunjangan'],
+            "created_at"=> Carbon::now(),
+            "updated_at"=> Carbon::now()
             )
         );
         }
@@ -280,6 +292,10 @@ class GajiController extends Controller
 
         Gaji::insert($finalArray);
 
+        Riwayat::create([
+            'user_id' => Auth::user()->id,
+            'aktivitas' => 'Mengenerate Data Gaji Pada Bulan '.$bulan.' Tahun '.$tahun.''
+        ]);
         Alert::toast('Data Berhasil Ditambah', 'success');
         return redirect()->route('gaji.index');
 

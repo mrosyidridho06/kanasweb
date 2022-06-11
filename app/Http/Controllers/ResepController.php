@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Bahan;
 use App\Models\Resep;
+use App\Models\Riwayat;
 use App\Models\ResepDetails;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -72,6 +74,10 @@ class ResepController extends Controller
         }
         Cookie::queue(Cookie::forget('shopping_cart'));
 
+        Riwayat::create([
+            'user_id' => Auth::user()->id,
+            'aktivitas' => 'Menambahkan Data Resep '.$resep->nama_resep.''
+        ]);
         Alert::toast('Data Berhasil Ditambahkan', 'success');
         return redirect()->back();
 
@@ -175,6 +181,11 @@ class ResepController extends Controller
 
         $resep->update($resedit);
 
+        Riwayat::create([
+            'user_id' => Auth::user()->id,
+            'aktivitas' => 'Mengubah Data Resep '.$resep->nama_resep.''
+        ]);
+
         Alert::toast('Data Berhasil Diubah', 'success');
         return redirect('resepdetails');
     }
@@ -187,7 +198,18 @@ class ResepController extends Controller
      */
     public function destroy($id)
     {
+        $res = Resep::where('id', $id)->get();
+        foreach($res as $item){
+            $rsb = $item->nama_resep;
+        }
+
+        Riwayat::create([
+            'user_id' => Auth::user()->id,
+            'aktivitas' => 'Menghapus Data Resep '.$rsb.''
+        ]);
+
         Resep::where('id', $id)->delete();
+
 
         Alert::toast('Data Berhasil Dihapus', 'success');
         return redirect()->back();

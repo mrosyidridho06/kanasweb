@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Riwayat;
 use App\Models\MasterGaji;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class MasterGajiController extends Controller
@@ -54,6 +56,11 @@ class MasterGajiController extends Controller
         // Bahan::create($bah);
         if($mj){
             //redirect dengan pesan sukses
+            Riwayat::create([
+                'user_id' => Auth::user()->id,
+                'aktivitas' => 'Menambah Data Uang Harian '.$mj->harian.' dan Uang Lembur '.$mj->lembur.''
+            ]);
+
             Alert::toast('Data Berhasil Ditambahkan', 'success');
             return redirect()->route('mastergaji.index');
         }else{
@@ -105,6 +112,11 @@ class MasterGajiController extends Controller
 
         if($mastergaji){
             //redirect dengan pesan sukses
+            Riwayat::create([
+                'user_id' => Auth::user()->id,
+                'aktivitas' => 'Mengubah Data Uang Harian '.$mastergaji->harian.' dan Uang Lembur '.$mastergaji->lembur.''
+            ]);
+
             Alert::toast('Data Berhasil Diupdate', 'success');
             return redirect()->route('mastergaji.index');
         }else{
@@ -124,6 +136,10 @@ class MasterGajiController extends Controller
     {
         $mastergaji->delete();
 
+        Riwayat::create([
+            'user_id' => Auth::user()->id,
+            'aktivitas' => 'Menghapus Data Uang Harian '.$mastergaji->harian.' dan Uang Lembur '.$mastergaji->lembur.''
+        ]);
         Alert::toast('Data Berhasil Dihapus', 'success');
         return redirect()->back();
     }

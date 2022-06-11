@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Riwayat;
 use App\Models\Karyawan;
 use Illuminate\Http\Request;
 use App\Models\TunjanganGaji;
+use Illuminate\Support\Facades\Auth;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class TunjanganGajiController extends Controller
@@ -43,6 +45,7 @@ class TunjanganGajiController extends Controller
             'tunjangan' => $request->tunjangan,
             'bpjs' => $request->bpjs
         ]);
+
         return response()->json(['success'=>'Tunjangan saved successfully!']);
     }
 
@@ -85,12 +88,12 @@ class TunjanganGajiController extends Controller
             'bpjs' => 'required',
         ]);
 
-        $kegiatan = TunjanganGaji::findOrFail($id);
+        $tunga = TunjanganGaji::findOrFail($id);
 
-        $kegiatan->tunjangan = $request->tunjangan;
-        $kegiatan->bpjs = $request->bpjs;
-        // $kegiatan->id_karyawan = $request->id_karyawan;
-        $kegiatan->save();
+        $tunga->tunjangan = $request->tunjangan;
+        $tunga->bpjs = $request->bpjs;
+        // $tunga->id_karyawan = $request->id_karyawan;
+        $tunga->save();
 
         Alert::toast('Data Berhasil Diupdate', 'success');
         return redirect()->route('tunjangangaji.index');

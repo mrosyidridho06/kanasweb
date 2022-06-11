@@ -246,7 +246,7 @@ class KehadiranController extends Controller
                 ->groupBy("nama")
                 ->get();
 
-        dd($abs);
+        // dd($abs);
 
         foreach($abs as $item){
             $na[] = $item->nama;
@@ -261,22 +261,35 @@ class KehadiranController extends Controller
                     ->get();
 
 
-                    $finalArray = array();
-                    foreach($abs as $key=>$value){
-                        array_push($finalArray, array(
-                    'karyawan_id'=>$value['nama'],
-                    'masuk'=>$value['masuk'],
-                    'lembur'=>$value['lembur'],
-                    'izin' => $value['izin'],
-                    ));
+        foreach($namakar as $key => $item){
+            $idka[] = $item['id'];
+            // $kk = array_push($idka);
         }
+        $ch = array_filter($idka, function($v) { return strpos($v, 'hidden') === false; });
+        // $ch = explode(" ", $idka);
+
+        // foreach($idka as $keid){
+        //     array_push
+        // }
+        dd($ch);
+
+        $finalArray = array();
+            foreach($abs as $key=>$value){
+                array_push($finalArray, array(
+            'karyawan_id'=>$idka,
+            'masuk'=>$value['masuk'],
+            'lembur'=>$value['lembur'],
+            'izin' => $value['izin'],
+            ));
+        }
+
+        dd($finalArray);
 
         // $merged = $namakar->merge($finalArray);
 
         // dd($merged);
         // Kehadiran::insert($finalArray);
 
-        // dd($finalArray);
 
     }
 }

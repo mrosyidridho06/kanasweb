@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Riwayat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
@@ -109,10 +110,15 @@ class ProfileController extends Controller
             }
         }
 
-            $user->save();
+        $user->save();
 
-            Alert::toast('Data Berhasil Diubah', 'success');
-            return redirect()->route('profile.index');
+        Riwayat::create([
+            'user_id' => Auth::user()->id,
+            'aktivitas' => 'Mengubah Data Profil'
+        ]);
+
+        Alert::toast('Data Berhasil Diubah', 'success');
+        return redirect()->route('profile.index');
     }
 
     /**

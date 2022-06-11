@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Riwayat;
 use App\Models\Karyawan;
 use Illuminate\Http\Request;
-use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class KaryawanController extends Controller
 {
@@ -67,6 +69,11 @@ class KaryawanController extends Controller
 
         if($karwan){
             //redirect dengan pesan sukses
+            Riwayat::create([
+                'user_id' => Auth::user()->id,
+                'aktivitas' => 'Membuat Data Karyawan '.$karwan->nama_karyawan.''
+            ]);
+
             Alert::toast('Data Berhasil Ditambahkan', 'success');
             return redirect()->route('karyawan.index');
         }else{
@@ -133,6 +140,11 @@ class KaryawanController extends Controller
 
         if($karyawan){
             //redirect dengan pesan sukses
+            Riwayat::create([
+                'user_id' => Auth::user()->id,
+                'aktivitas' => 'Mengubah Data Karyawan '.$karyawan->nama_karyawan.''
+            ]);
+
             Alert::toast('Data Berhasil Diubah', 'success');
             return redirect()->route('karyawan.index');
         }else{
@@ -153,6 +165,10 @@ class KaryawanController extends Controller
         $karyawan->delete();
         File::delete('images/karyawan/'.$karyawan->foto);
 
+        Riwayat::create([
+            'user_id' => Auth::user()->id,
+            'aktivitas' => 'Menghapus Data Karyawan '.$karyawan->nama_karyawan.''
+        ]);
         Alert::toast('Data Berhasil Dihapus', 'success');
         return redirect()->back();
     }
