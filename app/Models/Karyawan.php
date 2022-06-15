@@ -18,4 +18,9 @@ class Karyawan extends Model
         return $this->hasMany(Kehadiran::class);
     }
 
+    public function dataabsen()
+    {
+        return $this->hasMany(DataAbsen::class);
+    }
+
 }

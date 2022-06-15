@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Gaji;
 use App\Models\Karyawan;
 use App\Models\DataAbsen;
@@ -13,6 +14,7 @@ use App\Imports\DataAbsenImport;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use RealRashid\SweetAlert\Facades\Alert;
+use Symfony\Component\Console\Input\Input;
 
 class KehadiranController extends Controller
 {
@@ -228,68 +230,46 @@ class KehadiranController extends Controller
         $datakar = Karyawan::get();
 
         foreach($datakar as $item){
-            $idkar[] = $item->id;
+            $idkar[$item->nama_karyawan] = $item->id;
             $nama[] = $item->nama_karyawan;
         }
 
-        // $nam = array_values($nama);
+        $nam = array_values($nama);
 
-        // where(function($query) use($nam){
-        //     foreach($nam as $keyword) {
-        //         $query->orWhere('nama', 'LIKE', "%$keyword%");
-        //     }
-        // })
-        $abs = DataAbsen::whereIn("nama", $nama)
+        $as = DataAbsen::whereIn("nama", $nam)
                 ->whereMonth('tanggal', '=', $bulan)
                 ->whereYear('tanggal', '=', $tahun)
-                ->select("nama", DB::raw('count(IF(absen = 0, 1, NULL)) as masuk'),DB::raw('count(IF(lembur = 1, 1, NULL)) as lembur'), DB::raw('count(IF(absen = 1, 1, NULL)) as izin'))
+                ->select("nama", DB::raw('min(tanggal) as tanggal_awal'), DB::raw('max(tanggal) as tanggal_akhir'), DB::raw('count(IF(absen = 0, 1, NULL)) as masuk'),DB::raw('count(IF(lembur = 1, 1, NULL)) as lembur'), DB::raw('count(IF(absen = 1, 1, NULL)) as izin'))
                 ->groupBy("nama")
                 ->get();
 
-        // dd($abs);
-
-        foreach($abs as $item){
+        foreach($as as $item){
             $na[] = $item->nama;
-            $ma[] = $item->lembur;
-            $ab[] = $item->izin;
         }
-        // dd($ma);
-
-        $namakar = Karyawan::whereIn('nama_karyawan', $na)
-                    ->select('id')
-                    ->groupBy('id')
-                    ->get();
-
-
-        foreach($namakar as $key => $item){
-            $idka[] = $item['id'];
-            // $kk = array_push($idka);
-        }
-        $ch = array_filter($idka, function($v) { return strpos($v, 'hidden') === false; });
-        // $ch = explode(" ", $idka);
-
-        // foreach($idka as $keid){
-        //     array_push
-        // }
-        dd($ch);
 
         $finalArray = array();
-            foreach($abs as $key=>$value){
+            foreach($as as $key=>$value){
+                foreach($idkar as $key => $ik){
+                    if($value['nama'] == $key){
+                        $idkfis = $ik;
+                    }
+                }
                 array_push($finalArray, array(
-            'karyawan_id'=>$idka,
-            'masuk'=>$value['masuk'],
-            'lembur'=>$value['lembur'],
-            'izin' => $value['izin'],
-            ));
+                    'karyawan_id'=>$idkfis,
+                    'masuk'=>$value['masuk'],
+                    'lembur'=>$value['lembur'],
+                    'izin' => $value['izin'],
+                    'from_date' => $value['tanggal_awal'],
+                    'to_date' => $value['tanggal_akhir'],
+                    "created_at"=> Carbon::now(),
+                    "updated_at"=> Carbon::now()
+                )
+            );
         }
 
-        dd($finalArray);
+        Kehadiran::insert($finalArray);
 
-        // $merged = $namakar->merge($finalArray);
-
-        // dd($merged);
-        // Kehadiran::insert($finalArray);
-
-
+        Alert::toast('Data Berhasil Ditambah', 'success');
+        return redirect()->back();
     }
 }

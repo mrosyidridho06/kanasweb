@@ -29,7 +29,7 @@ class KaryawanFactory extends Factory
             'hp_karyawan' => $this->faker->phoneNumber(),
             'agama' => $this->faker->randomElement(array('islam', 'kristen', 'katolik', 'hindu', 'buddha')),
             'jabatan' => $this->faker->title(),
-            'tanggal' => $this->faker->date($format = 'Y-m-d', $max = 'now'),
+            'tanggal_masuk' => $this->faker->date($format = 'Y-m-d', $max = 'now'),
         ];
     }
 }

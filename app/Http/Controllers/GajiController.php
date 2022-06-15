@@ -264,7 +264,7 @@ class GajiController extends Controller
         $bulan= $request->get('bulangen');
         $tahun = $request->get('tahungen');
         $harian = $request->get('harian');
-        $lembur = $request->get('uanglembur');
+        $lembur = $request->get('lembur');
 
         $datakar = Kehadiran::with('karyawan')
                 ->whereMonth('from_date', '=', $bulan)
@@ -280,8 +280,8 @@ class GajiController extends Controller
             'gaji_harian' => $value['masuk']*$harian,
             'bpjs' => $value->karyawan['bpjs'],
             'tunjangan' => $value->karyawan['tunjangan'],
-            'uang_lembur' =>10000,
-            'total_gaji' =>($value['masuk']*$harian)+$value->karyawan['bpjs']+$value->karyawan['tunjangan'],
+            'uang_lembur' =>$value['lembur']*$lembur,
+            'total_gaji' =>($value['masuk']*$harian)+$value->karyawan['bpjs']+$value->karyawan['tunjangan']+($value['lembur']*$lembur),
             "created_at"=> Carbon::now(),
             "updated_at"=> Carbon::now()
             )
@@ -298,9 +298,5 @@ class GajiController extends Controller
         ]);
         Alert::toast('Data Berhasil Ditambah', 'success');
         return redirect()->route('gaji.index');
-
-        // $kehadir = new Kehadiran;
-        // $kehadir->masuk = $datakar['tanggal'];
-        // $kehadir->karyawan_id = $datakar['nama'];
     }
 }

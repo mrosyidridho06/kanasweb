@@ -58,15 +58,28 @@
                                                     <script>document.getElementById('tahun').value = "<?php if (isset($_GET['tahun']) && $_GET['tahun']) echo $_GET['tahun'];?>";</script>
                                                 </div>
                                             </div>
-                                            <div class="col-md-12">
-                                                <label for="uang_harian">Uang Harian</label>
-                                                <select class="form-control @error('uang_harian') is-invalid @enderror" name="harian" value="{{ old('harian') }}">
+                                            <div class="col-md-6">
+                                                <label for="harian">Uang Harian</label>
+                                                <select class="form-control @error('harian') is-invalid @enderror" name="harian" value="{{ old('harian') }}">
                                                     <option value="" selected disabled>Pilih Gaji Harian</option>
                                                     @foreach ($mgaji as $harian )
                                                         @if (old('harian') == $harian->harian)
                                                             <option value="{{ $harian->harian }}" selected>{{ $harian->harian }}</option>
                                                         @else
                                                             <option value="{{ $harian->harian }}">{{ $harian->harian }}</option>
+                                                        @endif
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="lembur">Uang Harian</label>
+                                                <select class="form-control @error('lembur') is-invalid @enderror" name="lembur" value="{{ old('lembur') }}">
+                                                    <option value="" selected disabled>Pilih Uang Lembur</option>
+                                                    @foreach ($mgaji as $lembur )
+                                                        @if (old('lembur') == $lembur->lembur)
+                                                            <option value="{{ $lembur->lembur }}" selected>{{ $lembur->lembur }}</option>
+                                                        @else
+                                                            <option value="{{ $lembur->lembur }}">{{ $lembur->lembur }}</option>
                                                         @endif
                                                     @endforeach
                                                 </select>
