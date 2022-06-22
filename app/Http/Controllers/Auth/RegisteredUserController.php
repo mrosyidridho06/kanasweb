@@ -50,10 +50,6 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        // dd($user);
-        // event(new Registered($user));
-
-        // Auth::login($user);
         Alert::toast('Data Berhasil Ditambahkan', 'success');
         return redirect()->back();
     }

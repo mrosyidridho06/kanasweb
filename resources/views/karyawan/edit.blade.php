@@ -107,6 +107,7 @@
                         <div class="col-md-6">
                             <label>Tanggal</label>
                                 <input type="date" name="tanggal_masuk" id="tanggal_masuk" class="form-control @error('tanggal_masuk') is-invalid @enderror" value="{{ $karyawan->tanggal_masuk }}" />
+                                {{-- {{ $karyawan->tanggal_masuk }} --}}
                                 @error('tanggal_masuk')
                                     <div class="alert alert-danger mt-2">
                                         {{ $message }}

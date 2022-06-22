@@ -2,7 +2,7 @@
 @section('title', 'Tambah Bahan')
 @section('content')
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">Bahan Baku</h1>
+    <h1 class="h3 mb-0 text-gray-800">Edit Supplier</h1>
     <div align="right" class="pt-1">
         <a href="{{route('supplier.index')}}" class="btn btn-warning btn-xs"><i class="fa fa-arrow-left"></i> Kembali</a>
     </div>

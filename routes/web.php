@@ -14,6 +14,7 @@ use App\Http\Controllers\ResepDetailsController;
 use App\Http\Controllers\RiwayatController;
 use App\Http\Controllers\TunjanganGajiController;
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -32,7 +33,7 @@ Route::get('/', function () {
 
 Route::group(['middleware' => 'auth'], function () {
 
-    Route::get('/dashboard', [DashboardController::class, 'index']);
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('/riwayat', RiwayatController::class);
     Route::resource('/profile', ProfileController::class);
 

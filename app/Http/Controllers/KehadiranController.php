@@ -27,17 +27,7 @@ class KehadiranController extends Controller
     {
         $karyawan = Karyawan::get();
 
-        // $tahun = Kehadiran::select('to_date')
-        //         ->groupBy('to_date')
-        //         ->get();
-
         $tahun = DB::table('kehadirans')->selectRaw('substr(to_date,1,4) as to_date')->pluck('to_date')->unique();
-
-        // dd($tahun);
-
-        // $tes = Kehadiran::addSelect(['ke' => Kehadiran::select('to_date')])->get();
-
-        // dd($tes);
 
         $month = $request->get('bulan');
         $year = $request->get('tahun');
@@ -145,13 +135,7 @@ class KehadiranController extends Controller
      */
     public function edit(Kehadiran $kehadiran)
     {
-        // $gaji = Kehadiran::with('karyawan')->get();
-
-        // dd($gaji);
         $karyawan = Karyawan::get();
-
-        // dd($karyawan);
-
         return view('kehadiran.edit', compact('kehadiran', 'karyawan'));
     }
 
@@ -224,8 +208,8 @@ class KehadiranController extends Controller
 
     public function absengen(Request $request)
     {
-        $bulan= $request->get('bulangen');
-        $tahun = $request->get('tahungen');
+        $bulan= $request->bulangen;
+        $tahun = $request->tahungen;
 
         $datakar = Karyawan::get();
 

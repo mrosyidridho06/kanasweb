@@ -148,6 +148,11 @@
 					<td style="text-align: right">Rp{{ number_format($item->harga_jual,1,',','.') }}</td>
 				</tr>
 				<tr class="total">
+					<td ></td>
+                    <td colspan="4" style="font-weight: bold">JUMLAH JUAL</td>
+					<td style="text-align: right">{{ $item->jual }}</td>
+				</tr>
+				<tr class="total">
                     <td></td>
 					<td colspan="4" style="font-weight: bold">TOTAL</td>
 					<td style="text-align: right">Rp{{ number_format($item->total,1,',','.') }}</td>

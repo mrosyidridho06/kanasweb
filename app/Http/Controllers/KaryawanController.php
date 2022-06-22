@@ -111,7 +111,7 @@ class KaryawanController extends Controller
      * @param  \App\Models\Karyawan  $karyawan
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Karyawan $karyawan)
+    public function update(Request $request, $id)
     {
         $this->validate($request, [
             'nama_karyawan' => 'required',
@@ -124,7 +124,9 @@ class KaryawanController extends Controller
             'tanggal_masuk' => 'required',
         ]);
 
+        $karyawan = Karyawan::find($id);
         $karya = $request->all();
+
 
         if ($foto = $request->file('foto')) {
             File::delete('images/karyawan/'.$karyawan->foto);

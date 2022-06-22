@@ -86,9 +86,6 @@ class BahanController extends Controller
             'aktivitas' => ('Tambah Bahan '.$request->nama_bahan.''),
         ]);
 
-        // dd($bah);
-
-        // Bahan::create($bah);
         if($bah){
             //redirect dengan pesan sukses
             Alert::toast('Data Berhasil Ditambahkan', 'success');
@@ -131,12 +128,14 @@ class BahanController extends Controller
      * @param  \App\Models\Bahan  $bahan
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Bahan $bahan)
+    public function update(Request $request, $id)
     {
-        $jumlah = $_POST['jumlah_bahan'];
-        $harga = $_POST['harga_bahan'];
+        $jumlah = $request->jumlah_bahan;
+        $harga = $request->harga_bahan;
 
         $harga_satuan = $harga/$jumlah;
+
+        $bahan = Bahan::find($id);
 
         $bahan->update([
             'nama_bahan' => $request->nama_bahan,
@@ -221,8 +220,9 @@ class BahanController extends Controller
      * @param  \App\Models\Bahan  $bahan
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Bahan $bahan)
+    public function destroy($id)
     {
+        $bahan = Bahan::find($id);
 
         $bahan->delete();
 

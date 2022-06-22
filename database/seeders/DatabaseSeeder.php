@@ -44,8 +44,8 @@ class DatabaseSeeder extends Seeder
         ]);
 
 
-        Bahan::factory(15)->create();
-        MasterGaji::factory(1)->create();
-        Kehadiran::factory(10)->create();
+        // Bahan::factory(15)->create();
+        // MasterGaji::factory(1)->create();
+        // Kehadiran::factory(10)->create();
     }
 }

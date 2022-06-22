@@ -94,7 +94,7 @@ class SupplierController extends Controller
      * @param  \App\Models\Supplier  $Supplier
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Supplier $supplier)
+    public function update(Request $request, $id)
     {
         $request->validate([
             'nama_supplier' => 'required',
@@ -102,16 +102,16 @@ class SupplierController extends Controller
             'hp_supplier' => 'required|min:10',
         ]);
 
-        $supplier->update([
+        $supplier = Supplier::find($id);
+
+        if($supplier){
+            $supplier->update([
             'nama_supplier' => $request->nama_supplier,
             'alamat_supplier' => $request->alamat_supplier,
             'hp_supplier' => $request->hp_supplier,
 
-        ]);
+            ]);
 
-
-        if($supplier){
-            //redirect dengan pesan sukses
             Riwayat::create([
                 'user_id' => Auth::user()->id,
                 'aktivitas' => ('Mengubah Supplier '.$supplier->nama_supplier.''),
@@ -131,8 +131,10 @@ class SupplierController extends Controller
      * @param  \App\Models\Supplier  $Supplier
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Supplier $supplier)
+    public function destroy($id)
     {
+        $supplier = Supplier::find($id);
+
         $supplier->delete();
 
         Riwayat::create([

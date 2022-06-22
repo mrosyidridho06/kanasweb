@@ -5,8 +5,8 @@
         <h1 class="h3 mb-0 text-gray-800">Penggajian</h1>
         <div align="right" class="pt-1">
             <a href="" class="btn btn-success btn-xs"><i class="fa fa-sync"></i></a>
-            <a href="{{ route('gaji.create') }}" class="btn btn-primary btn-xs"><i class="fa fa-plus"> Tambah Gaji</i></a>
-            <button class="btn btn-success" name="generate" id="generatebut" data-toggle="modal" data-target="#generate" type="submit">Generate</button>
+            {{-- <a href="{{ route('gaji.create') }}" class="btn btn-primary btn-xs"><i class="fa fa-plus"> Tambah Gaji</i></a> --}}
+            <button class="btn btn-primary" name="generate" id="generatebut" data-toggle="modal" data-target="#generate" type="submit">Generate</button>
             <div id="generate" class="modal fade">
                 <div class="modal-dialog">
                     <div class="modal-content">

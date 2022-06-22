@@ -51,9 +51,6 @@ class MasterGajiController extends Controller
             'lembur' => $request->lembur,
         ]);
 
-        // dd($bah);
-
-        // Bahan::create($bah);
         if($mj){
             //redirect dengan pesan sukses
             Riwayat::create([
@@ -99,14 +96,14 @@ class MasterGajiController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, MasterGaji $mastergaji)
+    public function update(Request $request, $id)
     {
         $request->validate([
             'harian' => 'required',
             'lembur' => 'required',
         ]);
 
-        // dd($request);
+        $mastergaji = MasterGaji::find($id);
 
         $mastergaji->update($request->all());
 

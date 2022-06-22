@@ -236,11 +236,6 @@ class ResepController extends Controller
                 if ($cart_data[$keys]["id"] == $bahan) {
                     Alert::toast('Bahan Sudah ada ditambahkan', 'error');
                     return back();
-                    // $minutes = 60;
-                    // $cart_data[$keys]["qty"] = $request->input('qty');
-                    // $item_data = json_encode($cart_data);
-                    // return response()->json(['status' => '"' . $cart_data[$keys]["nama_bahan"] . '" Already Added to Cart', 'status2' => '2']);
-                    // Cookie::queue(Cookie::make('shopping_cart', $item_data, $minutes));
                 }
             }
         } else {

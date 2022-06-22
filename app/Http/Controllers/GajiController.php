@@ -22,24 +22,10 @@ class GajiController extends Controller
      */
     public function index(Request $request, Gaji $gaji)
     {
-        $month = $request->get('bulan');
-        $year = $request->get('tahun');
 
-        // $gaji = Gaji::with('kehadiran', 'kehadiran.karyawan')->get();
-        // dd($gaji);
+        $month = $request->bulan;
+        $year = $request->tahun;
 
-        // $gaji = $gaji->newQuery();
-
-        // if ($request->has('bulan') && $request->has('tahun')) {
-        //     $gaji = Gaji::with('kehadiran', 'kehadiran.karyawan')
-        //         ->whereMonth('to_date', '=', $month)
-        //         ->whereYear('to_date', '=', $year)
-        //         ->get();
-        //     // dd($gaji);
-        //     }
-        // $filter = $gaji->get();
-
-        // dd($filter);
         $mgaji = MasterGaji::get();
 
         $filter = DB::table('gajis')
@@ -64,17 +50,13 @@ class GajiController extends Controller
     {
         $mgaji = MasterGaji::get();
 
-
         $karyawan = $request->get('nama_karyawan');
-
 
         $karya = Kehadiran::with('karyawan')
         ->where('id', '=', $karyawan)
         ->get();
 
         $dataTahun = DB::table('kehadirans')->selectRaw('substr(to_date,1,4) as to_date')->pluck('to_date')->unique();
-
-        // dd($dataTahun);
 
         $month = $request->get('bulan');
         $year = $request->get('tahun');
@@ -182,7 +164,7 @@ class GajiController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Gaji $gaji)
+    public function update(Request $request, $id)
     {
 
         $upah_harian = $request['uang_harian']*$request['masuk'];
@@ -191,6 +173,8 @@ class GajiController extends Controller
         $total_gaji = $uang_lembur+$upah_harian+$request['bonus']+$request['tunjangan']+$request['bpjs']-$request['potongan'];
 
         // dd($uang_lembur);
+
+        $gaji = Gaji::find($id);
 
         $gaji->update([
             'uang_lembur' => $uang_lembur,
