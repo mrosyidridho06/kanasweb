@@ -1,7 +1,5 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/kanasmyi/public_html/public
-    - /bin/cp index.html $DEPLOYPATH
-    - /bin/cp -R assets $DEPLOYPATH
-    - /bin/cp -R images $DEPLOYPATH
+    - export DEPLOYPATH=/home/kanasmyi/public_html/
+    - /bin/cp -r * $DEPLOYPATH
