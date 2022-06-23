@@ -54,7 +54,7 @@ class KaryawanController extends Controller
 
         $newNameImage = date('Ymd'). '-' . $request->nama_karyawan . '.' . $request->foto->extension();
 
-        $request->file('foto')->move(public_path('images/karyawan'), $newNameImage);
+        $request->file('foto')->move('images/karyawan', $newNameImage);
 
         $karwan = Karyawan::create([
             'nama_karyawan' => $request->nama_karyawan,
