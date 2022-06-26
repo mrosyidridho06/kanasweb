@@ -245,34 +245,30 @@ class GajiController extends Controller
 
     public function generategaji(Request $request)
     {
-        $bulan= $request->get('bulangen');
-        $tahun = $request->get('tahungen');
-        $harian = $request->get('harian');
-        $lembur = $request->get('lembur');
+        $bulan= $request->bulangen;
+        $tahun = $request->tahungen;
+        $harian = $request->harian;
+        $lembur = $request->lembur;
 
         $datakar = Kehadiran::with('karyawan')
                 ->whereMonth('from_date', '=', $bulan)
                 ->whereYear('from_date', '=', $tahun)
                 ->get();
 
-        // dd($datakar);
-
         $finalArray = array();
         foreach($datakar as $key=>$value){
-        array_push($finalArray, array(
-            'kehadiran_id'=> $value['id'],
-            'gaji_harian' => $value['masuk']*$harian,
-            'bpjs' => $value->karyawan['bpjs'],
-            'tunjangan' => $value->karyawan['tunjangan'],
-            'uang_lembur' =>$value['lembur']*$lembur,
-            'total_gaji' =>($value['masuk']*$harian)+$value->karyawan['bpjs']+$value->karyawan['tunjangan']+($value['lembur']*$lembur),
-            "created_at"=> Carbon::now(),
-            "updated_at"=> Carbon::now()
-            )
-        );
+            array_push($finalArray, array(
+                'kehadiran_id'=> $value['id'],
+                'gaji_harian' => $value['masuk']*$harian,
+                'bpjs' => $value->karyawan['bpjs'],
+                'tunjangan' => $value->karyawan['tunjangan'],
+                'uang_lembur' =>$value['lembur']*$lembur,
+                'total_gaji' =>($value['masuk']*$harian)+$value->karyawan['bpjs']+$value->karyawan['tunjangan']+($value['lembur']*$lembur),
+                "created_at"=> Carbon::now(),
+                "updated_at"=> Carbon::now()
+                )
+            );
         }
-
-        // dd($finalArray);
 
         Gaji::insert($finalArray);
 
@@ -280,7 +276,8 @@ class GajiController extends Controller
             'user_id' => Auth::user()->id,
             'aktivitas' => 'Mengenerate Data Gaji Pada Bulan '.$bulan.' Tahun '.$tahun.''
         ]);
+
         Alert::toast('Data Berhasil Ditambah', 'success');
-        return redirect()->route('gaji.index');
+        return redirect()->back();
     }
 }

@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use App\Models\Bahan;
 use App\Models\Resep;
-use App\Models\ResepDetails;
 use App\Models\Riwayat;
 use App\Models\Supplier;
+use App\Models\ResepDetails;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -224,7 +225,12 @@ class BahanController extends Controller
     {
         $bahan = Bahan::find($id);
 
-        $bahan->delete();
+        try {
+            $bahan->delete();
+        } catch (Exception $e){
+            Alert::toast('Bahan Terdapat Pada Resep', 'error');
+            return redirect()->back();
+        }
 
         Riwayat::create([
             'user_id' => Auth::user()->id,

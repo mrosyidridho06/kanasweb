@@ -7,6 +7,7 @@ use App\Models\Supplier;
 use Illuminate\Http\Request;
 use App\Exports\SupplierExport;
 use App\Imports\SupplierImport;
+use Exception;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -135,7 +136,12 @@ class SupplierController extends Controller
     {
         $supplier = Supplier::find($id);
 
-        $supplier->delete();
+        try {
+            $supplier->delete();
+        } catch (Exception $e){
+            Alert::toast('Supplier Terdapat pada Bahan', 'error');
+            return redirect()->back();
+        }
 
         Riwayat::create([
             'user_id' => Auth::user()->id,

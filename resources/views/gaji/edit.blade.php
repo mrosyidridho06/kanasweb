@@ -46,22 +46,24 @@
                 </div>
                 <div class="col-md-6">
                     <label>Uang Lembur</label>
-                        @foreach ($mgaji as $masgaji )
                         <select class="form-control @error('uang_lembur') is-invalid @enderror" height="100%" name="uang_lembur" value="{{ old('uang_lembur') }}" name="uang_lembur">
+                            @foreach ($mgaji as $masgaji )
                                 @if (old('uang_lembur') == $masgaji->lembur)
                                     <option value="{{ $masgaji->lembur }}" selected> {{ $masgaji->lembur }} </option>
                                 @else
                                     <option value="{{ $masgaji->lembur }}">{{ $masgaji->lembur }}</option>
                                 @endif
+                            @endforeach
                         </select>
                 </div>
                 <div class="col-md-6">
                     <label>Uang Harian</label>
                     <select class="form-control @error('uang_harian') is-invalid @enderror" height="100%" name="uang_harian" value="{{ old('uang_harian') }}" name="uang_harian">
-                            @if (old('uang_harian') == $masgaji->harian)
-                                <option value="{{ $masgaji->harian }}" selected> {{ $masgaji->harian }} </option>
+                        @foreach ($mgaji as $item)
+                            @if (old('uang_harian') == $item->harian)
+                                <option value="{{ $item->harian }}" selected> {{ $item->harian }} </option>
                             @else
-                                <option value="{{ $masgaji->harian }}">{{ $masgaji->harian }}</option>
+                                <option value="{{ $item->harian }}">{{ $item->harian }}</option>
                             @endif
                         @endforeach
                     </select>

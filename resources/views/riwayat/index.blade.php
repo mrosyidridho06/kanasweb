@@ -69,13 +69,6 @@
                 [ 10, 25, 50, 100, 1000, -1 ],
                 [ '10', '25', '50', '100', '1000', 'All' ]
             ],
-            columnDefs: [
-                {
-                    "searchable": false,
-                    "orderable": false,
-                    "targets": 3,
-                },
-            ],
             buttons: [
                 {
                     extend: 'csv',
@@ -84,7 +77,7 @@
                         modifier: {
                             page: 'all'
                         },
-                        columns: [ 0, 1, 2, 3, 4, 5, 6 ]
+                        columns: [ 0, 1, 2, 3 ]
                     }
                 },
                 {
@@ -94,7 +87,7 @@
                         modifier: {
                             page: 'all'
                         },
-                        columns: [ 0, 1, 2, 3, 4, 5, 6 ]
+                        columns: [ 0, 1, 2, 3 ]
                     }
                 },
                 {
@@ -104,7 +97,7 @@
                         modifier: {
                             page: 'all'
                         },
-                        columns: [ 0, 1, 2, 3, 4, 5, 6 ]
+                        columns: [ 0, 1, 2, 3 ]
                     }
                 },
 

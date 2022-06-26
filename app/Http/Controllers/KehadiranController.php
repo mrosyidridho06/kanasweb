@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use Carbon\Carbon;
 use App\Models\Gaji;
 use App\Models\Karyawan;
@@ -178,9 +179,15 @@ class KehadiranController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Kehadiran $kehadiran)
+    public function destroy($id)
     {
-        $kehadiran->delete();
+        $kehadiran = Kehadiran::find($id);
+        try {
+            $kehadiran->delete();
+        } catch (Exception $e){
+            Alert::toast('Kehadiran Terdapat Pada Gaji', 'error');
+            return redirect()->back();
+        }
 
         Alert::toast('Data Berhasil Dihapus', 'success');
         return redirect()->back();

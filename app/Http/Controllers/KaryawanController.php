@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use App\Models\Riwayat;
 use App\Models\Karyawan;
 use Illuminate\Http\Request;
@@ -161,11 +162,16 @@ class KaryawanController extends Controller
      * @param  \App\Models\Karyawan  $karyawan
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Karyawan $karyawan)
+    public function destroy($id)
     {
-        // $karyawan = Karyawan::find($karyawan);
-        $karyawan->delete();
-        File::delete('images/karyawan/'.$karyawan->foto);
+        $karyawan = Karyawan::find($id);
+        try {
+            $karyawan->delete();
+            File::delete('images/karyawan/'.$karyawan->foto);
+        } catch (Exception $e){
+            Alert::toast('karyawan Terdapat Pada Kehadiran', 'error');
+            return redirect()->back();
+        }
 
         Riwayat::create([
             'user_id' => Auth::user()->id,
