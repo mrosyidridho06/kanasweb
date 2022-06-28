@@ -11,7 +11,7 @@
     <div class="my-2 row">
         <div class="col-md-4">
             {{-- <a href="{{ route('supplierexport') }}" class="btn btn-primary">Export</a> --}}
-            {{-- <button class="btn btn-success" name="import" id="importbut" data-toggle="modal" data-target="#import" type="submit">Import</button>
+            <button class="btn btn-success" name="import" id="importbut" data-toggle="modal" data-target="#import" type="submit">Import</button>
             <div id="import" class="modal fade">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -32,7 +32,7 @@
                         </div>
                     </div>
                 </div>
-            </div> --}}
+            </div>
         </div>
     </div>
     <div class="card shadow mb-4">

@@ -50,7 +50,14 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        Alert::toast('Data Berhasil Ditambahkan', 'success');
-        return redirect()->back();
+        if($user){
+            //redirect dengan pesan sukses
+            Alert::toast('Data Berhasil Ditambahkan', 'success');
+            return redirect()->route('dashboard');
+        }else{
+            //redirect dengan pesan error
+            Alert::error('Gagal', 'Data Gagal Ditambahkan');
+            return redirect()->back();
+        }
     }
 }

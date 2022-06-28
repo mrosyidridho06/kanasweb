@@ -10,6 +10,28 @@
         {{-- <a href="{{route('bahan.create')}}" class="btn btn-primary">Tambah bahan</a> --}}
         <button type="button" data-toggle="modal" data-target="#add_data_Modal" class="btn btn-primary"><i class="fa fa-plus"> Tambah Bahan</i></button>
     </div>
+    <button class="btn btn-success" name="import" id="importbut" data-toggle="modal" data-target="#import" type="submit">Import</button>
+    <div id="import" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Import Bahan</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                    <div class="modal-body">
+                        <form action="{{ route('bahanimport') }}" method="post" enctype="multipart/form-data">
+                            @csrf
+                            <input type="file" name="bahan" class="form-control" required>
+                            <br>
+                            <button class="btn btn-primary" type="submit">Submit</button>
+                        </form>
+                    </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <div class="card shadow mb-4">
     <div class="card-body">

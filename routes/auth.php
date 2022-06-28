@@ -14,11 +14,8 @@ Route::get('/register', [RegisteredUserController::class, 'create'])
                 ->middleware('hakakses:admin')
                 ->name('register');
 
-// Route::post('/register', [RegisteredUserController::class, 'store'])
-//                 ->middleware('hakakses:admin');
-
 Route::post('/register', [RegisteredUserController::class, 'store'])
-                ->middleware('guest');
+                ->middleware('hakakses:admin');
 
 Route::get('/login', [AuthenticatedSessionController::class, 'create'])
                 ->middleware('guest')

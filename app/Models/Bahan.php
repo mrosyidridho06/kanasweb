@@ -8,10 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Bahan extends Model
 {
     use HasFactory;
-    
+
     protected $table = "bahans";
 
-    protected $fillable = ["supplier_id", "nama_bahan", "jumlah_bahan", "satuan_bahan", "harga_bahan", "harga_satuan"];
+    protected $fillable = ["id", "supplier_id", "nama_bahan", "jumlah_bahan", "satuan_bahan", "harga_bahan", "harga_satuan"];
 
     public function supplier()
     {

@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Bahan;
 use App\Models\Resep;
 use App\Models\Riwayat;
+use App\Imports\ResepImport;
 use App\Models\ResepDetails;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Cookie;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -334,6 +336,18 @@ class ResepController extends Controller
     public function clearCart()
     {
         Cookie::queue(Cookie::forget('shopping_cart'));
+        return redirect()->back();
+    }
+
+    public function import(Request $request)
+    {
+        $file = $request->file('resep');
+        $namaFile = $file->getClientOriginalName();
+        $file->move('DataResep', $namaFile);
+
+        Excel::import(new ResepImport, public_path('/DataResep/'.$namaFile));
+
+        Alert::toast('Data Berhasil Ditambah', 'success');
         return redirect()->back();
     }
 }

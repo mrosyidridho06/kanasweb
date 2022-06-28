@@ -15,6 +15,7 @@ class SupplierImport implements ToModel
     public function model(array $row)
     {
         return new Supplier([
+            'id' => $row[0],
             'nama_supplier' => $row[1],
             'alamat_supplier' => $row[2],
             'hp_supplier' => $row[3],

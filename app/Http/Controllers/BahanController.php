@@ -7,8 +7,10 @@ use App\Models\Bahan;
 use App\Models\Resep;
 use App\Models\Riwayat;
 use App\Models\Supplier;
+use App\Imports\BahanImport;
 use App\Models\ResepDetails;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Auth;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -238,6 +240,18 @@ class BahanController extends Controller
         ]);
 
         Alert::toast('Data Berhasil Dihapus', 'success');
+        return redirect()->back();
+    }
+
+    public function import(Request $request)
+    {
+        $file = $request->file('bahan');
+        $namaFile = $file->getClientOriginalName();
+        $file->move('DataBahan', $namaFile);
+
+        Excel::import(new BahanImport, public_path('/DataBahan/'.$namaFile));
+
+        Alert::toast('Data Berhasil Ditambah', 'success');
         return redirect()->back();
     }
 }

@@ -11,7 +11,7 @@ class ResepDetails extends Model
 
     protected $table='resep_details';
 
-    protected $fillable = [ 'resep_id', 'bahan_id', 'qty', 'harga', 'subtotal' ];
+    protected $fillable = [ 'id', 'resep_id', 'bahan_id', 'qty', 'harga', 'subtotal' ];
 
     public function bahan()
     {

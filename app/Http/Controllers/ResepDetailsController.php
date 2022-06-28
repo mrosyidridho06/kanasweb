@@ -8,7 +8,9 @@ use App\Models\Resep;
 use App\Models\Riwayat;
 use App\Models\ResepDetails;
 use Illuminate\Http\Request;
+use App\Imports\ResepDetailsImport;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class ResepDetailsController extends Controller
@@ -220,5 +222,17 @@ class ResepDetailsController extends Controller
             Alert::error('Gagal', 'Data Gagal Ditambahkan');
             return redirect()->back();
         }
+    }
+
+    public function import(Request $request)
+    {
+        $file = $request->file('resepdetail');
+        $namaFile = $file->getClientOriginalName();
+        $file->move('DataResepDetails', $namaFile);
+
+        Excel::import(new ResepDetailsImport, public_path('/DataResepDetails/'.$namaFile));
+
+        Alert::toast('Data Berhasil Ditambah', 'success');
+        return redirect()->back();
     }
 }

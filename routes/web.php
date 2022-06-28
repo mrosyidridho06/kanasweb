@@ -40,6 +40,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::group(['middleware' => 'hakakses:admin,user'], function(){
         // resep
         Route::resource('/resep', ResepController::class);
+        Route::post('/resepimport', [ResepController::class, 'import'])->name('resepimport');
         Route::post('/tambahCart', [ResepController::class, 'cartSession'])->name('tambahCart');
         Route::get('/resepcart', [ResepController::class, 'Cart'])->name('resepcart');
         Route::post('/updateresep', [ResepController::class, 'updateToCart'])->name('updateresep');
@@ -48,11 +49,13 @@ Route::group(['middleware' => 'auth'], function () {
 
         // resepdetails
         Route::resource('/resepdetails', ResepDetailsController::class);
+        Route::post('/resepdetailimport', [ResepDetailsController::class, 'import'])->name('resepdetailimport');
         Route::post('/tambaheditresep', [ResepDetailsController::class, 'tambaheditresep'])->name('tambaheditresep');
         Route::get('/reseppdf/{id}', [ResepDetailsController::class, 'exportresep'])->name('exportresep');
 
         // bahan
         Route::resource('/bahan', BahanController::class);
+        Route::post('/bahanimport', [BahanController::class, 'import'])->name('bahanimport');
 
         // supplier
         Route::resource('/supplier', SupplierController::class);
