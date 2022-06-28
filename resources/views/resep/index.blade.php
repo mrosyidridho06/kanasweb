@@ -4,9 +4,9 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
     <div class="container col-md-12">
         <h3 class="mb-2 text-gray-800">Resep</h3>
-        <div class="my-2 row">
+        {{-- <div class="my-2 row">
             <div class="col-md-4">
-                {{-- <a href="{{ route('supplierexport') }}" class="btn btn-primary">Export</a> --}}
+                <a href="{{ route('supplierexport') }}" class="btn btn-primary">Export</a>
                 <button class="btn btn-success" name="import" id="importbut" data-toggle="modal" data-target="#import" type="submit">Import</button>
                 <div id="import" class="modal fade">
                     <div class="modal-dialog">
@@ -30,7 +30,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
         <div class="row">
             <div class="col-md-12">
                 <div class="card card-primary">

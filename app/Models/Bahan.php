@@ -11,7 +11,7 @@ class Bahan extends Model
 
     protected $table = "bahans";
 
-    protected $fillable = ["id", "supplier_id", "nama_bahan", "jumlah_bahan", "satuan_bahan", "harga_bahan", "harga_satuan"];
+    protected $fillable = ["supplier_id", "nama_bahan", "jumlah_bahan", "satuan_bahan", "harga_bahan", "harga_satuan"];
 
     public function supplier()
     {

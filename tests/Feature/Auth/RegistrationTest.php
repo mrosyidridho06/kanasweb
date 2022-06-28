@@ -26,11 +26,11 @@ class RegistrationTest extends TestCase
         $user = User::find(4);
 
         User::create([
-            'name' => 'tesuser2',
-            'username' => 'tesuser2',
-            'email' => 'user2@tes.com',
-            'role' => 'user',
-            'password' => Hash::make('password'),
+            'name' => 'pemilik1',
+            'username' => 'pemilik1',
+            'email' => 'pemilik@tes.com',
+            'role' => 'admin',
+            'password' => Hash::make('pemilik'),
         ]);
 
         $response = $this->actingAs($user)->get('/register');
