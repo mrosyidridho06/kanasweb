@@ -41,7 +41,6 @@ class KaryawanController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request);
         $this->validate($request, [
             'nama_karyawan' => 'required',
             'alamat_karyawan' => 'required',
@@ -52,9 +51,7 @@ class KaryawanController extends Controller
             'tanggal_masuk' => 'required',
             'foto' => 'required|file|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
         ]);
-
         $newNameImage = date('Ymd'). '-' . $request->nama_karyawan . '.' . $request->foto->extension();
-
         $request->file('foto')->move('images/karyawan', $newNameImage);
 
         $karwan = Karyawan::create([
